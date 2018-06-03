@@ -62,12 +62,6 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'majutsushi/tagbar'
 Plug 'w0rp/ale'
 
-" Plug 'prabirshrestha/async.vim'
-" Plug 'prabirshrestha/asyncomplete.vim'
-" Plug 'prabirshrestha/vim-lsp'
-" Plug 'prabirshrestha/asyncomplete-lsp.vim'
-" Plug 'felixfbecker/php-language-server', {'do': 'composer install && composer run-script parse-stubs'}
-
 call plug#end()
 
 
@@ -116,21 +110,11 @@ nnoremap \q :Bdelete<CR>
 nnoremap ]b :bn<CR>
 nnoremap [b :bp<CR>
 nmap <leader>t :TagbarOpenAutoClose<CR>
-" nnoremap <silent> gh :LspHover<CR>
-" nnoremap <silent> gd :LspDefinition<CR>
-" nnoremap <silent> gr :LspReferences<CR>
-" nnoremap <silent> <leader>o :LspDocumentSymbol<CR>
-" nnoremap <silent> <leader>o :CtrlPBufTag<CR>
-" nnoremap <silent> <F2> :LspRename<CR>
 nnoremap <silent> <C-k><C-w> :bufdo :Bdelete<CR>
 nnoremap <silent> <leader>o :call LanguageClient#textDocument_documentSymbol()<CR>
 nnoremap <silent> gh :call LanguageClient#textDocument_hover()<CR>
 nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
 nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
-
-
-" inoremap <C-Space> <C-X><C-O>
-" imap <c-space> <Plug>(asyncomplete_force_refresh)
 
 colorscheme PaperColor
 
@@ -181,55 +165,6 @@ let g:airline_symbols.branch = ''
 let g:airline_symbols.readonly = ''
 let g:airline_symbols.linenr = '☰'
 let g:airline_symbols.maxlinenr = ''
-
-" let g:airline_symbols.crypt = '🔒'
-" let g:airline_symbols.linenr = ''
-" let g:airline_symbols.maxlinenr = '㏑'
-" let g:airline_symbols.branch = ''
-" let g:airline_symbols.paste = 'ρ'
-" let g:airline_symbols.spell = 'Ꞩ'
-" let g:airline_symbols.notexists = '∄'
-" let g:airline_symbols.whitespace = 'Ξ'
-
-" if executable('typescript-language-server')
-"     au User lsp_setup call lsp#register_server({
-"         \ 'name': 'typescript-language-server',
-"         \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
-"         \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
-"         \ 'whitelist': ['typescript'],
-"         \ })
-
-
-"     au User lsp_setup call lsp#register_server({
-"         \ 'name': 'javascript-language-server',
-"         \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
-"         \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'jsconfig.json'))},
-"         \ 'whitelist': ['javascript'],
-"         \ })
-" endif
-
-" if executable('css-language-server')
-"   au User ls_setup call lsp#register_server({
-"         \'name': 'css-language-server',
-"         \ 'cmd': {server_info->[&shell, &shellcmdflag, 'css-language-server --stdio']},
-"         \ 'whitelist': ['css'],
-"         \ })
-
-" endif
-
-" au User lsp_setup call lsp#register_server({
-"      \ 'name': 'php-language-server',
-"      \ 'cmd': {server_info->['php', expand('~/.config/nvim/plugged/php-language-server/bin/php-language-server.php')]},
-"      \ 'whitelist': ['php'],
-"      \ })
-
-" if executable('pyls')
-"     au User lsp_setup call lsp#register_server({
-"         \ 'name': 'pyls',
-"         \ 'cmd': {server_info->['pyls']},
-"         \ 'whitelist': ['python'],
-"         \ })
-" endif
 
 let g:LanguageClient_serverCommands = {
     \ 'rust': ['rustup', 'run', 'nightly', 'rls'],

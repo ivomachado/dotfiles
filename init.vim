@@ -141,7 +141,8 @@ let g:LanguageClient_serverCommands = {
             \ 'typescript': ['typescript-language-server', '--stdio'],
             \ 'css':        ['css-languageserver', '--stdio'],
             \ 'go':         ['go-langserver'],
-            \ 'cpp':        ['clangd'],
+            \ 'cpp':        ['clang'],
+            \ 'c':          ['clangd'],
             \}
 let g:LanguageClient_diagnosticsEnable = 'Disabled'
 let g:ale_set_loclist = 1

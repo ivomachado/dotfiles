@@ -1,0 +1,2 @@
+#!/bin/bash
+ssh -i ~/Documentos/Amazon/edleno.pem ubuntu@54.233.67.111

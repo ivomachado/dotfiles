@@ -2,23 +2,27 @@
 
 backupfolder=~/Workspace/dotfiles
 
-initvimpath=~/.config/nvim/init.vim
+initvimdir=~/.config/nvim/
+initvimpath=$initvimdir"init.vim"
 dotvimrcpath=~/.vimrc
 tmuxconfpath=~/.tmux.conf
-kittyconfpath=~/.config/kitty/kitty.conf
+kittyconfdir=~/.config/kitty/
+kittyconfpath=$kittyconfdir"kitty.conf"
 dotscriptspath=~/.scripts
 
-rm $initvimpath
+rm $initvimpath 2> /dev/null
+mkdir -p $initvimdir
 ln -s $backupfolder/init.vim $initvimpath
 
-rm $dotvimrcpath
+rm $dotvimrcpath 2> /dev/null
 ln -s $backupfolder/.vimrc $dotvimrcpath
 
-rm $kittyconfpath
+rm $kittyconfpath 2> /dev/null
+mkdir -p $kittyconfdir
 ln -s $backupfolder/kitty.conf $kittyconfpath
 
-rm $tmuxconfpath
+rm $tmuxconfpath 2> /dev/null
 ln -s $backupfolder/.tmux.conf $tmuxconfpath
 
-rm -r $dotscriptspath
+rm -r $dotscriptspath 2> /dev/null
 ln -s $backupfolder/.scripts $dotscriptspath

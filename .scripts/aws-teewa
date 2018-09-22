@@ -1,2 +1,2 @@
 #!/bin/bash
-ssh -i ~/Documents/Amazon/edleno.pem ubuntu@54.233.67.111
+ssh -i ~/Documents/Amazon/edleno.pem ubuntu@teewa.com.br

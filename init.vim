@@ -117,6 +117,7 @@ nnoremap <silent> gr :call LanguageClient#textDocument_references()<CR>
 nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
 nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 
+set background=light
 colorscheme PaperColor
 
 let g:NERDTreeChDirMode       = 2

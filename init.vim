@@ -30,7 +30,6 @@ Plug 'moll/vim-bbye' "Buffer management
 Plug 'vim-airline/vim-airline'
 Plug 'brooth/far.vim'
 
-Plug 'captbaritone/better-indent-support-for-php-with-html'
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-obsession'
 Plug 'elzr/vim-json'
@@ -46,19 +45,9 @@ Plug 'ap/vim-css-color'
 
 Plug 'edkolev/tmuxline.vim'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'fenetikm/falcon'
 Plug 'tomasiser/vim-code-dark'
 Plug 'NLKNguyen/papercolor-theme'
-Plug 'rakr/vim-two-firewatch'
-Plug 'jacoborus/tender.vim'
-Plug 'jonathanfilip/vim-lucius'
 
-Plug 'roxma/LanguageServer-php-neovim',  {'do': 'composer install && composer run-script parse-stubs'}
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'majutsushi/tagbar'
 Plug 'w0rp/ale'
 
@@ -128,34 +117,15 @@ let g:NERDTreeRespectWildIgnore = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#ale#enabled = 1
-let g:ale_linters = {
-\   'javascript': ['eslint'],
-\   'typescript': ['tslint'],
-\   'python':     ['pylint']
-\}
 let g:indentLine_leadingSpaceEnabled = 1
 let g:vim_json_syntax_conceal = 0
 let g:indentLine_leadingSpaceChar = '·'
 let g:indentLine_leadingSpaceEnabled = 1
 let g:indentLine_enabled = 0
-let g:LanguageClient_serverCommands = {
-            \ 'javascript': ['typescript-language-server', '--stdio'],
-            \ 'typescript': ['typescript-language-server', '--stdio'],
-            \ 'css':        ['css-languageserver', '--stdio'],
-            \ 'go':         ['go-langserver'],
-            \ 'cpp':        ['clang'],
-            \ 'c':          ['clangd'],
-            \}
-let g:LanguageClient_diagnosticsEnable = 'Disabled'
+
 let g:ale_set_loclist = 1
 let g:ale_set_quickfix = 0
 let g:jsx_ext_required = 1
-
-
-autocmd BufNewFile,BufRead *.js set ft=javascript
-autocmd BufNewFile,BufRead *.js vnoremap <leader>f :'<,'> call RangeJsBeautify()<CR>
-autocmd BufNewFile,BufRead *.js nnoremap <leader>f :call JsBeautify()<CR>
-autocmd CompleteDone * pclose!
 
 if !exists('g:airline_symbols')
   let g:airline_symbols = {}
@@ -168,11 +138,3 @@ let g:airline_symbols.branch = ''
 let g:airline_symbols.readonly = ''
 let g:airline_symbols.linenr = '☰'
 let g:airline_symbols.maxlinenr = ''
-
-let g:LanguageClient_serverCommands = {
-    \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
-    \ 'javascript': ['typescript-language-server', '--stdio'],
-    \ 'typescript': ['typescript-language-server', '--stdio'],
-    \ 'css': ['css-language-server', '--stdio'],
-    \ }
-let g:deoplete#enable_at_startup = 1

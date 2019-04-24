@@ -16,22 +16,18 @@ call plug#begin()
 
 Plug 'Xuyuanp/nerdtree-git-plugin' "Pacote de git do tree view
 Plug 'airblade/vim-gitgutter' " Mostrar + e - e modificado do git ao lado do número de linha
-Plug 'rhysd/conflict-marker.vim'
-Plug 'christoomey/vim-conflicted'
 Plug 'tpope/vim-fugitive'
 
 Plug 'scrooloose/nerdtree' " Pacote do tree view
 Plug 'Yggdroot/indentLine' " Pacote para mostrar indentação
 Plug 'editorconfig/editorconfig-vim'
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'junegunn/fzf'
 Plug 'tpope/vim-sleuth'
 Plug 'moll/vim-bbye' "Buffer management
 Plug 'vim-airline/vim-airline'
 Plug 'brooth/far.vim'
 
 Plug 'Valloric/YouCompleteMe', { 'do': 'python3 install.py --clang-complete' }
-Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
 
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-obsession'
@@ -44,7 +40,6 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sensible'
 Plug 'mattn/emmet-vim'
 Plug 'michaeljsmith/vim-indent-object'
-Plug 'ap/vim-css-color'
 
 Plug 'edkolev/tmuxline.vim'
 Plug 'vim-airline/vim-airline-themes'

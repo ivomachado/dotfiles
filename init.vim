@@ -1,15 +1,15 @@
 set nocompatible
 
 if has('nvim')
-    if empty(glob('~/.vim/autoload/plug.vim'))
+    if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
+    silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
+        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+      autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+elseif empty(glob('~/.vim/autoload/plug.vim'))
       silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
         \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
       autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
     endif
-elseif empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
-    silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
-        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-      autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
 call plug#begin()
@@ -23,12 +23,15 @@ Plug 'tpope/vim-fugitive'
 Plug 'scrooloose/nerdtree' " Pacote do tree view
 Plug 'Yggdroot/indentLine' " Pacote para mostrar indentação
 Plug 'editorconfig/editorconfig-vim'
-Plug 'kien/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 Plug 'junegunn/fzf'
 Plug 'tpope/vim-sleuth'
 Plug 'moll/vim-bbye' "Buffer management
 Plug 'vim-airline/vim-airline'
 Plug 'brooth/far.vim'
+
+Plug 'Valloric/YouCompleteMe', { 'do': 'python3 install.py --clang-complete' }
+Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
 
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-obsession'
@@ -49,7 +52,7 @@ Plug 'tomasiser/vim-code-dark'
 Plug 'NLKNguyen/papercolor-theme'
 
 Plug 'majutsushi/tagbar'
-Plug 'w0rp/ale'
+" Plug 'w0rp/ale'
 
 call plug#end()
 
@@ -91,26 +94,29 @@ inoremap jk <Esc>
 tnoremap jk <c-\><c-n>
 map <leader>w <c-w>
 nnoremap <leader>, :e ~/.config/nvim/init.vim<CR>
-nnoremap <leader>o :e ~/.config/oni/config.tsx<CR>
 nmap \b :NERDTreeToggle<CR>
-nmap <silent> [e <Plug>(ale_previous_wrap)
-nmap <silent> ]e <Plug>(ale_next_wrap)
+" nmap <silent> [e <Plug>(ale_previous_wrap)
+" nmap <silent> ]e <Plug>(ale_next_wrap)
 nnoremap \q :Bdelete<CR>
 nnoremap ]b :bn<CR>
 nnoremap [b :bp<CR>
 nmap <leader>t :TagbarOpenAutoClose<CR>
 nnoremap <silent> <C-k><C-w> :bufdo :Bdelete<CR>
-nnoremap <silent> <leader>o :call LanguageClient#textDocument_documentSymbol()<CR>
-nnoremap <silent> gh :call LanguageClient#textDocument_hover()<CR>
-nnoremap <silent> gr :call LanguageClient#textDocument_references()<CR>
-nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+nmap ycm :YcmCompleter 
+" nnoremap <silent> <leader>o :call LanguageClient#textDocument_documentSymbol()<CR>
+" nnoremap <silent> gh :call LanguageClient#textDocument_hover()<CR>
+" nnoremap <silent> gr :call LanguageClient#textDocument_references()<CR>
+nnoremap <silent> gd :YcmCompleter GoTo<CR>
+" nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+nmap <leader>o :CtrlPBufTag<CR> 
 
 set background=light
-colorscheme PaperColor
+set colorcolumn=80
+colorscheme codedark
 
 let g:NERDTreeChDirMode       = 2
 let g:ctrlp_working_path_mode = 0
+let g:ctrlp_custom_ignore = 'build\|.build\|third_party\|tools'
 let g:ctrlp_extensions = ['buffertag']
 let NERDTreeShowLineNumbers=1
 let g:NERDTreeRespectWildIgnore = 1

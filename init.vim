@@ -26,6 +26,7 @@ Plug 'tpope/vim-sleuth'
 Plug 'moll/vim-bbye' "Buffer management
 Plug 'vim-airline/vim-airline'
 Plug 'brooth/far.vim'
+Plug 'dkprice/vim-easygrep'
 
 Plug 'Valloric/YouCompleteMe', { 'do': 'python3 install.py --clang-complete' }
 
@@ -44,6 +45,7 @@ Plug 'michaeljsmith/vim-indent-object'
 Plug 'edkolev/tmuxline.vim'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tomasiser/vim-code-dark'
+Plug 'fenetikm/falcon'
 Plug 'NLKNguyen/papercolor-theme'
 
 Plug 'majutsushi/tagbar'
@@ -55,6 +57,7 @@ call plug#end()
 set list listchars=tab:>-,eol:¬,trail:.,extends:>
 
 
+set mouse=a
 set noshowmode
 set nobackup
 set title
@@ -70,9 +73,6 @@ set guioptions=
 set guifont=Fira_Code:h10
 set splitbelow
 set splitright
-set completeopt=menu
-" set completeopt-=preview
-" set complete=preview
 set ignorecase
 set smartcase
 set hlsearch
@@ -80,7 +80,6 @@ set incsearch
 set expandtab
 set tabstop=4
 set shiftwidth=4
-" set t_Co=256
 set eol
 set fixendofline
 filetype plugin on
@@ -89,23 +88,17 @@ inoremap jk <Esc>
 tnoremap jk <c-\><c-n>
 map <leader>w <c-w>
 nnoremap <leader>, :e ~/.config/nvim/init.vim<CR>
-nmap \b :NERDTreeToggle<CR>
-" nmap <silent> [e <Plug>(ale_previous_wrap)
-" nmap <silent> ]e <Plug>(ale_next_wrap)
-nnoremap \q :Bdelete<CR>
+nmap <leader>b :NERDTreeToggle<CR>
+nnoremap <leader>q :Bdelete<CR>
 nnoremap ]b :bn<CR>
 nnoremap [b :bp<CR>
 nmap <leader>t :TagbarOpenAutoClose<CR>
-nnoremap <silent> <C-k><C-w> :bufdo :Bdelete<CR>
+nnoremap <silent> <C-k><C-w> :bufdo :bd<CR>
 nmap ycm :YcmCompleter 
-" nnoremap <silent> <leader>o :call LanguageClient#textDocument_documentSymbol()<CR>
-" nnoremap <silent> gh :call LanguageClient#textDocument_hover()<CR>
-" nnoremap <silent> gr :call LanguageClient#textDocument_references()<CR>
 nnoremap <silent> gd :YcmCompleter GoTo<CR>
-" nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
-nmap <leader>o :CtrlPBufTag<CR> 
+nmap <leader>o :CtrlPBufTag<CR>
+nmap <leader>. :YcmCompleter FixIt<CR>
 
-set background=light
 set colorcolumn=80
 colorscheme codedark
 
@@ -123,19 +116,6 @@ let g:vim_json_syntax_conceal = 0
 let g:indentLine_leadingSpaceChar = '·'
 let g:indentLine_leadingSpaceEnabled = 1
 let g:indentLine_enabled = 0
-
-let g:ale_set_loclist = 1
-let g:ale_set_quickfix = 0
-let g:jsx_ext_required = 1
-
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_alt_sep = ''
-let g:airline_symbols.branch = ''
-let g:airline_symbols.readonly = ''
-let g:airline_symbols.linenr = '☰'
-let g:airline_symbols.maxlinenr = ''
+let g:ycm_autoclose_preview_window_after_insertion = 1
+let g:far#file_mask_favorites = ['%', '**/*.*', '**/*.cpp', '**/*.h']
+" let g:far#default_file_mask = '**/*.*'

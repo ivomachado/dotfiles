@@ -24,11 +24,14 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tpope/vim-sleuth'
 Plug 'moll/vim-bbye' "Buffer management
-Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline'
+Plug 'rbong/vim-crystalline'
 Plug 'brooth/far.vim'
 Plug 'dkprice/vim-easygrep'
 
-Plug 'Valloric/YouCompleteMe', { 'do': 'python3 install.py --clang-complete' }
+Plug 'Valloric/YouCompleteMe', { 'do': 'python3 install.py --clangd-complete' }
+Plug 'idanarye/vim-vebugger'
+Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-obsession'
@@ -42,8 +45,8 @@ Plug 'tpope/vim-sensible'
 Plug 'mattn/emmet-vim'
 Plug 'michaeljsmith/vim-indent-object'
 
-Plug 'edkolev/tmuxline.vim'
-Plug 'vim-airline/vim-airline-themes'
+" Plug 'edkolev/tmuxline.vim'
+" Plug 'vim-airline/vim-airline-themes'
 Plug 'tomasiser/vim-code-dark'
 Plug 'fenetikm/falcon'
 Plug 'NLKNguyen/papercolor-theme'
@@ -53,10 +56,7 @@ Plug 'majutsushi/tagbar'
 
 call plug#end()
 
-
 set list listchars=tab:>-,eol:¬,trail:.,extends:>
-
-
 set mouse=a
 set noshowmode
 set nobackup
@@ -82,6 +82,7 @@ set tabstop=4
 set shiftwidth=4
 set eol
 set fixendofline
+set cursorline
 filetype plugin on
 
 inoremap jk <Esc>
@@ -95,27 +96,50 @@ nnoremap [b :bp<CR>
 nmap <leader>t :TagbarOpenAutoClose<CR>
 nnoremap <silent> <C-k><C-w> :bufdo :bd<CR>
 nmap ycm :YcmCompleter 
+nmap <F2> :YcmCompleter RefactorRename 
 nnoremap <silent> gd :YcmCompleter GoTo<CR>
 nmap <leader>o :CtrlPBufTag<CR>
+nmap <leader>p :CtrlPBuffer<CR>
 nmap <leader>. :YcmCompleter FixIt<CR>
 
 set colorcolumn=80
 colorscheme codedark
 
+autocmd FileType help,nerdtree IndentLinesDisable
+
 let g:NERDTreeChDirMode       = 2
 let g:ctrlp_working_path_mode = 0
-let g:ctrlp_custom_ignore = 'build\|.build\|third_party\|tools'
+let g:ctrlp_custom_ignore = 'build|.build\|third_party\|tools/'
 let g:ctrlp_extensions = ['buffertag']
-let NERDTreeShowLineNumbers=1
+" let NERDTreeShowLineNumbers=1
 let g:NERDTreeRespectWildIgnore = 1
-let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#ale#enabled = 1
+" let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
+" let g:airline#extensions#tabline#enabled = 1
+" let g:airline#extensions#ale#enabled = 1
 let g:indentLine_leadingSpaceEnabled = 1
-let g:vim_json_syntax_conceal = 0
 let g:indentLine_leadingSpaceChar = '·'
 let g:indentLine_leadingSpaceEnabled = 1
 let g:indentLine_enabled = 0
+let g:vim_json_syntax_conceal = 0
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:far#file_mask_favorites = ['%', '**/*.*', '**/*.cpp', '**/*.h']
-" let g:far#default_file_mask = '**/*.*'
+
+function! StatusLine(current, width)
+  return (a:current ? crystalline#mode() . '%#Crystalline#' : '%#CrystallineInactive#')
+        \ . ' %f%h%w%m%r '
+        \ . (a:current ? '%#CrystallineFill# %{fugitive#head()} ' : '')
+        \ . '%=' . (a:current ? '%#Crystalline# %{&paste?"PASTE ":""}%{&spell?"SPELL ":""}' . crystalline#mode_color() : '')
+        \ . (a:width > 80 ? ' %{&ft}[%{&enc}][%{&ffs}] %l/%L %c%V %P ' : ' ')
+endfunction
+
+function! TabLine()
+  let l:vimlabel = has("nvim") ?  " NVIM " : " VIM "
+  return crystalline#bufferline(2, len(l:vimlabel), 1) . '%=%#CrystallineTab# ' . l:vimlabel
+endfunction
+
+let g:crystalline_statusline_fn = 'StatusLine'
+let g:crystalline_tabline_fn = 'TabLine'
+let g:crystalline_theme = 'gruvbox'
+
+set showtabline=2
+set laststatus=2

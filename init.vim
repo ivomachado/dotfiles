@@ -24,18 +24,13 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tpope/vim-sleuth'
 Plug 'moll/vim-bbye' "Buffer management
-" Plug 'vim-airline/vim-airline'
 Plug 'rbong/vim-crystalline'
 Plug 'brooth/far.vim'
-Plug 'dkprice/vim-easygrep'
 
 Plug 'Valloric/YouCompleteMe', { 'do': 'python3 install.py --clangd-complete' }
-Plug 'idanarye/vim-vebugger'
-Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-obsession'
-Plug 'elzr/vim-json'
 Plug 'vim-scripts/gitignore'
 
 Plug 'tpope/vim-commentary'
@@ -45,13 +40,10 @@ Plug 'tpope/vim-sensible'
 Plug 'michaeljsmith/vim-indent-object'
 
 Plug 'edkolev/tmuxline.vim'
-" Plug 'vim-airline/vim-airline-themes'
 Plug 'tomasiser/vim-code-dark'
-Plug 'fenetikm/falcon'
 Plug 'NLKNguyen/papercolor-theme'
 
 Plug 'majutsushi/tagbar'
-" Plug 'w0rp/ale'
 
 call plug#end()
 
@@ -95,7 +87,7 @@ nnoremap [b :bp<CR>
 nmap <leader>t :TagbarOpenAutoClose<CR>
 nnoremap <silent> <C-k><C-w> :bufdo :bd<CR>
 nmap ycm :YcmCompleter 
-nmap <F2> :YcmCompleter RefactorRename 
+nmap <F2> "zyiw :YcmCompleter RefactorRename <C-r>z
 nnoremap <silent> gd :YcmCompleter GoTo<CR>
 nmap <leader>o :CtrlPBufTag<CR>
 nmap <leader>p :CtrlPBuffer<CR>
@@ -112,11 +104,8 @@ let g:NERDTreeChDirMode       = 2
 let g:ctrlp_working_path_mode = 0
 let g:ctrlp_custom_ignore = 'build|.build\|third_party\|tools/'
 let g:ctrlp_extensions = ['buffertag']
-" let NERDTreeShowLineNumbers=1
+let NERDTreeShowLineNumbers=1
 let g:NERDTreeRespectWildIgnore = 1
-" let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
-" let g:airline#extensions#tabline#enabled = 1
-" let g:airline#extensions#ale#enabled = 1
 let g:indentLine_leadingSpaceEnabled = 1
 let g:indentLine_leadingSpaceChar = '·'
 let g:indentLine_leadingSpaceEnabled = 1
@@ -126,21 +115,42 @@ let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:far#file_mask_favorites = ['%', '**/*.*', '**/*.cpp', '**/*.h']
 
 function! StatusLine(current, width)
-  return (a:current ? crystalline#mode() . '%#Crystalline#' : '%#CrystallineInactive#')
-        \ . ' %f%h%w%m%r '
-        \ . (a:current ? '%#CrystallineFill# %{fugitive#head()} ' : '')
-        \ . '%=' . (a:current ? '%#Crystalline# %{&paste?"PASTE ":""}%{&spell?"SPELL ":""}' . crystalline#mode_color() : '')
-        \ . (a:width > 80 ? ' %{&ft}[%{&enc}][%{&ffs}] %l/%L %c%V %P ' : ' ')
+  let l:s = ''
+
+  if a:current
+    let l:s .= crystalline#mode() . crystalline#right_mode_sep('')
+  else
+    let l:s .= '%#CrystallineInactive#'
+  endif
+  let l:s .= ' %f%h%w%m%r '
+  if a:current
+    let l:s .= crystalline#right_sep('', 'Fill') . ' %{fugitive#head()}'
+  endif
+
+  let l:s .= '%='
+  if a:current
+    let l:s .= crystalline#left_sep('', 'Fill') . ' %{&paste ?"PASTE ":""}%{&spell?"SPELL ":""}'
+    let l:s .= crystalline#left_mode_sep('')
+  endif
+  if a:width > 80
+    let l:s .= ' %{&ft}[%{&enc}][%{&ffs}] %l/%L %c%V %P '
+  else
+    let l:s .= ' '
+  endif
+
+  return l:s
 endfunction
 
 function! TabLine()
-  let l:vimlabel = has("nvim") ?  " NVIM " : " VIM "
+  let l:vimlabel = has('nvim') ?  ' NVIM ' : ' VIM '
   return crystalline#bufferline(2, len(l:vimlabel), 1) . '%=%#CrystallineTab# ' . l:vimlabel
 endfunction
 
+" let g:crystalline_enable_sep = 1
 let g:crystalline_statusline_fn = 'StatusLine'
 let g:crystalline_tabline_fn = 'TabLine'
 let g:crystalline_theme = 'gruvbox'
 
 set showtabline=2
+set guioptions-=e
 set laststatus=2

@@ -42,10 +42,9 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sensible'
-Plug 'mattn/emmet-vim'
 Plug 'michaeljsmith/vim-indent-object'
 
-" Plug 'edkolev/tmuxline.vim'
+Plug 'edkolev/tmuxline.vim'
 " Plug 'vim-airline/vim-airline-themes'
 Plug 'tomasiser/vim-code-dark'
 Plug 'fenetikm/falcon'
@@ -101,6 +100,8 @@ nnoremap <silent> gd :YcmCompleter GoTo<CR>
 nmap <leader>o :CtrlPBufTag<CR>
 nmap <leader>p :CtrlPBuffer<CR>
 nmap <leader>. :YcmCompleter FixIt<CR>
+nmap <leader>rea <C-w>h <C-w>J <C-w>k <C-w>l <C-w>L
+nmap <C-w>M <C-w>\| <C-w>_
 
 set colorcolumn=80
 colorscheme codedark

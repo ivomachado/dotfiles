@@ -44,6 +44,10 @@ Plug 'tomasiser/vim-code-dark'
 Plug 'NLKNguyen/papercolor-theme'
 
 Plug 'majutsushi/tagbar'
+Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh \| UpdateRemotePlugins' }
+" Plug 'sakhnik/nvim-gdb', { 'branch': 'legacy',  'do': ':!./install.sh \| UpdateRemotePlugins'  }
+" Plug 'sakhnik/nvim-gdb', { 'branch': 'devel',  'do': ':!./install.sh \| UpdateRemotePlugins'  }
+
 
 call plug#end()
 
@@ -94,6 +98,7 @@ nmap <leader>p :CtrlPBuffer<CR>
 nmap <leader>. :YcmCompleter FixIt<CR>
 nmap <leader>rea <C-w>h <C-w>J <C-w>k <C-w>l <C-w>L
 nmap <C-w>M <C-w>\| <C-w>_
+nnoremap <C-t> :tabnew<CR>
 
 set colorcolumn=80
 colorscheme codedark
@@ -150,6 +155,7 @@ endfunction
 let g:crystalline_statusline_fn = 'StatusLine'
 let g:crystalline_tabline_fn = 'TabLine'
 let g:crystalline_theme = 'gruvbox'
+let g:python3_host_prog= '/usr/bin/python3.6'
 
 set showtabline=2
 set guioptions-=e

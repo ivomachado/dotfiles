@@ -45,9 +45,6 @@ Plug 'NLKNguyen/papercolor-theme'
 
 Plug 'majutsushi/tagbar'
 Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh \| UpdateRemotePlugins' }
-" Plug 'sakhnik/nvim-gdb', { 'branch': 'legacy',  'do': ':!./install.sh \| UpdateRemotePlugins'  }
-" Plug 'sakhnik/nvim-gdb', { 'branch': 'devel',  'do': ':!./install.sh \| UpdateRemotePlugins'  }
-
 
 call plug#end()
 
@@ -68,7 +65,6 @@ set guioptions=
 set guifont=Fira_Code:h10
 set splitbelow
 set splitright
-set ignorecase
 set smartcase
 set hlsearch
 set incsearch
@@ -151,7 +147,6 @@ function! TabLine()
   return crystalline#bufferline(2, len(l:vimlabel), 1) . '%=%#CrystallineTab# ' . l:vimlabel
 endfunction
 
-" let g:crystalline_enable_sep = 1
 let g:crystalline_statusline_fn = 'StatusLine'
 let g:crystalline_tabline_fn = 'TabLine'
 let g:crystalline_theme = 'gruvbox'

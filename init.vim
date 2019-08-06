@@ -31,7 +31,7 @@ Plug 'Valloric/YouCompleteMe', { 'do': 'python3 install.py --clangd-complete' }
 
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-obsession'
-Plug 'vim-scripts/gitignore'
+Plug 'euclio/gitignore.vim'
 
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
@@ -57,7 +57,7 @@ set hidden
 set relativenumber
 set number
 set noswapfile
-set wildignore+=*/tmp/*,*.swp,*.zip,*.exe,*/node_modules/*,*/build/*
+" set wildignore+=*/tmp/*,*.swp,*.zip,*.exe,*/node_modules/*,*/build/*
 set encoding=utf-8
 set fileencoding=utf-8
 set nowrap
@@ -65,15 +65,18 @@ set guioptions=
 set guifont=Fira_Code:h10
 set splitbelow
 set splitright
+set ignorecase
 set smartcase
 set hlsearch
 set incsearch
 set expandtab
 set tabstop=4
 set shiftwidth=4
+set conceallevel=0
 set eol
 set fixendofline
 set cursorline
+set background=light
 filetype plugin on
 
 inoremap jk <Esc>
@@ -92,18 +95,21 @@ nnoremap <silent> gd :YcmCompleter GoTo<CR>
 nmap <leader>o :CtrlPBufTag<CR>
 nmap <leader>p :CtrlPBuffer<CR>
 nmap <leader>. :YcmCompleter FixIt<CR>
-nmap <leader>rea <C-w>h <C-w>J <C-w>k <C-w>l <C-w>L
-nmap <C-w>M <C-w>\| <C-w>_
+nmap <leader>rea <C-w>h<C-w>J<C-w>k<C-w>l<C-w>L
+nmap <C-w>M <C-w>\|<C-w>_
 nnoremap <C-t> :tabnew<CR>
+nmap <space> <leader>
 
 set colorcolumn=80
-colorscheme codedark
+colorscheme PaperColor
 
 autocmd FileType help,nerdtree IndentLinesDisable
+autocmd FileType c,cpp setlocal commentstring=//\ %s
+autocmd FocusGained,BufEnter * :silent! !
 
 let g:NERDTreeChDirMode       = 2
 let g:ctrlp_working_path_mode = 0
-let g:ctrlp_custom_ignore = 'build|.build\|third_party\|tools/'
+let g:ctrlp_custom_ignore = '.git'
 let g:ctrlp_extensions = ['buffertag']
 let NERDTreeShowLineNumbers=1
 let g:NERDTreeRespectWildIgnore = 1
@@ -114,6 +120,7 @@ let g:indentLine_enabled = 0
 let g:vim_json_syntax_conceal = 0
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:far#file_mask_favorites = ['%', '**/*.*', '**/*.cpp', '**/*.h']
+let g:ctrlp_show_hidden = 1
 
 function! StatusLine(current, width)
   let l:s = ''
@@ -149,8 +156,7 @@ endfunction
 
 let g:crystalline_statusline_fn = 'StatusLine'
 let g:crystalline_tabline_fn = 'TabLine'
-let g:crystalline_theme = 'gruvbox'
-let g:python3_host_prog= '/usr/bin/python3.6'
+let g:crystalline_theme = 'papercolor'
 
 set showtabline=2
 set guioptions-=e

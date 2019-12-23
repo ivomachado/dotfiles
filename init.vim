@@ -58,7 +58,7 @@ set hidden
 set relativenumber
 set number
 set noswapfile
-set wildignore+=*/tmp/*,*.swp,*.zip,*.exe,*/node_modules/*,*/build/*,*/.ccls-cache/*,*/.clangd/*,*/.build/*,*gradle*,apps
+set wildignore+=*/tmp/*,*.swp,*.zip,*.exe,*/node_modules/*,*/build/*,*/.ccls-cache/*,*/.clangd/*,*/.build/*,*gradle*
 set encoding=utf-8
 set fileencoding=utf-8
 set nowrap
@@ -122,10 +122,10 @@ let g:ctrlp_show_hidden=1
 let g:ctrlp_by_filename=1
 let g:ctrlp_user_command = {
   \ 'types': {
-    \ 1: ['.git', 'cd %s && git ls-files -co --exclude-standard'],
-    \ },
-  \ 'fallback': 'find %s -type f'
-  \ }
+      \ 1: ['.git', 'cd %s && git ls-files -co --exclude-standard'],
+  \ },
+  \ 'ignore': 1
+\ }
 
 
 function! StatusLine(current, width)
@@ -147,9 +147,13 @@ function! StatusLine(current, width)
     let l:s .= crystalline#left_mode_sep('')
   endif
   if a:width > 80
-    let l:s .= ' %{&ft}[%{&enc}][%{&ffs}] %l/%L %c%V %P '
+    let l:s .= ' %{&ft}[%{&enc}][%{&ffs}]'
   else
     let l:s .= ' '
+  endif
+
+  if a:current
+      let l:s .= ' %l/%L %c %P '
   endif
 
   return l:s
@@ -167,6 +171,5 @@ let g:crystalline_theme = 'papercolor'
 set showtabline=2
 set guioptions-=e
 set laststatus=2
-
 
 command! RemoveIostream g/iostream\|cout/d

@@ -23,6 +23,7 @@ Plug 'jistr/vim-nerdtree-tabs' " Pacote do tree view
 Plug 'editorconfig/editorconfig-vim'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tpope/vim-sleuth'
+Plug 'tpope/vim-abolish'
 Plug 'moll/vim-bbye' "Buffer management
 Plug 'rbong/vim-crystalline'
 
@@ -31,6 +32,8 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-obsession'
 Plug 'euclio/gitignore.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'wincent/ferret'
 
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
@@ -83,9 +86,10 @@ filetype plugin on
 inoremap jk <Esc>
 tnoremap jk <c-\><c-n>
 map <leader>w <c-w>
-nnoremap <leader>, :e ~/.config/nvim/init.vim<CR>
+nnoremap <leader>, :tabnew ~/.config/nvim/init.vim<CR>
 nmap <leader>b :NERDTreeTabsToggle<CR>
 nnoremap <leader>q :Bdelete<CR>
+nnoremap <leader>Q :bdelete<CR>
 nnoremap ]b :bn<CR>
 nnoremap [b :bp<CR>
 nmap <leader>t :TagbarOpenAutoClose<CR>
@@ -99,12 +103,13 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 nmap <silent> [e <Plug>(coc-diagnostic-prev)
 nmap <silent> ]e <Plug>(coc-diagnostic-next)
+nnoremap <silent> K :call <SID>show_documentation()<CR>
 nmap <leader>o :CtrlPBufTag<CR>
 nmap <leader>p :CtrlPBuffer<CR>
 inoremap <silent><expr> <c-space> coc#refresh()
 nmap <leader>rea <C-w>h<C-w>J<C-w>k<C-w>l<C-w>L
+nmap <leader>ftest p^ceFRIEND_TEST<esc>$r;X>>
 nmap <C-w>M :NERDTreeClose<CR><C-w>\|<C-w>_
-nnoremap <C-t> :tabnew<CR>
 nmap <space> <leader>
 
 set colorcolumn=80
@@ -127,6 +132,13 @@ let g:ctrlp_user_command = {
   \ 'ignore': 1
 \ }
 
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
 
 function! StatusLine(current, width)
   let l:s = ''
@@ -171,5 +183,6 @@ let g:crystalline_theme = 'papercolor'
 set showtabline=2
 set guioptions-=e
 set laststatus=2
+set autoread
 
 command! RemoveIostream g/iostream\|cout/d

@@ -22,6 +22,7 @@ Plug 'scrooloose/nerdtree' " Pacote do tree view
 Plug 'jistr/vim-nerdtree-tabs' " Pacote do tree view
 Plug 'editorconfig/editorconfig-vim'
 Plug 'ctrlpvim/ctrlp.vim'
+Plug 'nixprime/cpsm', {'do': './install.sh'}
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-abolish'
 Plug 'moll/vim-bbye' "Buffer management
@@ -31,7 +32,6 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-obsession'
-Plug 'euclio/gitignore.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'wincent/ferret'
 
@@ -61,7 +61,7 @@ set hidden
 set relativenumber
 set number
 set noswapfile
-set wildignore+=*/tmp/*,*.swp,*.zip,*.exe,*/node_modules/*,*/build/*,*/.ccls-cache/*,*/.clangd/*,*/.build/*,*gradle*
+set wildignore+=*/tmp/*,*.swp,*.zip,*.exe,*/node_modules/*,*/build/*,*/.ccls-cache/*,*/.clangd/*,*/.build/*,*gradle*,*/.build*/*,*/output/*
 set encoding=utf-8
 set fileencoding=utf-8
 set nowrap
@@ -108,7 +108,12 @@ nmap <leader>o :CtrlPBufTag<CR>
 nmap <leader>p :CtrlPBuffer<CR>
 inoremap <silent><expr> <c-space> coc#refresh()
 nmap <leader>rea <C-w>h<C-w>J<C-w>k<C-w>l<C-w>L
-nmap <leader>ftest p^ceFRIEND_TEST<esc>$r;X>>
+nmap <leader>hftest p^ceFRIEND_TEST<esc>$r;X>>
+nmap <leader>sg yyjpojkkkk hget4j hsetyy wlojkp<  iset wh2j
+nmap <leader>hget ^iinline jk$s const {}jkk$BByeoreturn ";jkk$Bhi()jkhXbgUllbigetjk
+nmap <leader>hset ^^yst;)$hXIvoid jk$Bye0f($h%PbgUllhisetjk
+nmap <leader>iset 0$F(b"cPa::jk$s {}jkk$Byeo"_ = ";jk
+nmap <leader>cs :'a,'bS#
 nmap <C-w>M :NERDTreeClose<CR><C-w>\|<C-w>_
 nmap <space> <leader>
 
@@ -125,12 +130,15 @@ let NERDTreeShowLineNumbers=1
 let g:NERDTreeRespectWildIgnore=1
 let g:ctrlp_show_hidden=1
 let g:ctrlp_by_filename=1
-let g:ctrlp_user_command = {
-  \ 'types': {
-      \ 1: ['.git', 'cd %s && git ls-files -co --exclude-standard'],
-  \ },
-  \ 'ignore': 1
-\ }
+let g:ctrlp_match_func = {'match': 'cpsm#CtrlPMatch'}
+let g:ctrlp_use_caching = 0
+let g:ctrlp_user_command = 'fd --type f --color=never "" %s | head -n 10000'
+" let g:ctrlp_user_command = {
+"   \ 'types': {
+"       \ 1: ['.git', 'cd %s && git ls-files -co --exclude-standard'],
+"   \ },
+"   \ 'ignore': 1
+" \ }
 
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)

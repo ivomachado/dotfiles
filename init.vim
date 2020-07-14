@@ -27,6 +27,7 @@ Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-abolish'
 Plug 'moll/vim-bbye' "Buffer management
 Plug 'rbong/vim-crystalline'
+Plug 'octol/vim-cpp-enhanced-highlight'
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
@@ -45,6 +46,7 @@ Plug 'vim-scripts/headerguard'
 Plug 'edkolev/tmuxline.vim'
 Plug 'tomasiser/vim-code-dark'
 Plug 'NLKNguyen/papercolor-theme'
+Plug 'rakr/vim-two-firewatch'
 
 Plug 'majutsushi/tagbar'
 " Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh \| UpdateRemotePlugins' }
@@ -80,6 +82,7 @@ set conceallevel=0
 set eol
 set fixendofline
 set cursorline
+set t_Co=256
 set background=light
 filetype plugin on
 
@@ -121,6 +124,7 @@ set colorcolumn=80
 colorscheme PaperColor
 
 autocmd FileType c,cpp setlocal commentstring=//\ %s
+autocmd CursorHold * silent call CocActionAsync('highlight')
 
 let g:NERDTreeChDirMode       = 2
 let g:ctrlp_working_path_mode = 0
@@ -133,12 +137,6 @@ let g:ctrlp_by_filename=1
 let g:ctrlp_match_func = {'match': 'cpsm#CtrlPMatch'}
 let g:ctrlp_use_caching = 0
 let g:ctrlp_user_command = 'fd --type f --color=never "" %s | head -n 10000'
-" let g:ctrlp_user_command = {
-"   \ 'types': {
-"       \ 1: ['.git', 'cd %s && git ls-files -co --exclude-standard'],
-"   \ },
-"   \ 'ignore': 1
-" \ }
 
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
@@ -187,6 +185,11 @@ endfunction
 let g:crystalline_statusline_fn = 'StatusLine'
 let g:crystalline_tabline_fn = 'TabLine'
 let g:crystalline_theme = 'papercolor'
+
+let g:cpp_class_scope_highlight = 1
+let g:cpp_member_variable_highlight = 1
+let g:cpp_class_decl_highlight = 1
+let g:cpp_experimental_template_highlight = 1
 
 set showtabline=2
 set guioptions-=e

@@ -27,7 +27,10 @@ Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-abolish'
 Plug 'moll/vim-bbye' "Buffer management
 Plug 'rbong/vim-crystalline'
-Plug 'octol/vim-cpp-enhanced-highlight'
+Plug 'octol/vim-cpp-enhanced-highlight', {'for':['c', 'cpp']}
+Plug 'CoatiSoftware/vim-sourcetrail'
+Plug 'djoshea/vim-autoread'
+Plug 'PeterRincker/vim-argumentative'
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
@@ -97,6 +100,8 @@ nnoremap ]b :bn<CR>
 nnoremap [b :bp<CR>
 nmap <leader>t :TagbarOpenAutoClose<CR>
 nnoremap <silent> <C-k><C-w> :bufdo :bd<CR>
+nnoremap <leader>as :SourcetrailRefresh<CR>
+nnoremap <leader>aa :SourcetrailActivateToken<CR>
 
 nmap <leader>. <Plug>(coc-fix-current)
 nmap <F2> <Plug>(coc-rename)
@@ -137,6 +142,7 @@ let g:ctrlp_by_filename=1
 let g:ctrlp_match_func = {'match': 'cpsm#CtrlPMatch'}
 let g:ctrlp_use_caching = 0
 let g:ctrlp_user_command = 'fd --type f --color=never "" %s | head -n 10000'
+let g:sourcetrail_autostart = 1
 
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)

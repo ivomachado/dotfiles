@@ -17,6 +17,7 @@ call plug#begin()
 Plug 'Xuyuanp/nerdtree-git-plugin' "Pacote de git do tree view
 Plug 'airblade/vim-gitgutter' " Mostrar + e - e modificado do git ao lado do número de linha
 Plug 'tpope/vim-fugitive'
+Plug 'christoomey/vim-conflicted'
 
 Plug 'scrooloose/nerdtree' " Pacote do tree view
 Plug 'jistr/vim-nerdtree-tabs' " Pacote do tree view

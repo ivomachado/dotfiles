@@ -50,6 +50,7 @@ Plug 'vim-scripts/headerguard'
 Plug 'edkolev/tmuxline.vim'
 Plug 'tomasiser/vim-code-dark'
 Plug 'NLKNguyen/papercolor-theme'
+Plug 'jacoborus/tender.vim'
 Plug 'rakr/vim-two-firewatch'
 
 Plug 'majutsushi/tagbar'
@@ -87,7 +88,8 @@ set eol
 set fixendofline
 set cursorline
 set t_Co=256
-set background=light
+set background=dark
+set clipboard=unnamedplus
 filetype plugin on
 
 inoremap jk <Esc>
@@ -127,7 +129,7 @@ nmap <C-w>M :NERDTreeClose<CR><C-w>\|<C-w>_
 nmap <space> <leader>
 
 set colorcolumn=80
-colorscheme PaperColor
+colorscheme tender
 
 autocmd FileType c,cpp setlocal commentstring=//\ %s
 autocmd CursorHold * silent call CocActionAsync('highlight')
@@ -191,7 +193,7 @@ endfunction
 
 let g:crystalline_statusline_fn = 'StatusLine'
 let g:crystalline_tabline_fn = 'TabLine'
-let g:crystalline_theme = 'papercolor'
+let g:crystalline_theme = 'jellybeans'
 
 let g:cpp_class_scope_highlight = 1
 let g:cpp_member_variable_highlight = 1

@@ -7,6 +7,7 @@ initvimpath=$initvimdir"init.vim"
 dotvimrcpath=~/.vimrc
 tmuxconfpath=~/.tmux.conf
 kittyconfdir=~/.config/kitty/
+tmuxinatorconfdir=~/.tmuxinator
 zshrcpath=~/.zshrc
 kittyconfpath=$kittyconfdir"kitty.conf"
 dotscriptspath=~/.scripts
@@ -17,6 +18,9 @@ ln -s $backupfolder/init.vim $initvimpath
 
 rm $dotvimrcpath 2> /dev/null
 ln -s $backupfolder/.vimrc $dotvimrcpath
+
+rm $tmuxinatorconfdir -rf 2> /dev/null
+ln -s $backupfolder/.tmuxinator $tmuxinatorconfdir
 
 rm $kittyconfpath 2> /dev/null
 mkdir -p $kittyconfdir

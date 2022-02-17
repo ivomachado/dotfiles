@@ -2,22 +2,17 @@
 
 backupfolder=~/Workspace/dotfiles
 
-initvimdir=~/.config/nvim/
-initvimpath=$initvimdir"init.vim"
-dotvimrcpath=~/.vimrc
+initluadir=~/.config/nvim/
+initluapath=$initluadir"init.lua"
 tmuxconfpath=~/.tmux.conf
 kittyconfdir=~/.config/kitty/
 tmuxinatorconfdir=~/.tmuxinator
 zshrcpath=~/.zshrc
 kittyconfpath=$kittyconfdir"kitty.conf"
-dotscriptspath=~/.scripts
 
-rm $initvimpath 2> /dev/null
-mkdir -p $initvimdir
-ln -s $backupfolder/init.vim $initvimpath
-
-rm $dotvimrcpath 2> /dev/null
-ln -s $backupfolder/.vimrc $dotvimrcpath
+rm $initluapath 2> /dev/null
+mkdir -p $initluadir
+ln -sf $backupfolder/init.lua $initluapath
 
 rm $tmuxinatorconfdir -rf 2> /dev/null
 ln -s $backupfolder/.tmuxinator $tmuxinatorconfdir
@@ -31,6 +26,3 @@ ln -s $backupfolder/.tmux.conf $tmuxconfpath
 
 rm $zshrcpath 2> /dev/null
 ln -s $backupfolder/.zshrc $zshrcpath
-
-rm -r $dotscriptspath 2> /dev/null
-ln -s $backupfolder/.scripts $dotscriptspath

@@ -1,2 +1,0 @@
-#!/bin/bash
-ssh -i ~/Documents/Amazon/edleno.pem ubuntu@teewa.com.br

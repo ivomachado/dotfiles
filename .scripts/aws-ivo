@@ -1,2 +1,0 @@
-#!/bin/bash
-ssh -i ~/Documents/Amazon/ivo_aws.pem ubuntu@18.216.230.180

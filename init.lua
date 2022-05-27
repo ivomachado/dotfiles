@@ -71,33 +71,16 @@ require('telescope').setup{
     },
     layout_strategy = "horizontal",
     path_display = { truncate = 3 },
+    fuzzy = true,                    -- false will only do exact matching
+    override_generic_sorter = true,  -- override the generic sorter
+    override_file_sorter = true,     -- override the file sorter
+    case_mode = "smart_case",        -- or "ignore_case" or "respect_case" the default case_mode is "smart_case"
   }
 }
 
-require'nvim-treesitter.configs'.setup {
-  -- One of "all", "maintained" (parsers with maintainers), or a list of languages
-  ensure_installed = "maintained",
-
-  -- Install languages synchronously (only applied to `ensure_installed`)
-  sync_install = false,
-
-  -- List of parsers to ignore installing
-  ignore_install = { "javascript" },
-
-  highlight = {
-    -- `false` will disable the whole extension
-    enable = true,
-
-    -- list of language that will be disabled
-    disable = {},
-
-    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-    -- Using this option may slow down your editor, and you may see some duplicate highlights.
-    -- Instead of true it can also be a list of languages
-    additional_vim_regex_highlighting = false,
-  },
-}
+-- To get fzf loaded and working with telescope, you need to call
+-- -- load_extension, somewhere after setup function:
+-- require('telescope').load_extension('fzf')
 
 require('gitsigns').setup{
   on_attach = function(bufnr)
@@ -105,6 +88,8 @@ require('gitsigns').setup{
       opts = vim.tbl_extend('force', {noremap = true, silent = true}, opts or {})
       vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, opts)
     end
+
+    current_line_blame = true,
 
     -- Navigation
     map('n', ']c', "&diff ? ']c' : '<cmd>Gitsigns next_hunk<CR>'", {expr=true})
@@ -128,8 +113,8 @@ local on_attach = function(client, bufnr)
 
   -- Mappings.
   -- See `:help vim.lsp.*` for documentation on any of the below functions
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gs', '<cmd>ClangdSwitchSourceHeader<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
@@ -144,27 +129,27 @@ local on_attach = function(client, bufnr)
 end
 
 -- Setup nvim-cmp.
-  local cmp = require'cmp'
-  local lspkind = require('lspkind')
+local cmp = require'cmp'
+local lspkind = require('lspkind')
 
-  cmp.setup({
-    mapping = {
-      ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
-      ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
-      ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
-      ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
-      ['<C-e>'] = cmp.mapping({
-        i = cmp.mapping.abort(),
-        c = cmp.mapping.close(),
-      }),
-      ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-    },
-    sources = cmp.config.sources({
-      { name = 'nvim_lsp' },
-      { name = 'buffer' },
-      { name = 'path' },
+cmp.setup({
+  mapping = {
+    ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+    ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+    ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+    ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
+    ['<C-e>'] = cmp.mapping({
+      i = cmp.mapping.abort(),
+      c = cmp.mapping.close(),
     }),
-   formatting = {
+    ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+  },
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp' },
+    { name = 'buffer' },
+    { name = 'path' },
+  }),
+  formatting = {
     format = lspkind.cmp_format({
       with_text = false, -- do not show text alongside icons
       maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
@@ -194,6 +179,8 @@ local servers = {
   'clangd',
   'cmake',
 }
+
+require "lsp_signature".setup({})
 
 for _, lsp in pairs(servers) do
   require('lspconfig')[lsp].setup{
@@ -320,7 +307,7 @@ nmap("]q", "<cmd>cn<CR>")
 nmap("[q", "<cmd>cp<CR>")
 
 nmap("<leader>hftest", "p^ceFRIEND_TEST<esc>$r;X>>")
-nmap("<leader>cs", "<cmd>'a,'bS#")
+nmap("<leader>cs", ":'a,'bS#")
 
 nmap("<C-w>M", "<cmd>FocusMaximise<CR>")
 nmap("<C-w>=", "<cmd>FocusEqualise<CR>")

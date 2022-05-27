@@ -31,6 +31,8 @@ return require('packer').startup(function()
         require('Comment').setup()
       end
     }
+
+    use 'brooth/far.vim'
  
     use 'rcarriga/nvim-notify'
 
@@ -49,7 +51,8 @@ return require('packer').startup(function()
         bufnew =  false,
         hybridnumber = true,
         number = true,
-        cursorline = false,
+        cursorline = true,
+        autoresize = false,
       }
     end }
 
@@ -75,6 +78,8 @@ return require('packer').startup(function()
 
     use 'dstein64/vim-startuptime'
 
+    use 'CoatiSoftware/vim-sourcetrail'
+
     use 'moll/vim-bbye' -- Buffer management
 
     use {
@@ -83,6 +88,8 @@ return require('packer').startup(function()
         'nvim-lua/plenary.nvim'
       }
     }
+    use {'nvim-telescope/telescope-fzf-native.nvim', run = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
+
     use {'kevinhwang91/nvim-bqf'} -- Better quickfix windows
 
     use {
@@ -93,8 +100,8 @@ return require('packer').startup(function()
     }
 
     use {
-        'nvim-treesitter/nvim-treesitter',
-        run = ':TSUpdate',
+      'nvim-treesitter/nvim-treesitter',
+      run = ':TSUpdate',
     }
 
     use 'ray-x/lsp_signature.nvim'

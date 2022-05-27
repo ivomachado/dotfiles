@@ -1,7 +1,7 @@
-# /home/ivomachado/.tmuxinator/ccws.yml
+# /home/ivomachado/.tmuxinator/nightcrawler.yml
 
-name: ccws
-root: ~/projects/spiderman/cc-webservices
+name: nightcrawler
+root: ~/projects/nightcrawler
 
 # Optional tmux socket
 # socket_name: foo
@@ -44,6 +44,4 @@ windows:
       panes:
         - nvim -S
   - shell:
-  - shell:
-  - smart-platform:
-    - cd externals/smart_platform && nvim -S
+

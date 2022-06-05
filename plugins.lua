@@ -56,7 +56,10 @@ return require('packer').startup(function()
       }
     end }
 
-    use 'neovim/nvim-lspconfig' -- Collection of configurations for the built-in LSP client
+    use {
+      'neovim/nvim-lspconfig', -- Collection of configurations for the built-in LSP client
+      'williamboman/nvim-lsp-installer' -- Install LSP clients
+    }
     use 'hrsh7th/nvim-cmp' -- Plugin de AutoComplete
     use 'hrsh7th/cmp-nvim-lsp' -- Fonte de LSP para autocomplete
     use 'hrsh7th/cmp-path' -- Fonte de paths para autocomplete

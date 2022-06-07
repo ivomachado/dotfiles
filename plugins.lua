@@ -15,10 +15,17 @@ return require('packer').startup(function()
       requires = { 'kyazdani42/nvim-web-devicons', opt = true }
     }
 
-    use {'dracula/vim', as = 'dracula'}
-    use 'sainnhe/everforest'
-    use 'marko-cerovac/material.nvim'
-    use 'folke/tokyonight.nvim'
+    use {'dracula/vim', as = 'dracula', disable = true}
+    use {'sainnhe/everforest', disable = true}
+    use {'marko-cerovac/material.nvim', disable = true}
+    use {'folke/tokyonight.nvim', disable = true}
+    use {
+      'sonph/onehalf',
+      rtp = 'vim',
+      config = function()
+        vim.cmd("colorscheme onehalflight")
+      end
+    }
 
     use {
       'weirongxu/plantuml-previewer.vim',
@@ -33,7 +40,6 @@ return require('packer').startup(function()
     }
 
     use 'brooth/far.vim'
- 
     use 'rcarriga/nvim-notify'
 
     use 'tpope/vim-obsession'

@@ -1,32 +1,67 @@
 require('plugins')
-
 local filename_symbols = { modified = ' ●',}
 
+require("neo-tree").setup({
+    close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
+    enable_git_status = true,
+    enable_diagnostics = true,
+    window = {
+        mappings = { ["<space>"] = "none",  ["<F2>"] = "rename", }
+    },
+    filesystem = {
+        filtered_items = {
+            visible = true, -- when true, they will just be displayed differently than normal items
+            hide_dotfiles = true,
+            hide_gitignored = true,
+            hide_hidden = true, -- only works on Windows for hidden files/directories
+            hide_by_name = {
+            },
+            hide_by_pattern = { -- uses glob style patterns
+            --"*.meta"
+            },
+            never_show = { -- remains hidden even if visible is toggled to true
+                ".git",
+                ".clangd",
+                ".cache",
+                ".ccache",
+                "ccache",
+                ".vscode",
+                ".ccls-cache",
+                "Session.vim",
+            },
+        },
+    },
+})
+
 require('lualine').setup{
-    extensions = {'quickfix', 'chadtree'},
+    extensions = {'quickfix', 'neo-tree'},
     options = {
         icons_enabled = true,
-        component_separators = { left = '', right = ''},
+        -- component_separators = { left = '', right = ''},
+        component_separators = { left = '', right = ''},
         section_separators = { left = '', right = ''},
         disabled_filetypes = {},
         theme = 'iceberg_light',
+        -- theme = 'auto',
         always_divide_middle = true,
         globalstatus = true,
     },
     tabline = {
-        lualine_a = {'tabs'},
+        lualine_a = {
+            'tabs',
+        },
         lualine_b = {
+        },
+        lualine_c = {
             {'filetype', icon_only = true},
             {'filename', path = 1, symbols = filename_symbols, shorting_target = 30},
         },
-        lualine_c = {},
-        lualine_x = {},
-        lualine_y = {},
+        lualine_x = {
+        },
+        lualine_y = {
+        },
         lualine_z = {
-            {
-                'windows',
-                show_filename_only = false,
-            }
+            { 'windows', show_filename_only = false, }
         }
     },
     sections = {
@@ -317,7 +352,8 @@ end
 inoremap('jk', '<Esc>')
 
 -- Alterna a exibição do project drawer
-nmap('<leader>b', "<cmd>CHADopen<cr>")
+nmap('<leader>b', "<cmd>Neotree toggle=true<cr>")
+nmap('<leader>B', "<cmd>Neotree reveal toggle=true<cr>")
 
 nmap("<leader>o", "<cmd>Telescope current_buffer_tags<cr>")
 nmap("<leader>l", "<cmd>Telescope live_grep<cr>")
@@ -340,7 +376,7 @@ nmap("<C-w>M", "<cmd>FocusMaximise<CR>")
 nmap("<C-w>=", "<cmd>FocusEqualise<CR>")
 
 nmap("<c-p>", "<cmd>Telescope find_files<cr>")
-nmap("<leader>p", "<cmd>Telescope <cr>")
+-- nmap("<leader>p", "<cmd>Telescope <cr>")
 
 nnoremap("<space>", "<Nop>")
 nmap("<space>", "<leader>")

@@ -352,12 +352,12 @@ end
 inoremap('jk', '<Esc>')
 
 -- Alterna a exibição do project drawer
-nmap('<leader>b', "<cmd>Neotree toggle=true<cr>")
-nmap('<leader>B', "<cmd>Neotree reveal toggle=true<cr>")
+nmap('<leader>b', "<cmd>Neotree left toggle=true<cr>")
+nmap('<leader>B', "<cmd>Neotree left reveal toggle=true<cr>")
+nmap("<leader>a", "<cmd>Neotree float buffers<cr>")
 
 nmap("<leader>o", "<cmd>Telescope current_buffer_tags<cr>")
 nmap("<leader>l", "<cmd>Telescope live_grep<cr>")
-nmap("<leader>a", "<cmd>Telescope buffers<cr>")
 
 nmap("<leader>w", "<c-w>")
 nmap("<leader>,", ":tabnew ~/.config/nvim/init.lua<CR>:vsplit ~/.config/nvim/lua/plugins.lua<CR>")
@@ -372,7 +372,8 @@ nmap("[q", "<cmd>cp<CR>")
 nmap("<leader>hftest", "p^ceFRIEND_TEST<esc>$r;X>>")
 nmap("<leader>cs", ":'a,'bS#")
 
-nmap("<C-w>M", "<cmd>FocusMaximise<CR>")
+nmap("<C-w>M", "<cmd>Neotree close<CR><cmd>FocusMaximise<CR>")
+nmap("<C-w>m", "<cmd>Neotree close<CR><cmd>FocusToggle<CR>")
 nmap("<C-w>=", "<cmd>FocusEqualise<CR>")
 
 nmap("<c-p>", "<cmd>Telescope find_files<cr>")

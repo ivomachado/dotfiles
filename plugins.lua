@@ -83,7 +83,23 @@ return require('packer').startup(function()
       end
     }
 
-    use { 'ms-jpq/chadtree', branch = 'chad', run =  'python3 -m chadtree deps'}
+    use {
+      'ms-jpq/chadtree',
+      branch = 'chad',
+      run =  'python3 -m chadtree deps',
+      disable = true
+    }
+
+    use {
+      "nvim-neo-tree/neo-tree.nvim",
+      branch = "v2.x",
+      requires = { 
+        "nvim-lua/plenary.nvim",
+        "kyazdani42/nvim-web-devicons", -- not strictly required, but recommended
+        "MunifTanjim/nui.nvim",
+      },
+    }
+
 
     use 'dstein64/vim-startuptime'
 
@@ -97,6 +113,7 @@ return require('packer').startup(function()
         'nvim-lua/plenary.nvim'
       }
     }
+
     use {'nvim-telescope/telescope-fzf-native.nvim', run = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
 
     use {'kevinhwang91/nvim-bqf'} -- Better quickfix windows

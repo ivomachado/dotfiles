@@ -42,8 +42,8 @@ root: ~/projects/spiderman/cc-webservices
 windows:
   - editor:
       panes:
-        - nvim -S
+        - nvim
   - shell:
   - shell:
   - smart-platform:
-    - cd externals/smart_platform && nvim -S
+    - cd externals/smart_platform && nvim

@@ -42,7 +42,6 @@ return require('packer').startup(function()
     use 'brooth/far.vim'
     use 'rcarriga/nvim-notify'
 
-    use 'tpope/vim-obsession'
     use 'tpope/vim-surround'
     use 'tpope/vim-repeat'
     use 'tpope/vim-sensible'
@@ -136,4 +135,22 @@ return require('packer').startup(function()
 
   use 'ray-x/lsp_signature.nvim'
 
+  use 'rmagatti/session-lens'
+  use {
+    'rmagatti/auto-session',
+    config = function()
+      require('auto-session').setup {
+        log_level = 'info',
+        auto_session_suppress_dirs = {'~/', '~/projects'}
+      }
+    end
+  }
+
+  use {
+    's1n7ax/nvim-terminal',
+    config = function()
+      vim.o.hidden = true
+      require('nvim-terminal').setup()
+    end,
+  }
 end)

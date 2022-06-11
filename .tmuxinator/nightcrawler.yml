@@ -1,7 +1,7 @@
 # /home/ivomachado/.tmuxinator/nightcrawler.yml
 
 name: nightcrawler
-root: ~/projects/nightcrawler
+root: ~/projects/nightcrawler/stratos_wpe
 
 # Optional tmux socket
 # socket_name: foo
@@ -42,6 +42,6 @@ root: ~/projects/nightcrawler
 windows:
   - editor:
       panes:
-        - nvim -S
+        - nvim
   - shell:
 

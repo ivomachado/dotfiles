@@ -42,5 +42,5 @@ root: ~/projects/smart_platform
 windows:
   - editor:
       panes:
-        - nvim -S
+        - nvim
   - shell:

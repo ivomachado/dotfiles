@@ -183,8 +183,9 @@ cmp.setup({
     mapping = {
         ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
         ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+        ['<TAB>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i', 'c' }),
         ['<C-n>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i', 'c' }),
-        ['<C-p>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i', 'c' }),
+        ['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item(), { 'i', 'c' }),
         ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
         ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
         ['<C-e>'] = cmp.mapping({
@@ -298,14 +299,14 @@ vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
 -- vim.opt.wildignore+=*/tmp/*,*.swp,*.zip,*.exe,*/node_modules/*,*/build/*,*/.ccls-cache/*,*/.clangd/*,*/.build/*,*gradle*,*/.build*/*,*/output/*
 
-
+vim.cmd([[set guifont=Noto\ Sans:h11]])
 
 vim.opt.termguicolors = true
 
 vim.cmd("filetype plugin on")
 
 -- vim.g.tokyonight_style = "day"
--- vim.opt.background="light"
+vim.opt.background="light"
 
 vim.opt.list = true
 vim.opt.listchars:append("eol:↴")
@@ -345,6 +346,10 @@ function vmap(shortcut, command)
     map('v', shortcut, command)
 end
 
+function tnoremap(shortcut, command)
+    noremap('t', shortcut, command)
+end
+
 function inoremap(shortcut, command)
     noremap('i', shortcut, command)
 end
@@ -357,6 +362,7 @@ nmap('<leader>B', "<cmd>Neotree left reveal toggle=true<cr>")
 nmap("<leader>a", "<cmd>Neotree float buffers<cr>")
 
 nmap("<leader>o", "<cmd>Telescope current_buffer_tags<cr>")
+nmap("<leader>s", "<cmd>Telescope session-lens search_session<cr>")
 nmap("<leader>l", "<cmd>Telescope live_grep<cr>")
 
 nmap("<leader>w", "<c-w>")
@@ -382,3 +388,4 @@ nmap("<c-p>", "<cmd>Telescope find_files<cr>")
 nnoremap("<space>", "<Nop>")
 nmap("<space>", "<leader>")
 vmap("<space>", "<leader>")
+vim.o.sessionoptions="blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal"

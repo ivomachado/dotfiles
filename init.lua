@@ -350,6 +350,10 @@ function tnoremap(shortcut, command)
     noremap('t', shortcut, command)
 end
 
+function tmap(shortcut, command)
+    map('t', shortcut, command)
+end
+
 function inoremap(shortcut, command)
     noremap('i', shortcut, command)
 end
@@ -388,4 +392,6 @@ nmap("<c-p>", "<cmd>Telescope find_files<cr>")
 nnoremap("<space>", "<Nop>")
 nmap("<space>", "<leader>")
 vmap("<space>", "<leader>")
+tnoremap("<Esc>", "<C-\\><C-n>")
+tmap("<space>;", "<C-\\><C-n><leader>;")
 vim.o.sessionoptions="blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal"

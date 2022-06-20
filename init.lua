@@ -1,6 +1,8 @@
 require('plugins')
 local filename_symbols = { modified = ' ●',}
 
+vim.o.sessionoptions="buffers,curdir,folds,help,tabpages,winsize,winpos"
+
 require("neo-tree").setup({
     close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
     enable_git_status = true,
@@ -9,6 +11,7 @@ require("neo-tree").setup({
         mappings = { ["<space>"] = "none",  ["<F2>"] = "rename", }
     },
     filesystem = {
+        use_libuv_file_watcher = true,
         filtered_items = {
             visible = true, -- when true, they will just be displayed differently than normal items
             hide_dotfiles = true,
@@ -41,8 +44,8 @@ require('lualine').setup{
         component_separators = { left = '', right = ''},
         section_separators = { left = '', right = ''},
         disabled_filetypes = {},
-        theme = 'iceberg_light',
-        -- theme = 'auto',
+        -- theme = 'iceberg_light',
+        theme = 'auto',
         always_divide_middle = true,
         globalstatus = true,
     },
@@ -66,7 +69,7 @@ require('lualine').setup{
     },
     sections = {
         lualine_a = {'mode'},
-        lualine_b = {'branch', 'diff', 'diagnostics'},
+        lualine_b = {'branch', 'diff'},
         lualine_c = {{'filename', path = 1, symbols = filename_symbols}, 'diagnostics'},
         lualine_x = {'encoding', 'fileformat', 'filetype'},
         lualine_y = {'progress', function()
@@ -116,18 +119,26 @@ require('telescope').setup{
                 ["<C-a>"] = "smart_add_to_qflist",
             },
         },
-        layout_strategy = "horizontal",
+        layout_strategy = "vertical",
         path_display = { truncate = 3 },
         fuzzy = true,                    -- false will only do exact matching
         override_generic_sorter = true,  -- override the generic sorter
         override_file_sorter = true,     -- override the file sorter
         case_mode = "smart_case",        -- or "ignore_case" or "respect_case" the default case_mode is "smart_case"
+    },
+    pickers = {
+        find_files = {
+            theme = "dropdown",
+        }
     }
 }
 
 -- To get fzf loaded and working with telescope, you need to call
 -- load_extension, somewhere after setup function:
 require('telescope').load_extension('fzf')
+require('telescope').load_extension('notify')
+
+require('dressing').setup()
 
 require('gitsigns').setup{
     on_attach = function(bufnr)
@@ -142,7 +153,7 @@ require('gitsigns').setup{
         map('n', ']c', "&diff ? ']c' : '<cmd>Gitsigns next_hunk<CR>'", {expr=true})
         map('n', '[c', "&diff ? '[c' : '<cmd>Gitsigns prev_hunk<CR>'", {expr=true})
 
-        map('n', '<leader>g', '<cmd>Gitsigns blame_line<CR>', {expr=true})
+        map('n', '<leader>g', '<cmd>Gitsigns toggle_current_line_blame<CR>', {expr=true})
     end
 }
 
@@ -183,7 +194,10 @@ cmp.setup({
     mapping = {
         ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
         ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+        ['<C-n>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i', 'c' }),
+        ['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item(), { 'i', 'c' }),
         ['<TAB>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i', 'c' }),
+        ['<S-TAB>'] = cmp.mapping(cmp.mapping.select_prev_item(), { 'i', 'c' }),
         ['<C-n>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i', 'c' }),
         ['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item(), { 'i', 'c' }),
         ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
@@ -198,11 +212,12 @@ cmp.setup({
         { name = 'nvim_lsp' },
         { name = 'buffer' },
         { name = 'path' },
+        { name = 'nvim_lsp_signature_help' },
     }),
     formatting = {
         format = lspkind.cmp_format({
-            with_text = false, -- do not show text alongside icons
-            maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+            mode = 'symbol_text',
+            -- maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
         })
     }
 })
@@ -210,7 +225,8 @@ cmp.setup({
 -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline('/', {
     sources = {
-        { name = 'buffer' }
+        { name = 'nvim_lsp_document_symbol'},
+        { name = 'buffer'},
     }
 })
 
@@ -239,11 +255,13 @@ require'nvim-lsp-installer'.setup({
 local servers = {
     'clangd',
     'cmake',
+    'html',
+    'lemminx',
     'rust_analyzer',
     'pylsp',
 }
 
-require "lsp_signature".setup({})
+-- require "lsp_signature".setup({})
 
 for _, lsp in pairs(servers) do
     require('lspconfig')[lsp].setup{
@@ -294,19 +312,22 @@ vim.opt.hlsearch = true
 vim.opt.incsearch = true
 vim.opt.expandtab = true
 vim.opt.fixendofline = true
-vim.opt.lazyredraw = true
+vim.opt.lazyredraw = false
 vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
 -- vim.opt.wildignore+=*/tmp/*,*.swp,*.zip,*.exe,*/node_modules/*,*/build/*,*/.ccls-cache/*,*/.clangd/*,*/.build/*,*gradle*,*/.build*/*,*/output/*
 
 vim.cmd([[set guifont=Noto\ Sans:h11]])
+vim.cmd([[set timeoutlen=300]])
 
 vim.opt.termguicolors = true
 
 vim.cmd("filetype plugin on")
 
 -- vim.g.tokyonight_style = "day"
-vim.opt.background="light"
+-- vim.opt.background="light"
+-- vim.cmd([[colorscheme tokynight]])
+vim.cmd([[colorscheme dracula]])
 
 vim.opt.list = true
 vim.opt.listchars:append("eol:↴")
@@ -362,7 +383,7 @@ inoremap('jk', '<Esc>')
 
 -- Alterna a exibição do project drawer
 nmap('<leader>b', "<cmd>Neotree left toggle=true<cr>")
-nmap('<leader>B', "<cmd>Neotree left reveal toggle=true<cr>")
+nmap('<leader>B', "<cmd>Neotree left focus reveal<cr>")
 nmap("<leader>a", "<cmd>Neotree float buffers<cr>")
 
 nmap("<leader>o", "<cmd>Telescope current_buffer_tags<cr>")
@@ -394,4 +415,4 @@ nmap("<space>", "<leader>")
 vmap("<space>", "<leader>")
 tnoremap("<Esc>", "<C-\\><C-n>")
 tmap("<space>;", "<C-\\><C-n><leader>;")
-vim.o.sessionoptions="blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal"
+tmap("<space>_", "<C-\\><C-n><C-W>_a")

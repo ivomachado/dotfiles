@@ -15,21 +15,17 @@ return require('packer').startup(function()
         requires = { 'kyazdani42/nvim-web-devicons', opt = true }
     }
 
-    use {'dracula/vim', as = 'dracula', disable = true}
-    use {'sainnhe/everforest', disable = true}
+    use {'dracula/vim', as = 'dracula', disable = false}
+    use {'sainnhe/everforest', disable = false}
     use {'marko-cerovac/material.nvim', disable = true}
-    use {'folke/tokyonight.nvim', disable = true}
+    use {'folke/tokyonight.nvim', disable = false}
     use {
         'sonph/onehalf',
         rtp = 'vim',
         config = function()
-            vim.cmd("colorscheme onehalflight")
-        end
-    }
-
-    use {
-        'weirongxu/plantuml-previewer.vim',
-        requires = { 'aklt/plantuml-syntax', 'tyru/open-browser.vim' }
+            vim.cmd("colorscheme onehalfdark")
+        end,
+        disable = true
     }
 
     use {
@@ -73,7 +69,9 @@ return require('packer').startup(function()
   use 'hrsh7th/cmp-nvim-lsp' -- Fonte de LSP para autocomplete
   use 'hrsh7th/cmp-path' -- Fonte de paths para autocomplete
   use 'hrsh7th/cmp-buffer' -- Fonte de palavras de buffer para autocomplete
-  use 'hrsh7th/cmp-cmdline' -- Fonte de palavras de buffer para autocomplete
+  use 'hrsh7th/cmp-cmdline'
+  use 'hrsh7th/cmp-nvim-lsp-signature-help'
+  use 'hrsh7th/cmp-nvim-lsp-document-symbol'
   use 'onsails/lspkind-nvim' -- Mostra ícones no autocomplete
 
   use {
@@ -117,6 +115,8 @@ return require('packer').startup(function()
       }
   }
 
+  use {'stevearc/dressing.nvim'}
+
   use {'nvim-telescope/telescope-fzf-native.nvim', run = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
 
   use {'kevinhwang91/nvim-bqf'} -- Better quickfix windows
@@ -133,7 +133,7 @@ return require('packer').startup(function()
       run = ':TSUpdate',
   }
 
-  use 'ray-x/lsp_signature.nvim'
+  -- use 'ray-x/lsp_signature.nvim'
 
   use 'rmagatti/session-lens'
   use {
@@ -152,5 +152,18 @@ return require('packer').startup(function()
       vim.o.hidden = true
       require('nvim-terminal').setup()
     end,
+  }
+
+  use {
+    'dstein64/nvim-scrollview',
+    config = function()
+      require('scrollview').setup({
+        excluded_filetypes = {'nerdtree'},
+        current_only = true,
+        winblend = 50,
+        scrollview_base = 'right',
+        scrollview_column = 1
+      })
+    end
   }
 end)

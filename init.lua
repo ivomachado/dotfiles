@@ -1,6 +1,26 @@
 require('plugins')
 local filename_symbols = { modified = ' ●',}
 
+vim.g.catppuccin_flavour = "latte"
+require'catppuccin'.setup({
+    integrations = {
+        neotree = {
+            enabled = true
+        },
+    },
+})
+
+terminal = require('nvim-terminal').DefaultTerminal;
+local silent = { silent = true }
+
+vim.api.nvim_set_keymap('n', '<leader>t', ':lua terminal:toggle()<cr>', silent)
+vim.api.nvim_set_keymap('n', '<leader>1', ':lua terminal:open(1)<cr>', silent)
+vim.api.nvim_set_keymap('n', '<leader>2', ':lua terminal:open(2)<cr>', silent)
+vim.api.nvim_set_keymap('n', '<leader>3', ':lua terminal:open(3)<cr>', silent)
+
+-- vim.opt.background="light"
+vim.cmd([[colorscheme catppuccin]])
+
 vim.o.sessionoptions="buffers,curdir,folds,help,tabpages,winsize,winpos"
 
 require("neo-tree").setup({
@@ -45,6 +65,7 @@ require('lualine').setup{
         section_separators = { left = '', right = ''},
         disabled_filetypes = {},
         -- theme = 'iceberg_light',
+        -- theme = 'catppuccin',
         theme = 'auto',
         always_divide_middle = true,
         globalstatus = true,
@@ -333,11 +354,6 @@ vim.cmd([[set guifont=Noto\ Sans:h11]])
 vim.opt.termguicolors = true
 
 vim.cmd("filetype plugin on")
-
--- vim.g.tokyonight_style = "day"
--- vim.opt.background="light"
--- vim.cmd([[colorscheme tokynight]])
-vim.cmd([[colorscheme dracula]])
 
 vim.opt.list = true
 vim.opt.listchars:append("eol:↴")

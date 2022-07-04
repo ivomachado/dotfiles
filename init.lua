@@ -377,10 +377,10 @@ vim.cmd([[
 set titlestring=%{fnamemodify(getcwd(),':~')}
 ]])
 
-vim.cmd([[
-autocmd BufWinEnter,WinEnter term://* set timeoutlen=50
-autocmd BufLeave term://* set timeoutlen=1500
-]])
+-- vim.cmd([[
+-- autocmd BufWinEnter,WinEnter term://* set timeoutlen=50
+-- autocmd BufLeave term://* set timeoutlen=1500
+-- ]])
 
 function noremap(mode, shortcut, command)
     vim.api.nvim_set_keymap(mode, shortcut, command, { noremap = true, silent = true })

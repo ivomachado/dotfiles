@@ -69,6 +69,7 @@ return require('packer').startup(function()
   use 'hrsh7th/cmp-vsnip'
   use 'hrsh7th/vim-vsnip'
   use 'hrsh7th/cmp-nvim-lsp' -- Fonte de LSP para autocomplete
+  use 'hrsh7th/cmp-nvim-lua' -- Fonte de LSP para autocomplete
   use 'hrsh7th/cmp-path' -- Fonte de paths para autocomplete
   use 'hrsh7th/cmp-buffer' -- Fonte de palavras de buffer para autocomplete
   use 'hrsh7th/cmp-cmdline'

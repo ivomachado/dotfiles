@@ -216,17 +216,21 @@ cmp.setup({
     },
     sources = cmp.config.sources({
         { name = 'nvim_lsp' },
-        { name = 'vsnip' },
-        { name = 'buffer' },
-        { name = 'path' },
         { name = 'nvim_lsp_signature_help' },
+        { name = 'vsnip' },
+        { name = 'nvim_lua' },
+        { name = 'buffer', keyword_length = 5 },
+        { name = 'path' },
     }),
     formatting = {
         format = lspkind.cmp_format({
             mode = 'symbol_text',
             -- maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
         })
-    }
+    },
+    experimental = {
+        ghost_text = true,
+    },
 })
 
 -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).

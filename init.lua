@@ -129,7 +129,7 @@ require('telescope').setup{
     pickers = {
         find_files = {
             theme = "dropdown",
-        }
+        },
     }
 }
 
@@ -329,7 +329,6 @@ vim.opt.tabstop = 4
 -- vim.opt.wildignore+=*/tmp/*,*.swp,*.zip,*.exe,*/node_modules/*,*/build/*,*/.ccls-cache/*,*/.clangd/*,*/.build/*,*gradle*,*/.build*/*,*/output/*
 
 vim.cmd([[set guifont=Noto\ Sans:h11]])
-vim.cmd([[set timeoutlen=300]])
 
 vim.opt.termguicolors = true
 
@@ -356,6 +355,15 @@ autocmd BufReadPost *  DetectIndent
 augroup END
 
 command! RemoveIostream g/iostream\|cout/d
+]])
+
+vim.cmd([[
+set titlestring=%{fnamemodify(getcwd(),':~')}
+]])
+
+vim.cmd([[
+autocmd BufWinEnter,WinEnter term://* set timeoutlen=50
+autocmd BufLeave term://* set timeoutlen=1500
 ]])
 
 function noremap(mode, shortcut, command)
@@ -402,7 +410,7 @@ nmap('<leader>b', "<cmd>Neotree left toggle=true<cr>")
 nmap('<leader>B', "<cmd>Neotree left focus reveal<cr>")
 nmap("<leader>a", "<cmd>Neotree float buffers<cr>")
 
-nmap("<leader>o", "<cmd>Telescope current_buffer_tags<cr>")
+nmap("<leader>o", "<cmd>Telescope current_buffer_tags theme=ivy<cr>")
 nmap("<leader>s", "<cmd>Telescope session-lens search_session<cr>")
 nmap("<leader>l", "<cmd>Telescope live_grep<cr>")
 
@@ -413,22 +421,19 @@ nmap("<leader>q", "<cmd>Bdelete<CR>")
 nmap("<leader>Q", "<cmd>bdelete<CR>")
 nmap("]b", "<cmd>bn<CR>")
 nmap("[b", "<cmd>bp<CR>")
-nmap("]q", "<cmd>cn<CR>")
-nmap("[q", "<cmd>cp<CR>")
 
 nmap("<leader>hftest", "p^ceFRIEND_TEST<esc>$r;X>>")
-nmap("<leader>cs", ":'a,'bS#")
+nmap("<leader>cs", "<cmd>'a,'bS#")
 
 nmap("<C-w>M", "<cmd>Neotree close<CR><cmd>FocusMaximise<CR>")
 nmap("<C-w>m", "<cmd>Neotree close<CR><cmd>FocusToggle<CR>")
 nmap("<C-w>=", "<cmd>FocusEqualise<CR>")
 
 nmap("<c-p>", "<cmd>Telescope find_files<cr>")
--- nmap("<leader>p", "<cmd>Telescope <cr>")
+nmap("<leader>p", "<cmd>Telescope <cr>")
 
 nnoremap("<space>", "<Nop>")
 nmap("<space>", "<leader>")
 vmap("<space>", "<leader>")
-tnoremap("<Esc>", "<C-\\><C-n>")
-tmap("<space>;", "<C-\\><C-n><leader>;")
-tmap("<space>_", "<C-\\><C-n><C-W>_a")
+tmap("<Esc>", "<C-\\><C-n>")
+tmap("jk", "<C-\\><C-n>")

@@ -66,6 +66,8 @@ return require('packer').startup(function()
       'williamboman/nvim-lsp-installer' -- Install LSP clients
   }
   use 'hrsh7th/nvim-cmp' -- Plugin de AutoComplete
+  use 'hrsh7th/cmp-vsnip'
+  use 'hrsh7th/vim-vsnip'
   use 'hrsh7th/cmp-nvim-lsp' -- Fonte de LSP para autocomplete
   use 'hrsh7th/cmp-path' -- Fonte de paths para autocomplete
   use 'hrsh7th/cmp-buffer' -- Fonte de palavras de buffer para autocomplete

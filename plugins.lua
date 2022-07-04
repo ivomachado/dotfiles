@@ -163,6 +163,7 @@ return require('packer').startup(function()
       require('auto-session').setup {
         log_level = 'info',
         auto_session_suppress_dirs = {'~/', '~/projects'}
+        -- post_restore_cmd = 
       }
     end
   }
@@ -171,7 +172,9 @@ return require('packer').startup(function()
     's1n7ax/nvim-terminal',
     config = function()
       vim.o.hidden = true
-      require('nvim-terminal').setup()
+      require('nvim-terminal').setup({
+        window_height_change_amount = 10,
+      })
     end,
   }
 

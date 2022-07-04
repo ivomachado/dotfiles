@@ -19,6 +19,16 @@ return require('packer').startup(function()
     use {'sainnhe/everforest', disable = false}
     use {'marko-cerovac/material.nvim', disable = true}
     use {'folke/tokyonight.nvim', disable = false}
+    use {"adisen99/codeschool.nvim", requires = {"rktjmp/lush.nvim"}}
+    use({
+      "catppuccin/nvim",
+        as = "catppuccin",
+      })
+    use 'Mofiqul/vscode.nvim'
+    use 'Th3Whit3Wolf/onebuddy'
+    use 'EdenEast/nightfox.nvim'
+    use 'Th3Whit3Wolf/space-nvim'
+    use ({ 'projekt0n/github-nvim-theme' })
     use {
         'sonph/onehalf',
         rtp = 'vim',
@@ -26,6 +36,14 @@ return require('packer').startup(function()
             vim.cmd("colorscheme onehalfdark")
         end,
         disable = true
+    }
+
+    use {
+      "mcchrish/zenbones.nvim",
+      -- Optionally install Lush. Allows for more configuration or extending the colorscheme
+      -- If you don't want to install lush, make sure to set g:zenbones_compat = 1
+      -- In Vim, compat mode is turned on as Lush only works in Neovim.
+      requires = "rktjmp/lush.nvim"
     }
 
     use {

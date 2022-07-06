@@ -12,7 +12,89 @@ return require('packer').startup(function()
 
     use {
         'nvim-lualine/lualine.nvim',
-        requires = { 'kyazdani42/nvim-web-devicons', opt = true }
+        require = { 'kyazdani42/nvim-web-devicons', opt = true },
+        config = function()
+            require('lualine').setup{
+                extensions = {'quickfix', 'neo-tree'},
+                options = {
+                    icons_enabled = true,
+                    -- component_separators = { left = '', right = ''},
+                    component_separators = { left = '', right = ''},
+                    section_separators = { left = '', right = ''},
+                    disabled_filetypes = {},
+                    -- theme = 'iceberg_light',
+                    -- theme = 'catppuccin',
+                    theme = 'auto',
+                   always_divide_middle = true,
+                    globalstatus = true,
+                },
+                tabline = {
+                    lualine_a = {
+                        'tabs',
+                    },
+                    lualine_b = {
+                    },
+                    lualine_c = {
+                        {'filetype', icon_only = true},
+                        {'filename', path = 1, symbols = filename_symbols, shorting_target = 30},
+                    },
+                    lualine_x = {
+                    },
+                    lualine_y = {
+                    },
+                    lualine_z = {
+                        { 'windows', show_filename_only = false, }
+                    }
+                },
+                sections = {
+                    lualine_a = {'mode'},
+                    lualine_b = {'branch', 'diff'},
+                    lualine_c = {{'filename', path = 1, symbols = filename_symbols}, 'diagnostics'},
+                    lualine_x = {'encoding', 'fileformat', 'filetype'},
+                    lualine_y = {'progress', function()
+                        if vim.bo.expandtab then
+                            return [[Spaces: ]]..vim.bo.shiftwidth
+                        else
+                            return [[Tab size: ]]..vim.bo.tabstop
+                        end
+                    end},
+                    lualine_z = {'location'}
+                },
+                inactive_sections = {
+                    lualine_a = {},
+                    lualine_b = {},
+                    lualine_c = {{'filename', symbols = filename_symbols}, 'diagnostics'},
+                    lualine_x = {'location'},
+                    lualine_y = {},
+                    lualine_z = {}
+                },
+            }
+
+        end,
+        disable = false
+    }
+
+    use {
+        "folke/twilight.nvim",
+        config = function()
+            require("twilight").setup {
+                -- your configuration comes here
+                -- or leave it empty to use the default settings
+                -- refer to the configuration section below
+            }
+        end,
+        disable = true
+    }
+
+    use {
+        "feline-nvim/feline.nvim",
+        config = function()
+            require("feline").setup {
+                -- your configuration comes here
+                -- or leave it empty to use the default settings
+                -- refer to the configuration section below
+            }
+        end
     }
 
     use {'dracula/vim', as = 'dracula', disable = false}
@@ -21,12 +103,23 @@ return require('packer').startup(function()
     use {'folke/tokyonight.nvim', disable = false}
     use {"adisen99/codeschool.nvim", requires = {"rktjmp/lush.nvim"}}
     use({
-      "catppuccin/nvim",
+        "catppuccin/nvim",
         as = "catppuccin",
-      })
+    })
     use 'Mofiqul/vscode.nvim'
     use 'Th3Whit3Wolf/onebuddy'
-    use 'EdenEast/nightfox.nvim'
+    use {
+        'EdenEast/nightfox.nvim',
+        config = function()
+            require('nightfox').setup({
+                options = {
+                    terminal_colors = false,
+                    dim_inactive = false,
+                },
+            })
+        end
+    }
+
     use 'Th3Whit3Wolf/space-nvim'
     use ({ 'projekt0n/github-nvim-theme' })
     use {
@@ -39,11 +132,11 @@ return require('packer').startup(function()
     }
 
     use {
-      "mcchrish/zenbones.nvim",
-      -- Optionally install Lush. Allows for more configuration or extending the colorscheme
-      -- If you don't want to install lush, make sure to set g:zenbones_compat = 1
-      -- In Vim, compat mode is turned on as Lush only works in Neovim.
-      requires = "rktjmp/lush.nvim"
+        "mcchrish/zenbones.nvim",
+        -- Optionally install Lush. Allows for more configuration or extending the colorscheme
+        -- If you don't want to install lush, make sure to set g:zenbones_compat = 1
+        -- In Vim, compat mode is turned on as Lush only works in Neovim.
+        requires = "rktjmp/lush.nvim"
     }
 
     use {
@@ -79,115 +172,115 @@ return require('packer').startup(function()
         end,
     }
 
-  use {
-      'neovim/nvim-lspconfig', -- Collection of configurations for the built-in LSP client
-      'williamboman/nvim-lsp-installer' -- Install LSP clients
-  }
-  use 'hrsh7th/nvim-cmp' -- Plugin de AutoComplete
-  use 'hrsh7th/cmp-vsnip'
-  use 'hrsh7th/vim-vsnip'
-  use 'hrsh7th/cmp-nvim-lsp' -- Fonte de LSP para autocomplete
-  use 'hrsh7th/cmp-nvim-lua' -- Fonte de LSP para autocomplete
-  use 'hrsh7th/cmp-path' -- Fonte de paths para autocomplete
-  use 'hrsh7th/cmp-buffer' -- Fonte de palavras de buffer para autocomplete
-  use 'hrsh7th/cmp-cmdline'
-  use 'hrsh7th/cmp-nvim-lsp-signature-help'
-  use 'hrsh7th/cmp-nvim-lsp-document-symbol'
-  use 'onsails/lspkind-nvim' -- Mostra ícones no autocomplete
+    use {
+        'neovim/nvim-lspconfig', -- Collection of configurations for the built-in LSP client
+        'williamboman/nvim-lsp-installer' -- Install LSP clients
+    }
+    use 'hrsh7th/nvim-cmp' -- Plugin de AutoComplete
+    use 'hrsh7th/cmp-vsnip'
+    use 'hrsh7th/vim-vsnip'
+    use 'hrsh7th/cmp-nvim-lsp' -- Fonte de LSP para autocomplete
+    use 'hrsh7th/cmp-nvim-lua' -- Fonte de LSP para autocomplete
+    use 'hrsh7th/cmp-path' -- Fonte de paths para autocomplete
+    use 'hrsh7th/cmp-buffer' -- Fonte de palavras de buffer para autocomplete
+    use 'hrsh7th/cmp-cmdline'
+    use 'hrsh7th/cmp-nvim-lsp-signature-help'
+    use 'hrsh7th/cmp-nvim-lsp-document-symbol'
+    use 'onsails/lspkind-nvim' -- Mostra ícones no autocomplete
 
-  use {
-      -- Aquelas janelas flutuantes para mostrar previews com gpd, gpp, gP
-      'rmagatti/goto-preview',
-      config = function()
-          require('goto-preview').setup {
-              default_mappings = true,
-          }
-      end
-  }
+    use {
+        -- Aquelas janelas flutuantes para mostrar previews com gpd, gpp, gP
+        'rmagatti/goto-preview',
+        config = function()
+            require('goto-preview').setup {
+                default_mappings = true,
+            }
+        end
+    }
 
-  use {
-      'ms-jpq/chadtree',
-      branch = 'chad',
-      run =  'python3 -m chadtree deps',
-      disable = true
-  }
+    use {
+        'ms-jpq/chadtree',
+        branch = 'chad',
+        run =  'python3 -m chadtree deps',
+        disable = true
+    }
 
-  use {
-      "nvim-neo-tree/neo-tree.nvim",
-      branch = "v2.x",
-      requires = { 
-          "nvim-lua/plenary.nvim",
-          "kyazdani42/nvim-web-devicons", -- not strictly required, but recommended
-          "MunifTanjim/nui.nvim",
-      },
-  }
+    use {
+        "nvim-neo-tree/neo-tree.nvim",
+        branch = "v2.x",
+        requires = { 
+            "nvim-lua/plenary.nvim",
+            "kyazdani42/nvim-web-devicons", -- not strictly required, but recommended
+            "MunifTanjim/nui.nvim",
+        },
+    }
 
 
-  use 'dstein64/vim-startuptime'
+    use 'dstein64/vim-startuptime'
 
-  use 'CoatiSoftware/vim-sourcetrail'
+    use 'CoatiSoftware/vim-sourcetrail'
 
-  use 'moll/vim-bbye' -- Buffer management
+    use 'moll/vim-bbye' -- Buffer management
 
-  use {
-      'nvim-telescope/telescope.nvim',
-      requires = {
-          'nvim-lua/plenary.nvim'
-      }
-  }
+    use {
+        'nvim-telescope/telescope.nvim',
+        requires = {
+            'nvim-lua/plenary.nvim'
+        }
+    }
 
-  use {'stevearc/dressing.nvim'}
+    use {'stevearc/dressing.nvim'}
 
-  use {'nvim-telescope/telescope-fzf-native.nvim', run = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
+    use {'nvim-telescope/telescope-fzf-native.nvim', run = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
 
-  use {'kevinhwang91/nvim-bqf'} -- Better quickfix windows
+    use {'kevinhwang91/nvim-bqf'} -- Better quickfix windows
 
-  use {
-      'lewis6991/gitsigns.nvim',
-      requires = {
-          'nvim-lua/plenary.nvim'
-      },
-  }
+    use {
+        'lewis6991/gitsigns.nvim',
+        requires = {
+            'nvim-lua/plenary.nvim'
+        },
+    }
 
-  use {
-      'nvim-treesitter/nvim-treesitter',
-      run = ':TSUpdate',
-  }
+    use {
+        'nvim-treesitter/nvim-treesitter',
+        run = ':TSUpdate',
+    }
 
-  -- use 'ray-x/lsp_signature.nvim'
+    -- use 'ray-x/lsp_signature.nvim'
 
-  use 'rmagatti/session-lens'
-  use {
-    'rmagatti/auto-session',
-    config = function()
-      require('auto-session').setup {
-        log_level = 'info',
-        auto_session_suppress_dirs = {'~/', '~/projects'}
-        -- post_restore_cmd = 
-      }
-    end
-  }
+    use 'rmagatti/session-lens'
+    use {
+        'rmagatti/auto-session',
+        config = function()
+            require('auto-session').setup {
+                log_level = 'info',
+                auto_session_suppress_dirs = {'~/', '~/projects'}
+                -- post_restore_cmd = 
+            }
+        end
+    }
 
-  use {
-    's1n7ax/nvim-terminal',
-    config = function()
-      vim.o.hidden = true
-      require('nvim-terminal').setup({
-        window_height_change_amount = 10,
-      })
-    end,
-  }
+    use {
+        's1n7ax/nvim-terminal',
+        config = function()
+            vim.o.hidden = true
+            require('nvim-terminal').setup({
+                window_height_change_amount = 10,
+            })
+        end,
+    }
 
-  use {
-    'dstein64/nvim-scrollview',
-    config = function()
-      require('scrollview').setup({
-        excluded_filetypes = {'nerdtree'},
-        current_only = true,
-        winblend = 50,
-        scrollview_base = 'right',
-        scrollview_column = 1
-      })
-    end
-  }
+    use {
+        'dstein64/nvim-scrollview',
+        config = function()
+            require('scrollview').setup({
+                excluded_filetypes = {'nerdtree'},
+                current_only = true,
+                winblend = 50,
+                scrollview_base = 'right',
+                scrollview_column = 1
+            })
+        end
+    }
 end)

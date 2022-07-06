@@ -1,7 +1,6 @@
 require('plugins')
-local filename_symbols = { modified = ' ●',}
 
-vim.g.catppuccin_flavour = "latte"
+vim.g.catppuccin_flavour = "mocha"
 require'catppuccin'.setup({
     integrations = {
         neotree = {
@@ -11,7 +10,7 @@ require'catppuccin'.setup({
 })
 
 -- vim.opt.background="light"
-vim.cmd([[colorscheme catppuccin]])
+vim.cmd([[colorscheme nordfox]])
 
 vim.o.sessionoptions="buffers,curdir,folds,help,tabpages,winsize"
 
@@ -47,62 +46,6 @@ require("neo-tree").setup({
         },
     },
 })
-
-require('lualine').setup{
-    extensions = {'quickfix', 'neo-tree'},
-    options = {
-        icons_enabled = true,
-        -- component_separators = { left = '', right = ''},
-        component_separators = { left = '', right = ''},
-        section_separators = { left = '', right = ''},
-        disabled_filetypes = {},
-        -- theme = 'iceberg_light',
-        -- theme = 'catppuccin',
-        theme = 'auto',
-        always_divide_middle = true,
-        globalstatus = true,
-    },
-    tabline = {
-        lualine_a = {
-            'tabs',
-        },
-        lualine_b = {
-        },
-        lualine_c = {
-            {'filetype', icon_only = true},
-            {'filename', path = 1, symbols = filename_symbols, shorting_target = 30},
-        },
-        lualine_x = {
-        },
-        lualine_y = {
-        },
-        lualine_z = {
-            { 'windows', show_filename_only = false, }
-        }
-    },
-    sections = {
-        lualine_a = {'mode'},
-        lualine_b = {'branch', 'diff'},
-        lualine_c = {{'filename', path = 1, symbols = filename_symbols}, 'diagnostics'},
-        lualine_x = {'encoding', 'fileformat', 'filetype'},
-        lualine_y = {'progress', function()
-            if vim.bo.expandtab then
-                return [[Spaces: ]]..vim.bo.shiftwidth
-            else
-                return [[Tab size: ]]..vim.bo.tabstop
-            end
-        end},
-        lualine_z = {'location'}
-    },
-    inactive_sections = {
-        lualine_a = {},
-        lualine_b = {},
-        lualine_c = {{'filename', symbols = filename_symbols}, 'diagnostics'},
-        lualine_x = {'location'},
-        lualine_y = {},
-        lualine_z = {}
-    },
-}
 
 require("indent_blankline").setup {
     show_end_of_line = true,
@@ -288,7 +231,7 @@ cmp.setup.cmdline(':', {
 })
 require'nvim-treesitter.configs'.setup {
     -- A list of parser names, or "all"
-    -- ensure_installed = { "c", "lua", "rust" },
+    ensure_installed = { "c", "svelte", "cpp", "lua", "rust" },
 
     -- Install parsers synchronously (only applied to `ensure_installed`)
     sync_install = false,
@@ -300,19 +243,7 @@ require'nvim-treesitter.configs'.setup {
     },
 
     highlight = {
-        -- `false` will disable the whole extension
         enable = true,
-
-        -- NOTE: these are the names of the parsers and not the filetype. (for example if you want to
-        -- disable highlighting for the `tex` filetype, you need to include `latex` in this list as this is
-        -- the name of the parser)
-        -- list of language that will be disabled
-        -- disable = { "c", "rust" },
-
-        -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-        -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-        -- Using this option may slow down your editor, and you may see some duplicate highlights.
-        -- Instead of true it can also be a list of languages
         additional_vim_regex_highlighting = false,
     },
 }
@@ -340,6 +271,7 @@ local servers = {
     'svelte',
     'tsserver',
     'pylsp',
+    'sumneko_lua',
 }
 
 -- require "lsp_signature".setup({})
@@ -431,39 +363,39 @@ set titlestring=%{fnamemodify(getcwd(),':~')}
 -- autocmd BufLeave term://* set timeoutlen=1500
 -- ]])
 
-function noremap(mode, shortcut, command)
+local function noremap(mode, shortcut, command)
     vim.api.nvim_set_keymap(mode, shortcut, command, { noremap = true, silent = true })
 end
 
-function map(mode, shortcut, command)
+local function map(mode, shortcut, command)
     vim.api.nvim_set_keymap(mode, shortcut, command, { noremap = false, silent = true })
 end
 
-function nnoremap(shortcut, command)
+local function nnoremap(shortcut, command)
     noremap('n', shortcut, command)
 end
 
-function nmap(shortcut, command)
+local function nmap(shortcut, command)
     map('n', shortcut, command)
 end
 
-function vmap(shortcut, command)
+local function vmap(shortcut, command)
     map('v', shortcut, command)
 end
 
-function tnoremap(shortcut, command)
-    noremap('t', shortcut, command)
-end
+-- function tnoremap(shortcut, command)
+--     noremap('t', shortcut, command)
+-- end
 
-function tmap(shortcut, command)
+local function tmap(shortcut, command)
     map('t', shortcut, command)
 end
 
-function inoremap(shortcut, command)
+local function inoremap(shortcut, command)
     noremap('i', shortcut, command)
 end
 
-function snoremap(shortcut, command)
+local function snoremap(shortcut, command)
     noremap('s', shortcut, command)
 end
 

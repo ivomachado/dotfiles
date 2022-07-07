@@ -94,7 +94,8 @@ return require('packer').startup(function()
                 -- or leave it empty to use the default settings
                 -- refer to the configuration section below
             }
-        end
+        end,
+        disable = true
     }
 
     use {'dracula/vim', as = 'dracula', disable = false}

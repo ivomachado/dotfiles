@@ -231,7 +231,7 @@ cmp.setup.cmdline(':', {
 })
 require'nvim-treesitter.configs'.setup {
     -- A list of parser names, or "all"
-    ensure_installed = { "c", "svelte", "cpp", "lua", "rust" },
+    ensure_installed = { "c", "svelte", "cpp", "lua", "rust" , "typescript", "css", "html", "javascript"},
 
     -- Install parsers synchronously (only applied to `ensure_installed`)
     sync_install = false,

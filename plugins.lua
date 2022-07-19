@@ -111,14 +111,6 @@ return require('packer').startup(function()
     use 'Th3Whit3Wolf/onebuddy'
     use {
         'EdenEast/nightfox.nvim',
-        config = function()
-            require('nightfox').setup({
-                options = {
-                    terminal_colors = false,
-                    dim_inactive = false,
-                },
-            })
-        end
     }
 
     use 'Th3Whit3Wolf/space-nvim'
@@ -175,7 +167,8 @@ return require('packer').startup(function()
 
     use {
         'neovim/nvim-lspconfig', -- Collection of configurations for the built-in LSP client
-        'williamboman/nvim-lsp-installer' -- Install LSP clients
+        'williamboman/nvim-lsp-installer', -- Install LSP clients
+        'p00f/clangd_extensions.nvim',
     }
     use 'hrsh7th/nvim-cmp' -- Plugin de AutoComplete
     use 'hrsh7th/cmp-vsnip'
@@ -248,8 +241,6 @@ return require('packer').startup(function()
         run = ':TSUpdate',
     }
 
-    -- use 'ray-x/lsp_signature.nvim'
-
     use 'rmagatti/session-lens'
     use {
         'rmagatti/auto-session',
@@ -272,6 +263,8 @@ return require('packer').startup(function()
         end,
     }
 
+    use 'folke/trouble.nvim'
+
     use {
         'dstein64/nvim-scrollview',
         config = function()
@@ -283,5 +276,10 @@ return require('packer').startup(function()
                 scrollview_column = 1
             })
         end
+    }
+
+    use {
+        'weirongxu/plantuml-previewer.vim',
+         requires = { {'tyru/open-browser.vim'}, {'aklt/plantuml-syntax'} },
     }
 end)

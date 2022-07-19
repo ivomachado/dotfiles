@@ -9,6 +9,13 @@ require'catppuccin'.setup({
     },
 })
 
+require('nightfox').setup({
+    options = {
+        terminal_colors = true,
+        dim_inactive = false,
+    },
+})
+
 -- vim.opt.background="light"
 vim.cmd([[colorscheme nordfox]])
 
@@ -76,14 +83,21 @@ require('telescope').setup{
             },
         },
         layout_strategy = "vertical",
-        path_display = { truncate = 5 },
         fuzzy = true,                    -- false will only do exact matching
         override_generic_sorter = true,  -- override the generic sorter
         override_file_sorter = true,     -- override the file sorter
-        case_mode = "smart_case",        -- or "ignore_case" or "respect_case" the default case_mode is "smart_case"
+        case_mode = "ignore_case",       -- or "ignore_case" or "respect_case" the default case_mode is "smart_case"
+        dynamic_preview_title = true,
     },
     pickers = {
         find_files = {
+            theme = "dropdown",
+            -- search_dirs = {'externals/'},
+        },
+        lsp_document_symbols = {
+            fname_width = 50,
+        },
+        commands = {
             theme = "dropdown",
         },
     }
@@ -103,14 +117,13 @@ require('gitsigns').setup{
             vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, opts)
         end
 
-        current_line_blame = true,
-
         -- Navigation
         map('n', ']c', "&diff ? ']c' : '<cmd>Gitsigns next_hunk<CR>'", {expr=true})
         map('n', '[c', "&diff ? '[c' : '<cmd>Gitsigns prev_hunk<CR>'", {expr=true})
 
         map('n', '<leader>g', '<cmd>Gitsigns toggle_current_line_blame<CR>', {expr=true})
-    end
+    end,
+    current_line_blame = true,
 }
 
 local opts = { noremap=true, silent=true }
@@ -138,7 +151,7 @@ local on_attach = function(client, bufnr)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>.', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>Telescope lsp_references<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>f', '<cmd>lua vim.lsp.buf.format()<CR>', opts)
+    -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>f', '<cmd>lua vim.lsp.buf.format()<CR>', opts)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>o', '<cmd>Telescope lsp_document_symbols<CR>', opts)
 end
 
@@ -206,11 +219,23 @@ cmp.setup({
     formatting = {
         format = lspkind.cmp_format({
             mode = 'symbol_text',
-            -- maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+            maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
         })
     },
     experimental = {
         ghost_text = true,
+    },
+    sorting = {
+        comparators = {
+            cmp.config.compare.offset,
+            cmp.config.compare.exact,
+            cmp.config.compare.recently_used,
+            require("clangd_extensions.cmp_scores"),
+            cmp.config.compare.kind,
+            cmp.config.compare.sort_text,
+            cmp.config.compare.length,
+            cmp.config.compare.order,
+        },
     },
 })
 
@@ -229,6 +254,9 @@ cmp.setup.cmdline(':', {
         { name = 'cmdline' },
     })
 })
+
+require("clangd_extensions").setup()
+
 require'nvim-treesitter.configs'.setup {
     -- A list of parser names, or "all"
     ensure_installed = { "c", "svelte", "cpp", "lua", "rust" , "typescript", "css", "html", "javascript"},
@@ -407,9 +435,10 @@ nmap('<leader>b', "<cmd>Neotree left toggle=true<cr>")
 nmap('<leader>B', "<cmd>Neotree left focus reveal<cr>")
 nmap("<leader>a", "<cmd>Neotree float buffers<cr>")
 
-nmap("<leader>o", "<cmd>Telescope current_buffer_tags theme=ivy<cr>")
+nmap("<leader>o", "<cmd>Telescope lsp_document_symbols theme=ivy<cr>")
 nmap("<leader>s", "<cmd>Telescope session-lens search_session<cr>")
 nmap("<leader>l", "<cmd>Telescope live_grep<cr>")
+nmap("<leader>p", "<cmd>Telescope commands<cr>")
 
 nmap("<leader>w", "<c-w>")
 nmap("<leader>,", ":tabnew ~/.config/nvim/init.lua<CR>:vsplit ~/.config/nvim/lua/plugins.lua<CR>")
@@ -427,7 +456,7 @@ nmap("<C-w>m", "<cmd>Neotree close<CR><cmd>FocusToggle<CR>")
 nmap("<C-w>=", "<cmd>FocusEqualise<CR>")
 
 nmap("<c-p>", "<cmd>Telescope find_files<cr>")
-nmap("<leader>p", "<cmd>Telescope <cr>")
+nmap("<leader>P", "<cmd>Telescope <cr>")
 
 nnoremap("<space>", "<Nop>")
 nmap("<space>", "<leader>")

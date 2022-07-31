@@ -1,136 +1,153 @@
+vim.notify = require("notify")
+
+vim.opt.compatible = false
+vim.opt.mouse="a"
+vim.opt.showmode = false
+vim.opt.backup = false
+vim.opt.title = true
+vim.opt.hidden = true
+vim.opt.relativenumber = true
+vim.opt.number = true
+vim.opt.swapfile = false
+vim.opt.encoding="utf-8"
+vim.opt.fileencoding="utf-8"
+vim.opt.wrap = false
+vim.opt.splitbelow = true
+vim.opt.splitright = true
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+vim.opt.hlsearch = true
+vim.opt.incsearch = true
+vim.opt.expandtab = true
+vim.opt.fixendofline = true
+vim.opt.lazyredraw = false
+vim.opt.shiftwidth = 4
+vim.opt.tabstop = 4
+
+vim.opt.termguicolors = true
+
+vim.cmd("filetype plugin on")
+
+vim.opt.list = true
+vim.opt.listchars:append("eol:↴")
+vim.opt.listchars:append("tab:<->")
+vim.opt.listchars:append("lead:·")
+vim.opt.listchars:append("trail:·")
+vim.opt.listchars:append("extends:>")
+vim.opt.listchars:append("precedes:<")
+vim.opt.ffs="unix"
+
+vim.cmd([[
+augroup DetectIndent
+autocmd!
+autocmd BufReadPost *  DetectIndent
+augroup END
+
+command! RemoveIostream g/iostream\|cout/d
+]])
+
+vim.cmd([[
+set titlestring=%{fnamemodify(getcwd(),':~')}
+]])
+
+local function noremap(mode, shortcut, command)
+    vim.api.nvim_set_keymap(mode, shortcut, command, { noremap = true, silent = true })
+end
+
+local function map(mode, shortcut, command)
+    vim.api.nvim_set_keymap(mode, shortcut, command, { noremap = false, silent = true })
+end
+
+local function nnoremap(shortcut, command)
+    noremap('n', shortcut, command)
+end
+
+local function nmap(shortcut, command)
+    map('n', shortcut, command)
+end
+
+local function vmap(shortcut, command)
+    map('v', shortcut, command)
+end
+
+local function tmap(shortcut, command)
+    map('t', shortcut, command)
+end
+
+local function inoremap(shortcut, command)
+    noremap('i', shortcut, command)
+end
+
+local function snoremap(shortcut, command)
+    noremap('s', shortcut, command)
+end
+
+inoremap('jk', '<Esc>')
+snoremap('jk', '<Esc>')
+
+-- Alterna a exibição do project drawer
+nmap('<leader>b', "<cmd>Neotree left toggle=true<cr>")
+nmap('<leader>B', "<cmd>Neotree left focus reveal<cr>")
+nmap("<leader>a", "<cmd>Neotree float buffers<cr>")
+
+nmap("<leader>o", "<cmd>Telescope lsp_document_symbols theme=ivy<cr>")
+nmap("<leader>s", "<cmd>Telescope session-lens search_session<cr>")
+nmap("<leader>l", "<cmd>Telescope live_grep<cr>")
+nmap("<leader>p", "<cmd>Telescope commands<cr>")
+
+nmap("<leader>w", "<c-w>")
+nmap("<leader>,", ":tabnew ~/.config/nvim/init.lua<CR>:vsplit ~/.config/nvim/lua/plugins.lua<CR>")
+
+nmap("<leader>q", "<cmd>Bdelete<CR>")
+nmap("<leader>Q", "<cmd>bdelete<CR>")
+nmap("]b", "<cmd>bn<CR>")
+nmap("[b", "<cmd>bp<CR>")
+
+nmap("<leader>hftest", "p^ceFRIEND_TEST<esc>$r;X>>")
+nmap("<leader>cs", "<cmd>'a,'bS#")
+
+nmap("<C-w>M", "<cmd>Neotree close<CR><cmd>FocusMaximise<CR>")
+nmap("<C-w>m", "<cmd>Neotree close<CR><cmd>FocusToggle<CR>")
+nmap("<C-w>=", "<cmd>FocusEqualise<CR>")
+
+nmap("<c-p>", "<cmd>Telescope find_files<cr>")
+nmap("<leader>P", "<cmd>Telescope <cr>")
+
+nnoremap("<space>", "<Nop>")
+nmap("<space>", "<leader>")
+vmap("<space>", "<leader>")
+tmap("<Esc>", "<C-\\><C-n>")
+
+nnoremap('<leader>e', '<cmd>lua vim.diagnostic.open_float()<CR>')
+nnoremap('[e', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
+nnoremap(']e', '<cmd>lua vim.diagnostic.goto_next()<CR>')
+
 require('plugins')
 
-vim.g.catppuccin_flavour = "mocha"
-require'catppuccin'.setup({
-    integrations = {
-        neotree = {
-            enabled = true
-        },
-    },
-})
-
-require('nightfox').setup({
-    options = {
-        terminal_colors = true,
-        dim_inactive = false,
-    },
-})
-
--- vim.opt.background="light"
 vim.cmd([[colorscheme nordfox]])
 
 vim.o.sessionoptions="buffers,curdir,folds,help,tabpages,winsize"
-
-require("neo-tree").setup({
-    close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
-    enable_git_status = true,
-    enable_diagnostics = true,
-    window = {
-        mappings = { ["<space>"] = "none",  ["<F2>"] = "rename", }
-    },
-    filesystem = {
-        use_libuv_file_watcher = true,
-        filtered_items = {
-            visible = true, -- when true, they will just be displayed differently than normal items
-            hide_dotfiles = true,
-            hide_gitignored = true,
-            hide_hidden = true, -- only works on Windows for hidden files/directories
-            hide_by_name = {
-            },
-            hide_by_pattern = { -- uses glob style patterns
-            --"*.meta"
-            },
-            never_show = { -- remains hidden even if visible is toggled to true
-                ".git",
-                ".clangd",
-                ".cache",
-                ".ccache",
-                "ccache",
-                ".vscode",
-                ".ccls-cache",
-                "Session.vim",
-            },
-        },
-    },
-})
 
 require("indent_blankline").setup {
     show_end_of_line = true,
     indent_blankline_show_first_indent_level = false,
 }
 
-require('telescope').setup{
-    defaults = {
-        mappings = {
-            i = {
-                ["<C-k>"] = "move_selection_previous",
-                ["<C-j>"] = "move_selection_next",
-                ["<C-p>"] = "cycle_history_prev",
-                ["<C-n>"] = "cycle_history_next",
-                ["<C-z>"] = "toggle_selection",
-                ["<C-o>"] = "smart_send_to_qflist",
-                ["<C-a>"] = "smart_add_to_qflist",
-                ["<esc>"] = "close",
-            },
-            n = {
-                ["<C-k>"] = "move_selection_previous",
-                ["<C-j>"] = "move_selection_next",
-                ["<C-p>"] = "cycle_history_prev",
-                ["<C-n>"] = "cycle_history_next",
-                ["<C-z>"] = "toggle_selection",
-                ["<C-o>"] = "smart_send_to_qflist",
-                ["<C-a>"] = "smart_add_to_qflist",
-            },
-        },
-        layout_strategy = "vertical",
-        fuzzy = true,                    -- false will only do exact matching
-        override_generic_sorter = true,  -- override the generic sorter
-        override_file_sorter = true,     -- override the file sorter
-        case_mode = "ignore_case",       -- or "ignore_case" or "respect_case" the default case_mode is "smart_case"
-        dynamic_preview_title = true,
-    },
-    pickers = {
-        find_files = {
-            theme = "dropdown",
-            -- search_dirs = {'externals/'},
-        },
-        lsp_document_symbols = {
-            fname_width = 50,
-        },
-        commands = {
-            theme = "dropdown",
-        },
-    }
-}
-
--- To get fzf loaded and working with telescope, you need to call
--- load_extension, somewhere after setup function:
-require('telescope').load_extension('fzf')
-require('telescope').load_extension('notify')
-
 require('dressing').setup()
 
 require('gitsigns').setup{
     on_attach = function(bufnr)
-        local function map(mode, lhs, rhs, opts)
+        local function key_map(mode, lhs, rhs, opts)
             opts = vim.tbl_extend('force', {noremap = true, silent = true}, opts or {})
             vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, opts)
         end
 
         -- Navigation
-        map('n', ']c', "&diff ? ']c' : '<cmd>Gitsigns next_hunk<CR>'", {expr=true})
-        map('n', '[c', "&diff ? '[c' : '<cmd>Gitsigns prev_hunk<CR>'", {expr=true})
-
-        map('n', '<leader>g', '<cmd>Gitsigns toggle_current_line_blame<CR>', {expr=true})
+        key_map('n', ']c', "&diff ? ']c' : '<cmd>Gitsigns next_hunk<CR>'", {expr=true})
+        key_map('n', '[c', "&diff ? '[c' : '<cmd>Gitsigns prev_hunk<CR>'", {expr=true})
     end,
     current_line_blame = true,
 }
-
-local opts = { noremap=true, silent=true }
-vim.api.nvim_set_keymap('n', '<leader>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
-vim.api.nvim_set_keymap('n', '[e', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
-vim.api.nvim_set_keymap('n', ']e', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
--- vim.api.nvim_set_keymap('n', '<leader>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
@@ -139,20 +156,17 @@ local on_attach = function(client, bufnr)
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
     -- Mappings.
-    -- See `:help vim.lsp.*` for documentation on any of the below functions
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gs', '<cmd>ClangdSwitchSourceHeader<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wf', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>.', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>Telescope lsp_references<CR>', opts)
-    -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>f', '<cmd>lua vim.lsp.buf.format()<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>o', '<cmd>Telescope lsp_document_symbols<CR>', opts)
+    nnoremap('gD', '<cmd>lua vim.lsp.buf.declaration()<CR>')
+    nnoremap('gd', '<cmd>lua vim.lsp.buf.definition()<CR>')
+    nnoremap('gs', '<cmd>ClangdSwitchSourceHeader<CR>')
+    nnoremap('K', '<cmd>lua vim.lsp.buf.hover()<CR>')
+    nnoremap('gi', '<cmd>lua vim.lsp.buf.implementation()<CR>')
+    nnoremap('<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
+    nnoremap('<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
+    nnoremap('<F2>', '<cmd>lua vim.lsp.buf.rename()<CR>')
+    nnoremap('<leader>.', '<cmd>lua vim.lsp.buf.code_action()<CR>')
+    nnoremap('gr', '<cmd>Telescope lsp_references<CR>')
+    nnoremap('<leader>o', '<cmd>Telescope lsp_document_symbols<CR>')
 end
 
 -- Setup nvim-cmp.
@@ -198,8 +212,6 @@ cmp.setup({
                 feedkey("<Plug>(vsnip-jump-prev)", "")
             end
         end, { "i", "s" }),
-        ['<C-n>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i', 'c' }),
-        ['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item(), { 'i', 'c' }),
         ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
         ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
         ['<C-e>'] = cmp.mapping({
@@ -299,10 +311,36 @@ local servers = {
     'svelte',
     'tsserver',
     'pylsp',
-    'sumneko_lua',
+    -- 'sumneko_lua',
 }
 
--- require "lsp_signature".setup({})
+require('lspconfig')['sumneko_lua'].setup{
+    on_attach = on_attach,
+    capabilities = capabilities,
+    flags = {
+        debounce_text_changes = 150,
+    },
+    settings = {
+        Lua = {
+            runtime = {
+                -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+                version = 'LuaJIT',
+            },
+            diagnostics = {
+                -- Get the language server to recognize the `vim` global
+                globals = {'vim'},
+            },
+            workspace = {
+                -- Make the server aware of Neovim runtime files
+                library = vim.api.nvim_get_runtime_file("", true),
+            },
+            -- Do not send telemetry data containing a randomized but unique identifier
+            telemetry = {
+                enable = false,
+            },
+        },
+    }
+}
 
 for _, lsp in pairs(servers) do
     require('lspconfig')[lsp].setup{
@@ -331,134 +369,3 @@ _G.vimrc.cmp.lsp = function()
     ]])
 end
 
-vim.notify = require("notify")
-
-vim.opt.compatible = false
-vim.opt.mouse="a"
-vim.opt.showmode = false
-vim.opt.backup = false
-vim.opt.title = true
-vim.opt.hidden = true
-vim.opt.relativenumber = true
-vim.opt.number = true
-vim.opt.swapfile = false
-vim.opt.encoding="utf-8"
-vim.opt.fileencoding="utf-8"
-vim.opt.wrap = false
-vim.opt.splitbelow = true
-vim.opt.splitright = true
-vim.opt.ignorecase = true
-vim.opt.smartcase = true
-vim.opt.hlsearch = true
-vim.opt.incsearch = true
-vim.opt.expandtab = true
-vim.opt.fixendofline = true
-vim.opt.lazyredraw = false
-vim.opt.shiftwidth = 4
-vim.opt.tabstop = 4
--- vim.opt.wildignore+=*/tmp/*,*.swp,*.zip,*.exe,*/node_modules/*,*/build/*,*/.ccls-cache/*,*/.clangd/*,*/.build/*,*gradle*,*/.build*/*,*/output/*
-
-vim.cmd([[set guifont=Noto\ Sans:h11]])
-
-vim.opt.termguicolors = true
-
-vim.cmd("filetype plugin on")
-
-vim.opt.list = true
-vim.opt.listchars:append("eol:↴")
-vim.opt.listchars:append("tab:<->")
-vim.opt.listchars:append("lead:·")
-vim.opt.listchars:append("trail:·")
-vim.opt.listchars:append("extends:>")
-vim.opt.listchars:append("precedes:<")
-vim.opt.ffs="unix"
-
-vim.cmd([[
-augroup DetectIndent
-autocmd!
-autocmd BufReadPost *  DetectIndent
-augroup END
-
-command! RemoveIostream g/iostream\|cout/d
-]])
-
-vim.cmd([[
-set titlestring=%{fnamemodify(getcwd(),':~')}
-]])
-
--- vim.cmd([[
--- autocmd BufWinEnter,WinEnter term://* set timeoutlen=50
--- autocmd BufLeave term://* set timeoutlen=1500
--- ]])
-
-local function noremap(mode, shortcut, command)
-    vim.api.nvim_set_keymap(mode, shortcut, command, { noremap = true, silent = true })
-end
-
-local function map(mode, shortcut, command)
-    vim.api.nvim_set_keymap(mode, shortcut, command, { noremap = false, silent = true })
-end
-
-local function nnoremap(shortcut, command)
-    noremap('n', shortcut, command)
-end
-
-local function nmap(shortcut, command)
-    map('n', shortcut, command)
-end
-
-local function vmap(shortcut, command)
-    map('v', shortcut, command)
-end
-
--- function tnoremap(shortcut, command)
---     noremap('t', shortcut, command)
--- end
-
-local function tmap(shortcut, command)
-    map('t', shortcut, command)
-end
-
-local function inoremap(shortcut, command)
-    noremap('i', shortcut, command)
-end
-
-local function snoremap(shortcut, command)
-    noremap('s', shortcut, command)
-end
-
-inoremap('jk', '<Esc>')
-snoremap('jk', '<Esc>')
-
--- Alterna a exibição do project drawer
-nmap('<leader>b', "<cmd>Neotree left toggle=true<cr>")
-nmap('<leader>B', "<cmd>Neotree left focus reveal<cr>")
-nmap("<leader>a", "<cmd>Neotree float buffers<cr>")
-
-nmap("<leader>o", "<cmd>Telescope lsp_document_symbols theme=ivy<cr>")
-nmap("<leader>s", "<cmd>Telescope session-lens search_session<cr>")
-nmap("<leader>l", "<cmd>Telescope live_grep<cr>")
-nmap("<leader>p", "<cmd>Telescope commands<cr>")
-
-nmap("<leader>w", "<c-w>")
-nmap("<leader>,", ":tabnew ~/.config/nvim/init.lua<CR>:vsplit ~/.config/nvim/lua/plugins.lua<CR>")
-
-nmap("<leader>q", "<cmd>Bdelete<CR>")
-nmap("<leader>Q", "<cmd>bdelete<CR>")
-nmap("]b", "<cmd>bn<CR>")
-nmap("[b", "<cmd>bp<CR>")
-
-nmap("<leader>hftest", "p^ceFRIEND_TEST<esc>$r;X>>")
-nmap("<leader>cs", "<cmd>'a,'bS#")
-
-nmap("<C-w>M", "<cmd>Neotree close<CR><cmd>FocusMaximise<CR>")
-nmap("<C-w>m", "<cmd>Neotree close<CR><cmd>FocusToggle<CR>")
-nmap("<C-w>=", "<cmd>FocusEqualise<CR>")
-
-nmap("<c-p>", "<cmd>Telescope find_files<cr>")
-nmap("<leader>P", "<cmd>Telescope <cr>")
-
-nnoremap("<space>", "<Nop>")
-nmap("<space>", "<leader>")
-vmap("<space>", "<leader>")
-tmap("<Esc>", "<C-\\><C-n>")

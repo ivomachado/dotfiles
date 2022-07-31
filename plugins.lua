@@ -95,7 +95,7 @@ return require('packer').startup(function()
                 -- refer to the configuration section below
             }
         end,
-        disable = true
+        disable = true,
     }
 
     use {'dracula/vim', as = 'dracula', disable = false}
@@ -106,11 +106,29 @@ return require('packer').startup(function()
     use({
         "catppuccin/nvim",
         as = "catppuccin",
+        config = function()
+            vim.g.catppuccin_flavour = "mocha"
+            require'catppuccin'.setup({
+                integrations = {
+                    neotree = {
+                        enabled = true
+                    },
+                },
+            })
+        end
     })
     use 'Mofiqul/vscode.nvim'
     use 'Th3Whit3Wolf/onebuddy'
     use {
         'EdenEast/nightfox.nvim',
+        config = function()
+            require('nightfox').setup({
+                options = {
+                    terminal_colors = true,
+                    dim_inactive = false,
+                },
+            })
+        end
     }
 
     use 'Th3Whit3Wolf/space-nvim'
@@ -207,10 +225,45 @@ return require('packer').startup(function()
             "kyazdani42/nvim-web-devicons", -- not strictly required, but recommended
             "MunifTanjim/nui.nvim",
         },
+        config = function()
+            require("neo-tree").setup({
+                close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
+                enable_git_status = true,
+                enable_diagnostics = true,
+                window = {
+                    mappings = { ["<space>"] = "none",  ["<F2>"] = "rename", }
+                },
+                filesystem = {
+                    use_libuv_file_watcher = true,
+                    filtered_items = {
+                        visible = true, -- when true, they will just be displayed differently than normal items
+                        hide_dotfiles = true,
+                        hide_gitignored = true,
+                        hide_hidden = true, -- only works on Windows for hidden files/directories
+                        hide_by_name = {
+                        },
+                        hide_by_pattern = { -- uses glob style patterns
+                            --"*.meta"
+                        },
+                        never_show = { -- remains hidden even if visible is toggled to true
+                            ".git",
+                            ".clangd",
+                            ".cache",
+                            ".ccache",
+                            "ccache",
+                            ".vscode",
+                            ".ccls-cache",
+                            "Session.vim",
+                        },
+                    },
+                },
+            })
+
+
+            require('telescope').load_extension('fzf')
+            require('telescope').load_extension('notify')
+        end
     }
-
-
-    use 'dstein64/vim-startuptime'
 
     use 'CoatiSoftware/vim-sourcetrail'
 
@@ -220,7 +273,52 @@ return require('packer').startup(function()
         'nvim-telescope/telescope.nvim',
         requires = {
             'nvim-lua/plenary.nvim'
-        }
+        },
+        config = function()
+            require('telescope').setup{
+                defaults = {
+                    mappings = {
+                        i = {
+                            ["<C-k>"] = "move_selection_previous",
+                            ["<C-j>"] = "move_selection_next",
+                            ["<C-p>"] = "cycle_history_prev",
+                            ["<C-n>"] = "cycle_history_next",
+                            ["<C-z>"] = "toggle_selection",
+                            ["<C-o>"] = "smart_send_to_qflist",
+                            ["<C-a>"] = "smart_add_to_qflist",
+                            ["<esc>"] = "close",
+                        },
+                        n = {
+                            ["<C-k>"] = "move_selection_previous",
+                            ["<C-j>"] = "move_selection_next",
+                            ["<C-p>"] = "cycle_history_prev",
+                            ["<C-n>"] = "cycle_history_next",
+                            ["<C-z>"] = "toggle_selection",
+                            ["<C-o>"] = "smart_send_to_qflist",
+                            ["<C-a>"] = "smart_add_to_qflist",
+                        },
+                    },
+                    layout_strategy = "vertical",
+                    fuzzy = true,                    -- false will only do exact matching
+                    override_generic_sorter = true,  -- override the generic sorter
+                    override_file_sorter = true,     -- override the file sorter
+                    case_mode = "ignore_case",       -- or "ignore_case" or "respect_case" the default case_mode is "smart_case"
+                    dynamic_preview_title = true,
+                },
+                pickers = {
+                    find_files = {
+                        theme = "dropdown",
+                        -- search_dirs = {'externals/'},
+                    },
+                    lsp_document_symbols = {
+                        fname_width = 50,
+                    },
+                    commands = {
+                        theme = "dropdown",
+                    },
+                }
+            }
+        end
     }
 
     use {'stevearc/dressing.nvim'}

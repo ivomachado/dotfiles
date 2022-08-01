@@ -122,6 +122,8 @@ nnoremap('<leader>e', '<cmd>lua vim.diagnostic.open_float()<CR>')
 nnoremap('[e', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
 nnoremap(']e', '<cmd>lua vim.diagnostic.goto_next()<CR>')
 
+vim.cmd([[set guifont=FiraCode\ Nerd\ Font\ Font\ Mono:h11]])
+
 require('plugins')
 
 vim.cmd([[colorscheme nordfox]])

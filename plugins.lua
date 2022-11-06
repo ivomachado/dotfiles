@@ -107,7 +107,7 @@ return require('packer').startup(function()
         "catppuccin/nvim",
         as = "catppuccin",
         config = function()
-            vim.g.catppuccin_flavour = "mocha"
+            vim.g.catppuccin_flavour = "macchiato"
             require'catppuccin'.setup({
                 integrations = {
                     neotree = {
@@ -124,8 +124,8 @@ return require('packer').startup(function()
         config = function()
             require('nightfox').setup({
                 options = {
-                    terminal_colors = true,
-                    dim_inactive = false,
+                    -- terminal_colors = true,
+                    -- dim_inactive = false,
                 },
             })
         end

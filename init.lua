@@ -124,7 +124,7 @@ vim.cmd([[set guifont=FiraCode\ Nerd\ Font\ Font\ Mono:h11]])
 
 require('plugins')
 
-vim.cmd([[colorscheme nordfox]])
+vim.cmd([[colorscheme catppuccin]])
 
 vim.o.sessionoptions="buffers,curdir,folds,help,tabpages,winsize"
 

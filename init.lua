@@ -21,6 +21,7 @@ vim.opt.fixendofline = true
 vim.opt.lazyredraw = false
 vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
+vim.opt.showtabline = 0
 
 vim.opt.termguicolors = true
 
@@ -124,7 +125,7 @@ vim.cmd([[set guifont=FiraCode\ Nerd\ Font\ Font\ Mono:h11]])
 
 require('plugins')
 
-vim.cmd([[colorscheme catppuccin]])
+vim.cmd([[colorscheme ayu-mirage]])
 
 vim.o.sessionoptions="buffers,curdir,folds,help,tabpages,winsize"
 

@@ -11,6 +11,16 @@ return require('packer').startup(function()
     use 'wbthomason/packer.nvim'
 
     use {
+        'Shatur/neovim-ayu',
+        config = function ()
+            require('ayu').setup({
+                mirage = false,
+                overrides = {},
+            })
+        end
+    }
+
+    use {
         'nvim-lualine/lualine.nvim',
         require = { 'kyazdani42/nvim-web-devicons', opt = true },
         config = function()
@@ -25,27 +35,27 @@ return require('packer').startup(function()
                     -- theme = 'iceberg_light',
                     -- theme = 'catppuccin',
                     theme = 'auto',
-                   always_divide_middle = true,
+                    always_divide_middle = true,
                     globalstatus = true,
                 },
-                tabline = {
-                    lualine_a = {
-                        'tabs',
-                    },
-                    lualine_b = {
-                    },
-                    lualine_c = {
-                        {'filetype', icon_only = true},
-                        {'filename', path = 1, symbols = filename_symbols, shorting_target = 30},
-                    },
-                    lualine_x = {
-                    },
-                    lualine_y = {
-                    },
-                    lualine_z = {
-                        { 'windows', show_filename_only = false, }
-                    }
-                },
+                -- tabline = {
+                --     lualine_a = {
+                --         -- 'tabs',
+                --     },
+                --     lualine_b = {
+                --     },
+                --     lualine_c = {
+                --         -- {'filetype', icon_only = true},
+                --         -- {'filename', path = 1, symbols = filename_symbols, shorting_target = 30},
+                --     },
+                --     lualine_x = {
+                --     },
+                --     lualine_y = {
+                --     },
+                --     lualine_z = {
+                --         -- { 'windows', show_filename_only = false, }
+                --     }
+                -- },
                 sections = {
                     lualine_a = {'mode'},
                     lualine_b = {'branch', 'diff'},
@@ -57,8 +67,24 @@ return require('packer').startup(function()
                         else
                             return [[Tab size: ]]..vim.bo.tabstop
                         end
-                    end},
-                    lualine_z = {'location'}
+                    end, 'location'},
+                    lualine_z = {'tabs'}
+                },
+                inactive_winbar = {
+                    lualine_a = {},
+                    lualine_b = {},
+                    lualine_c = {{'filename', path = 1, symbols = filename_symbols}},
+                    lualine_x = {},
+                    lualine_y = {},
+                    lualine_z = {}
+                },
+                winbar = {
+                    lualine_a = {{'filename', path = 1, symbols = filename_symbols}},
+                    lualine_b = {},
+                    lualine_c = {},
+                    lualine_x = {},
+                    lualine_y = {},
+                    lualine_z = {}
                 },
                 inactive_sections = {
                     lualine_a = {},
@@ -124,8 +150,8 @@ return require('packer').startup(function()
         config = function()
             require('nightfox').setup({
                 options = {
-                    -- terminal_colors = true,
-                    -- dim_inactive = false,
+                    terminal_colors = true,
+                    dim_inactive = false,
                 },
             })
         end
@@ -375,7 +401,8 @@ return require('packer').startup(function()
                     'method',
                 }
             }
-        end
+        end,
+        disable = true
     }
 
     use 'rmagatti/session-lens'

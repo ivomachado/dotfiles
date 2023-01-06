@@ -1,3 +1,5 @@
+require('plugins')
+
 vim.opt.compatible = false
 vim.opt.mouse="a"
 vim.opt.showmode = false
@@ -123,14 +125,13 @@ nnoremap(']e', '<cmd>lua vim.diagnostic.goto_next()<CR>')
 
 vim.cmd([[set guifont=FiraCode\ Nerd\ Font\ Font\ Mono:h11]])
 
-require('plugins')
-
 vim.cmd([[colorscheme ayu-mirage]])
 
 vim.o.sessionoptions="buffers,curdir,folds,help,tabpages,winsize"
 
 require("indent_blankline").setup {
     show_end_of_line = true,
+    show_current_context = true,
     indent_blankline_show_first_indent_level = false,
 }
 
@@ -275,6 +276,7 @@ require("clangd_extensions").setup()
 require'nvim-treesitter.configs'.setup {
     -- A list of parser names, or "all"
     ensure_installed = { "c", "svelte", "cpp", "lua", "rust" , "typescript", "css", "html", "javascript"},
+    auto_install = true,
 
     -- Install parsers synchronously (only applied to `ensure_installed`)
     sync_install = false,
@@ -282,7 +284,7 @@ require'nvim-treesitter.configs'.setup {
     -- List of parsers to ignore installing (for "all")
     --
     indent = {
-        enable = true,
+        enable = false,
     },
 
     highlight = {
@@ -371,4 +373,3 @@ _G.vimrc.cmp.lsp = function()
     inoremap <C-x><C-s> <Cmd>lua vimrc.cmp.snippet()<CR>
     ]])
 end
-

@@ -1,14 +1,26 @@
-local fn = vim.fn
-local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-if fn.empty(fn.glob(install_path)) > 0 then
-    packer_bootstrap = fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+local ensure_packer = function()
+    local fn = vim.fn
+    local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+    if fn.empty(fn.glob(install_path)) > 0 then
+        fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+        vim.cmd [[packadd packer.nvim]]
+        return true
+    end
+    return false
 end
 
-vim.cmd [[packadd packer.nvim]]
+local packer_bootstrap = ensure_packer()
 
 return require('packer').startup(function()
     -- Packer can manage itself
     use 'wbthomason/packer.nvim'
+
+    use 'tpope/vim-surround'
+    use 'tpope/vim-repeat'
+    use 'tpope/vim-sensible'
+    use 'tpope/vim-abolish'
+
+    use 'mattn/emmet-vim'
 
     use {
         'Shatur/neovim-ayu',
@@ -28,38 +40,17 @@ return require('packer').startup(function()
                 extensions = {'quickfix', 'neo-tree'},
                 options = {
                     icons_enabled = true,
-                    -- component_separators = { left = '', right = ''},
                     component_separators = { left = '', right = ''},
                     section_separators = { left = '', right = ''},
                     disabled_filetypes = {},
-                    -- theme = 'iceberg_light',
-                    -- theme = 'catppuccin',
                     theme = 'auto',
                     always_divide_middle = true,
                     globalstatus = true,
                 },
-                -- tabline = {
-                --     lualine_a = {
-                --         -- 'tabs',
-                --     },
-                --     lualine_b = {
-                --     },
-                --     lualine_c = {
-                --         -- {'filetype', icon_only = true},
-                --         -- {'filename', path = 1, symbols = filename_symbols, shorting_target = 30},
-                --     },
-                --     lualine_x = {
-                --     },
-                --     lualine_y = {
-                --     },
-                --     lualine_z = {
-                --         -- { 'windows', show_filename_only = false, }
-                --     }
-                -- },
                 sections = {
                     lualine_a = {'mode'},
                     lualine_b = {'branch', 'diff'},
-                    lualine_c = {{'filename', path = 1, symbols = filename_symbols}, 'diagnostics'},
+                    lualine_c = {{'filename', path = 1}, 'diagnostics'},
                     lualine_x = {'encoding', 'fileformat', 'filetype'},
                     lualine_y = {'progress', function()
                         if vim.bo.expandtab then
@@ -73,24 +64,16 @@ return require('packer').startup(function()
                 inactive_winbar = {
                     lualine_a = {},
                     lualine_b = {},
-                    lualine_c = {{'filename', path = 1, symbols = filename_symbols}},
+                    lualine_c = {{'filename', path = 1}},
                     lualine_x = {},
                     lualine_y = {},
                     lualine_z = {}
                 },
                 winbar = {
-                    lualine_a = {{'filename', path = 1, symbols = filename_symbols}},
+                    lualine_a = {{'filename', path = 1}},
                     lualine_b = {},
                     lualine_c = {},
                     lualine_x = {},
-                    lualine_y = {},
-                    lualine_z = {}
-                },
-                inactive_sections = {
-                    lualine_a = {},
-                    lualine_b = {},
-                    lualine_c = {{'filename', symbols = filename_symbols}, 'diagnostics'},
-                    lualine_x = {'location'},
                     lualine_y = {},
                     lualine_z = {}
                 },
@@ -186,10 +169,6 @@ return require('packer').startup(function()
     use 'brooth/far.vim'
     use 'rcarriga/nvim-notify'
 
-    use 'tpope/vim-surround'
-    use 'tpope/vim-repeat'
-    use 'tpope/vim-sensible'
-    use 'tpope/vim-abolish'
     use 'roryokane/detectindent'
     use 'michaeljsmith/vim-indent-object'
     use 'PeterRincker/vim-argumentative'
@@ -444,6 +423,12 @@ return require('packer').startup(function()
 
     use {
         'weirongxu/plantuml-previewer.vim',
-         requires = { {'tyru/open-browser.vim'}, {'aklt/plantuml-syntax'} },
+        requires = { {'tyru/open-browser.vim'}, {'aklt/plantuml-syntax'} },
     }
+
+    -- Automatically set up your configuration after cloning packer.nvim
+    -- Put this at the end after all plugins
+    if packer_bootstrap then
+        require('packer').sync()
+    end
 end)

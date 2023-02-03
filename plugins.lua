@@ -11,14 +11,39 @@ end
 
 local packer_bootstrap = ensure_packer()
 
+vim.cmd([[
+  augroup packer_user_config
+    autocmd!
+    autocmd BufWritePost plugins.lua source <afile> | PackerCompile
+  augroup end
+]])
+
 return require('packer').startup(function()
     -- Packer can manage itself
     use 'wbthomason/packer.nvim'
 
     use 'tpope/vim-surround'
     use 'tpope/vim-repeat'
-    use 'tpope/vim-sensible'
     use 'tpope/vim-abolish'
+
+    use {
+        'williamboman/mason.nvim',
+        config = function ()
+            require("mason").setup()
+        end
+    }
+    use 'mfussenegger/nvim-dap'
+    use {
+        'jay-babu/mason-nvim-dap.nvim',
+        after = 'mason.nvim',
+        config = function ()
+            require("mason-nvim-dap").setup({
+                automatic_setup = true,
+                ensure_installed = {'codelldb'}
+            })
+        end
+
+    }
 
     use 'mattn/emmet-vim'
 
@@ -339,7 +364,10 @@ return require('packer').startup(function()
                 pickers = {
                     find_files = {
                         theme = "dropdown",
-                        -- search_dirs = {'externals/'},
+                        search_dirs = {'.', 'externals/certi_common_libs'},
+                    },
+                    live_grep = {
+                        search_dirs = {'.', 'externals/certi_common_libs'},
                     },
                     lsp_document_symbols = {
                         fname_width = 50,

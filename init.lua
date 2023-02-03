@@ -119,6 +119,8 @@ nmap("<space>", "<leader>")
 vmap("<space>", "<leader>")
 tmap("<Esc>", "<C-\\><C-n>")
 
+nmap("<F9>", "<cmd>lua require'dap'.toggle_breakpoint()<CR>")
+
 nnoremap('<leader>e', '<cmd>lua vim.diagnostic.open_float()<CR>')
 nnoremap('[e', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
 nnoremap(']e', '<cmd>lua vim.diagnostic.goto_next()<CR>')

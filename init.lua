@@ -119,7 +119,11 @@ nmap("<space>", "<leader>")
 vmap("<space>", "<leader>")
 tmap("<Esc>", "<C-\\><C-n>")
 
+nmap("<F5>", "<cmd>lua require'dap'.continue()<CR>")
 nmap("<F9>", "<cmd>lua require'dap'.toggle_breakpoint()<CR>")
+nmap("<F10>", "<cmd>lua require'dap'.step_over()<CR>")
+nmap("<F11>", "<cmd>lua require'dap'.step_into()<CR>")
+nmap("<leader>K", "<cmd>lua require'dap.ui.widgets'.cursor_float()<CR>")
 
 nnoremap('<leader>e', '<cmd>lua vim.diagnostic.open_float()<CR>')
 nnoremap('[e', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
@@ -277,7 +281,7 @@ require("clangd_extensions").setup()
 
 require'nvim-treesitter.configs'.setup {
     -- A list of parser names, or "all"
-    ensure_installed = { "c", "svelte", "cpp", "lua", "rust" , "typescript", "css", "html", "javascript"},
+    ensure_installed = { "c", "svelte", "cpp", "lua", "rust" , "typescript", "css", "html", "javascript", "vim"},
     auto_install = true,
 
     -- Install parsers synchronously (only applied to `ensure_installed`)

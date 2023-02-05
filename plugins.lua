@@ -41,6 +41,7 @@ return require('packer').startup(function()
                 automatic_setup = true,
                 ensure_installed = {'codelldb'}
             })
+            require("mason-nvim-dap").setup_handlers{}
         end
 
     }

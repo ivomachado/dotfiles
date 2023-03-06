@@ -48,7 +48,7 @@ command! RemoveIostream g/iostream\|cout/d
 ]])
 
 vim.cmd([[
-set titlestring=%{fnamemodify(getcwd(),':t')}
+set titlestring=%{fnamemodify(getcwd(),':h:t')}/%{fnamemodify(getcwd(),':t')}
 ]])
 
 local function noremap(mode, shortcut, command)

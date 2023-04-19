@@ -32,6 +32,7 @@ return require('packer').startup(function()
             require("mason").setup()
         end
     }
+    use "folke/neodev.nvim"
     use 'mfussenegger/nvim-dap'
     use {
         'jay-babu/mason-nvim-dap.nvim',
@@ -39,11 +40,29 @@ return require('packer').startup(function()
         config = function ()
             require("mason-nvim-dap").setup({
                 automatic_setup = true,
-                ensure_installed = {'codelldb'}
+                ensure_installed = {'cppdbg'},
+                handlers = {}
             })
-            require("mason-nvim-dap").setup_handlers{}
         end
 
+    }
+
+    use {
+        'rcarriga/nvim-dap-ui',
+        config = function ()
+            require("dapui").setup()
+            local dap, dapui = require("dap"), require("dapui")
+
+            dap.listeners.after.event_initialized["dapui_config"] = function()
+                dapui.open()
+            end
+            dap.listeners.before.event_terminated["dapui_config"] = function()
+                dapui.close()
+            end
+            dap.listeners.before.event_exited["dapui_config"] = function()
+                dapui.close()
+            end
+        end
     }
 
     use 'mattn/emmet-vim'
@@ -55,6 +74,34 @@ return require('packer').startup(function()
                 mirage = false,
                 overrides = {},
             })
+        end
+    }
+
+    use {
+        "lewis6991/hover.nvim",
+        config = function()
+            require("hover").setup {
+                init = function()
+                    -- Require providers
+                    require("hover.providers.lsp")
+                    -- require('hover.providers.gh')
+                    -- require('hover.providers.gh_user')
+                    -- require('hover.providers.jira')
+                    -- require('hover.providers.man')
+                    -- require('hover.providers.dictionary')
+                end,
+                preview_opts = {
+                    border = nil
+                },
+                -- Whether the contents of a currently open hover window should be moved
+                -- to a :h preview-window when pressing the hover keymap.
+                preview_window = false,
+                title = true
+            }
+
+            -- Setup keymaps
+            vim.keymap.set("n", "K", require("hover").hover, {desc = "hover.nvim"})
+            vim.keymap.set("n", "gK", require("hover").hover_select, {desc = "hover.nvim (select)"})
         end
     }
 
@@ -216,7 +263,7 @@ return require('packer').startup(function()
 
     use {
         'neovim/nvim-lspconfig', -- Collection of configurations for the built-in LSP client
-        'williamboman/nvim-lsp-installer', -- Install LSP clients
+        -- 'williamboman/nvim-lsp-installer', -- Install LSP clients
         'p00f/clangd_extensions.nvim',
     }
     use 'hrsh7th/nvim-cmp' -- Plugin de AutoComplete
@@ -361,14 +408,34 @@ return require('packer').startup(function()
                     override_file_sorter = true,     -- override the file sorter
                     case_mode = "ignore_case",       -- or "ignore_case" or "respect_case" the default case_mode is "smart_case"
                     dynamic_preview_title = true,
+                    layout_config = {
+                        width = 0.75,
+                    },
                 },
                 pickers = {
                     find_files = {
-                        theme = "dropdown",
-                        search_dirs = {'.', 'externals/certi_common_libs'},
+                        -- theme = "dropdown",
+                        search_dirs = {
+                            './',
+                            'externals/certi_common_libs',
+                            'externals/smart_platform',
+                            'externals/certi_formatter',
+                            'buildroot',
+                            'externals/certi_libwpe',
+                            'externals/certi_wpe',
+                            'externals/wpebackend-certi',
+                        },
                     },
                     live_grep = {
-                        search_dirs = {'.', 'externals/certi_common_libs'},
+                        search_dirs = {
+                            './',
+                            'externals/certi_common_libs',
+                            'externals/smart_platform',
+                            'buildroot',
+                            'externals/certi_libwpe',
+                            'externals/certi_wpe',
+                            'externals/wpebackend-certi',
+                        },
                     },
                     lsp_document_symbols = {
                         fname_width = 50,

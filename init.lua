@@ -124,6 +124,7 @@ nmap("<F9>", "<cmd>lua require'dap'.toggle_breakpoint()<CR>")
 nmap("<F10>", "<cmd>lua require'dap'.step_over()<CR>")
 nmap("<F11>", "<cmd>lua require'dap'.step_into()<CR>")
 nmap("<leader>K", "<cmd>lua require'dap.ui.widgets'.cursor_float()<CR>")
+nmap("<leader>D", "<cmd>lua require'dapui'.toggle()<CR>")
 
 nnoremap('<leader>e', '<cmd>lua vim.diagnostic.open_float()<CR>')
 nnoremap('[e', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
@@ -169,7 +170,6 @@ local on_attach = function(client, bufnr)
     nnoremap('gD', '<cmd>lua vim.lsp.buf.declaration()<CR>')
     nnoremap('gd', '<cmd>lua vim.lsp.buf.definition()<CR>')
     nnoremap('gs', '<cmd>ClangdSwitchSourceHeader<CR>')
-    nnoremap('K', '<cmd>lua vim.lsp.buf.hover()<CR>')
     nnoremap('gi', '<cmd>lua vim.lsp.buf.implementation()<CR>')
     nnoremap('<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
     nnoremap('<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
@@ -314,7 +314,7 @@ require'nvim-lsp-installer'.setup({
 })
 
 local servers = {
-    'clangd',
+    -- 'clangd',
     'cmake',
     'html',
     'lemminx',
@@ -325,31 +325,40 @@ local servers = {
     -- 'sumneko_lua',
 }
 
-require('lspconfig')['sumneko_lua'].setup{
+-- require('lspconfig')['lua_ls'].setup{
+--     on_attach = on_attach,
+--     capabilities = capabilities,
+--     flags = {
+--         debounce_text_changes = 150,
+--     },
+--     settings = {
+--         Lua = {
+--             runtime = {
+--                 -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+--                 version = 'LuaJIT',
+--             },
+--             diagnostics = {
+--                 -- Get the language server to recognize the `vim` global
+--                 globals = {'vim'},
+--             },
+--             workspace = {
+--                 -- Make the server aware of Neovim runtime files
+--                 library = vim.api.nvim_get_runtime_file("", true),
+--             },
+--             -- Do not send telemetry data containing a randomized but unique identifier
+--             telemetry = {
+--                 enable = false,
+--             },
+--         },
+--     }
+-- }
+
+require('lspconfig')['clangd'].setup{
     on_attach = on_attach,
     capabilities = capabilities,
+    root_dir = require('lspconfig').util.root_pattern('compile_commands.json'),
     flags = {
         debounce_text_changes = 150,
-    },
-    settings = {
-        Lua = {
-            runtime = {
-                -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-                version = 'LuaJIT',
-            },
-            diagnostics = {
-                -- Get the language server to recognize the `vim` global
-                globals = {'vim'},
-            },
-            workspace = {
-                -- Make the server aware of Neovim runtime files
-                library = vim.api.nvim_get_runtime_file("", true),
-            },
-            -- Do not send telemetry data containing a randomized but unique identifier
-            telemetry = {
-                enable = false,
-            },
-        },
     }
 }
 
@@ -362,6 +371,53 @@ for _, lsp in pairs(servers) do
         }
     }
 end
+
+vim.fn.sign_define('DapBreakpoint', {text='🔴', texthl='', linehl='', numhl=''})
+
+require'dap'.configurations.cpp = {
+    {
+        type = 'cppdbg';
+        request = 'launch';
+        name = "TPV Emulator GL";
+        program = "${workspaceFolder}/output/tpv_mw_emulator_gl/debug/sandbox/bin/dtvplay-emulator";
+        cwd = "${workspaceFolder}",
+        environment = {
+            { name =  "LC_ALL", value = "C" },
+            { name =  "LD_LIBRARY_PATH", value = "${workspaceFolder}/output/tpv_mw_emulator_gl/debug/sandbox/lib/:${workspaceFolder}/output/tpv_mw_emulator_gl/debug/usr/lib:${workspaceFolder}/output/tpv_mw_emulator_gl/debug/usr/lib/pulseaudio" },
+            { name =  "GIO_MODULE_DIR", value = "${workspaceFolder}/output/tpv_mw_emulator_gl/debug/usr/lib/gio/modules" },
+            { name =  "GST_PLUGIN_PATH", value = "${workspaceFolder}/output/tpv_mw_emulator_gl/debug/usr/lib/gstreamer-1.0" },
+            { name =  "LIBGL_DRIVERS_PATH", value = "${workspaceFolder}/output/tpv_mw_emulator_gl/debug/usr/lib/dri" }
+        },
+        setupCommands = {  
+            { 
+                text = '-enable-pretty-printing',
+                description =  'enable pretty printing',
+                ignoreFailures = false 
+            },
+        },
+    },
+    {
+        type = 'cppdbg';
+        request = 'launch';
+        name = "TPV Emulator GL DebugFull";
+        program = "${workspaceFolder}/output/tpv_mw_emulator_gl/debugfull/sandbox/bin/dtvplay-emulator";
+        cwd = "${workspaceFolder}",
+        environment = {
+            { name =  "LC_ALL", value = "C" },
+            { name =  "LD_LIBRARY_PATH", value = "${workspaceFolder}/output/tpv_mw_emulator_gl/debugfull/sandbox/lib/:${workspaceFolder}/output/tpv_mw_emulator_gl/debugfull/usr/lib:${workspaceFolder}/output/tpv_mw_emulator_gl/debugfull/usr/lib/pulseaudio" },
+            { name =  "GIO_MODULE_DIR", value = "${workspaceFolder}/output/tpv_mw_emulator_gl/debugfull/usr/lib/gio/modules" },
+            { name =  "GST_PLUGIN_PATH", value = "${workspaceFolder}/output/tpv_mw_emulator_gl/debugfull/usr/lib/gstreamer-1.0" },
+            { name =  "LIBGL_DRIVERS_PATH", value = "${workspaceFolder}/output/tpv_mw_emulator_gl/debugfull/usr/lib/dri" }
+        },
+        setupCommands = {  
+            { 
+                text = '-enable-pretty-printing',
+                description =  'enable pretty printing',
+                ignoreFailures = false 
+            },
+        },
+    },
+}
 
 _G.vimrc = _G.vimrc or {}
 _G.vimrc.cmp = _G.vimrc.cmp or {}

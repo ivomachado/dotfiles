@@ -148,16 +148,11 @@ vim.notify = require("notify")
 
 require('gitsigns').setup{
     on_attach = function(bufnr)
-        local function key_map(mode, lhs, rhs, opts)
-            opts = vim.tbl_extend('force', {noremap = true, silent = true}, opts or {})
-            vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, opts)
-        end
-
-        -- Navigation
-        key_map('n', ']c', "&diff ? ']c' : '<cmd>Gitsigns next_hunk<CR>'", {expr=true})
-        key_map('n', '[c', "&diff ? '[c' : '<cmd>Gitsigns prev_hunk<CR>'", {expr=true})
+        nnoremap(']c', '<cmd>Gitsigns next_hunk<CR>')
+        nnoremap('[c', '<cmd>Gitsigns prev_hunk<CR>')
+        nnoremap('<leader>hb', '<cmd>Gitsigns blame_line<CR>')
     end,
-    current_line_blame = true,
+    current_line_blame = false,
 }
 
 -- Use an on_attach function to only map the following keys
@@ -234,13 +229,12 @@ cmp.setup({
         { name = 'nvim_lsp' },
         { name = 'nvim_lsp_signature_help' },
         { name = 'vsnip' },
-        { name = 'nvim_lua' },
-        { name = 'buffer', keyword_length = 5 },
+        { name = 'buffer', keyword_length = 2 },
         { name = 'path' },
     }),
     formatting = {
         format = lspkind.cmp_format({
-            mode = 'symbol_text',
+            mode = 'symbol',
             maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
         })
     },
@@ -300,21 +294,9 @@ require'nvim-treesitter.configs'.setup {
 }
 
 -- Setup lspconfig.
-local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
-
-require'nvim-lsp-installer'.setup({
-    automatic_installation = true, -- automatically detect which servers to install (based on which servers are set up via lspconfig)
-    ui = {
-        icons = {
-            server_installed = "✓",
-            server_pending = "➜",
-            server_uninstalled = "✗"
-        }
-    }
-})
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 local servers = {
-    -- 'clangd',
     'cmake',
     'html',
     'lemminx',
@@ -322,36 +304,10 @@ local servers = {
     'svelte',
     'tsserver',
     'pylsp',
-    -- 'sumneko_lua',
 }
 
--- require('lspconfig')['lua_ls'].setup{
---     on_attach = on_attach,
---     capabilities = capabilities,
---     flags = {
---         debounce_text_changes = 150,
---     },
---     settings = {
---         Lua = {
---             runtime = {
---                 -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
---                 version = 'LuaJIT',
---             },
---             diagnostics = {
---                 -- Get the language server to recognize the `vim` global
---                 globals = {'vim'},
---             },
---             workspace = {
---                 -- Make the server aware of Neovim runtime files
---                 library = vim.api.nvim_get_runtime_file("", true),
---             },
---             -- Do not send telemetry data containing a randomized but unique identifier
---             telemetry = {
---                 enable = false,
---             },
---         },
---     }
--- }
+require("mason").setup()
+require("mason-lspconfig").setup()
 
 require('lspconfig')['clangd'].setup{
     on_attach = on_attach,

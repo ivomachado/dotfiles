@@ -26,15 +26,11 @@ return require('packer').startup(function()
     use 'tpope/vim-repeat'
     use 'tpope/vim-abolish'
 
-    use {
-        'williamboman/mason.nvim',
-        config = function ()
-            require("mason").setup()
-        end
-    }
     use "folke/neodev.nvim"
     use 'mfussenegger/nvim-dap'
     use {
+        'williamboman/mason.nvim',
+        'williamboman/mason-lspconfig.nvim',
         'jay-babu/mason-nvim-dap.nvim',
         after = 'mason.nvim',
         config = function ()
@@ -44,7 +40,6 @@ return require('packer').startup(function()
                 handlers = {}
             })
         end
-
     }
 
     use {
@@ -64,8 +59,6 @@ return require('packer').startup(function()
             end
         end
     }
-
-    use 'mattn/emmet-vim'
 
     use {
         'Shatur/neovim-ayu',
@@ -156,30 +149,6 @@ return require('packer').startup(function()
         disable = false
     }
 
-    use {
-        "folke/twilight.nvim",
-        config = function()
-            require("twilight").setup {
-                -- your configuration comes here
-                -- or leave it empty to use the default settings
-                -- refer to the configuration section below
-            }
-        end,
-        disable = true
-    }
-
-    use {
-        "feline-nvim/feline.nvim",
-        config = function()
-            require("feline").setup {
-                -- your configuration comes here
-                -- or leave it empty to use the default settings
-                -- refer to the configuration section below
-            }
-        end,
-        disable = true,
-    }
-
     use {'dracula/vim', as = 'dracula', disable = false}
     use {'sainnhe/everforest', disable = false}
     use {'marko-cerovac/material.nvim', disable = true}
@@ -211,25 +180,6 @@ return require('packer').startup(function()
                 },
             })
         end
-    }
-
-    use 'Th3Whit3Wolf/space-nvim'
-    use ({ 'projekt0n/github-nvim-theme' })
-    use {
-        'sonph/onehalf',
-        rtp = 'vim',
-        config = function()
-            vim.cmd("colorscheme onehalfdark")
-        end,
-        disable = true
-    }
-
-    use {
-        "mcchrish/zenbones.nvim",
-        -- Optionally install Lush. Allows for more configuration or extending the colorscheme
-        -- If you don't want to install lush, make sure to set g:zenbones_compat = 1
-        -- In Vim, compat mode is turned on as Lush only works in Neovim.
-        requires = "rktjmp/lush.nvim"
     }
 
     use {
@@ -286,13 +236,6 @@ return require('packer').startup(function()
                 default_mappings = true,
             }
         end
-    }
-
-    use {
-        'ms-jpq/chadtree',
-        branch = 'chad',
-        run =  'python3 -m chadtree deps',
-        disable = true
     }
 
     use {
@@ -466,20 +409,6 @@ return require('packer').startup(function()
         run = ':TSUpdate',
     }
 
-    use {
-        'nvim-treesitter/nvim-treesitter-context',
-        config = function ()
-            require'treesitter-context'.setup{
-                default = {
-                    'class',
-                    'function',
-                    'method',
-                }
-            }
-        end,
-        disable = true
-    }
-
     use 'rmagatti/session-lens'
     use {
         'rmagatti/auto-session',
@@ -515,11 +444,6 @@ return require('packer').startup(function()
                 scrollview_column = 1
             })
         end
-    }
-
-    use {
-        'weirongxu/plantuml-previewer.vim',
-        requires = { {'tyru/open-browser.vim'}, {'aklt/plantuml-syntax'} },
     }
 
     -- Automatically set up your configuration after cloning packer.nvim

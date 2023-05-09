@@ -304,10 +304,15 @@ local servers = {
     'svelte',
     'tsserver',
     'pylsp',
+    'gopls',
 }
 
 require("mason").setup()
-require("mason-lspconfig").setup()
+require("mason-lspconfig").setup(
+{
+    ensure_installed = {'clangd'},
+    automatic_installation = true,
+})
 
 require('lspconfig')['clangd'].setup{
     on_attach = on_attach,

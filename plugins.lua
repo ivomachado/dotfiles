@@ -219,6 +219,7 @@ return require('packer').startup(function()
     use 'hrsh7th/nvim-cmp' -- Plugin de AutoComplete
     use 'hrsh7th/cmp-vsnip'
     use 'hrsh7th/vim-vsnip'
+    use "rafamadriz/friendly-snippets"
     use 'hrsh7th/cmp-nvim-lsp' -- Fonte de LSP para autocomplete
     use 'hrsh7th/cmp-nvim-lua' -- Fonte de LSP para autocomplete
     use 'hrsh7th/cmp-path' -- Fonte de paths para autocomplete

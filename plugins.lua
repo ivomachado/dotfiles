@@ -32,14 +32,6 @@ return require('packer').startup(function()
         'williamboman/mason.nvim',
         'williamboman/mason-lspconfig.nvim',
         'jay-babu/mason-nvim-dap.nvim',
-        after = 'mason.nvim',
-        config = function ()
-            require("mason-nvim-dap").setup({
-                automatic_setup = true,
-                ensure_installed = {'cppdbg'},
-                handlers = {}
-            })
-        end
     }
 
     use {

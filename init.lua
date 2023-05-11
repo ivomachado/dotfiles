@@ -239,7 +239,7 @@ cmp.setup({
         })
     },
     experimental = {
-        ghost_text = true,
+        ghost_text = false,
     },
     sorting = {
         comparators = {
@@ -296,42 +296,41 @@ require'nvim-treesitter.configs'.setup {
 -- Setup lspconfig.
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-local servers = {
-    'cmake',
-    'html',
-    'lemminx',
-    'rust_analyzer',
-    'svelte',
-    'tsserver',
-    'pylsp',
-    'gopls',
-}
-
 require("mason").setup()
 require("mason-lspconfig").setup(
 {
-    ensure_installed = {'clangd'},
+    ensure_installed = {
+        'clangd', 'cmake', 'html', 'lemminx', 'rust_analyzer',
+        'svelte', 'tsserver', 'pylsp',
+    },
     automatic_installation = true,
 })
-
-require('lspconfig')['clangd'].setup{
-    on_attach = on_attach,
-    capabilities = capabilities,
-    root_dir = require('lspconfig').util.root_pattern('compile_commands.json'),
-    flags = {
-        debounce_text_changes = 150,
-    }
-}
-
-for _, lsp in pairs(servers) do
-    require('lspconfig')[lsp].setup{
-        on_attach = on_attach,
-        capabilities = capabilities,
-        flags = {
-            debounce_text_changes = 150,
+require("mason-lspconfig").setup_handlers{
+    function (server_name)
+        require("lspconfig")[server_name].setup{
+            on_attach = on_attach,
+            capabilities = capabilities,
+            flags = {
+                debounce_text_changes = 150,
+            }
         }
-    }
-end
+    end,
+    ["clangd"] = function ()
+        require('lspconfig')['clangd'].setup{
+            on_attach = on_attach,
+            capabilities = capabilities,
+            root_dir = require('lspconfig').util.root_pattern('compile_commands.json'),
+            flags = {
+                debounce_text_changes = 150,
+            }
+        }
+    end
+}
+require("mason-nvim-dap").setup({
+    automatic_setup = true,
+    ensure_installed = {'cppdbg'},
+    handlers = {}
+})
 
 vim.fn.sign_define('DapBreakpoint', {text='🔴', texthl='', linehl='', numhl=''})
 

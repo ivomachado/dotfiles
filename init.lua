@@ -132,7 +132,7 @@ nnoremap(']e', '<cmd>lua vim.diagnostic.goto_next()<CR>')
 
 vim.cmd([[set guifont=FiraCode\ Nerd\ Font\ Font\ Mono:h11]])
 
-vim.cmd([[colorscheme ayu-mirage]])
+vim.cmd([[colorscheme catppuccin-latte]])
 
 vim.o.sessionoptions="buffers,curdir,folds,help,tabpages,winsize"
 

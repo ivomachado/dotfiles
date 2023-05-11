@@ -150,7 +150,6 @@ return require('packer').startup(function()
         "catppuccin/nvim",
         as = "catppuccin",
         config = function()
-            vim.g.catppuccin_flavour = "macchiato"
             require'catppuccin'.setup({
                 integrations = {
                     neotree = {

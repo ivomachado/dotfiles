@@ -95,6 +95,8 @@ nmap("<leader>o", "<cmd>Telescope lsp_document_symbols theme=ivy<cr>")
 nmap("<leader>s", "<cmd>Telescope session-lens search_session<cr>")
 nmap("<leader>l", "<cmd>Telescope live_grep<cr>")
 nmap("<leader>p", "<cmd>Telescope commands<cr>")
+nmap("<c-p>", "<cmd>Telescope find_files<cr>")
+nmap("<leader>P", "<cmd>Telescope <cr>")
 
 nmap("<leader>w", "<c-w>")
 nmap("<leader>,", ":tabnew ~/.config/nvim/init.lua<CR>:vsplit ~/.config/nvim/lua/plugins.lua<CR>")
@@ -110,9 +112,6 @@ nmap("<leader>cs", "<cmd>'a,'bS#")
 nmap("<C-w>M", "<cmd>Neotree close<CR><cmd>FocusMaximise<CR>")
 nmap("<C-w>m", "<cmd>Neotree close<CR><cmd>FocusToggle<CR>")
 nmap("<C-w>=", "<cmd>FocusEqualise<CR>")
-
-nmap("<c-p>", "<cmd>Telescope find_files<cr>")
-nmap("<leader>P", "<cmd>Telescope <cr>")
 
 nnoremap("<space>", "<Nop>")
 nmap("<space>", "<leader>")
@@ -132,7 +131,7 @@ nnoremap(']e', '<cmd>lua vim.diagnostic.goto_next()<CR>')
 
 vim.cmd([[set guifont=FiraCode\ Nerd\ Font\ Font\ Mono:h11]])
 
-vim.cmd([[colorscheme catppuccin-latte]])
+vim.cmd([[colorscheme catppuccin-frappe]])
 
 vim.o.sessionoptions="buffers,curdir,folds,help,tabpages,winsize"
 
@@ -162,12 +161,13 @@ local on_attach = function(client, bufnr)
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
     -- Mappings.
-    nnoremap('gD', '<cmd>lua vim.lsp.buf.declaration()<CR>')
-    nnoremap('gd', '<cmd>lua vim.lsp.buf.definition()<CR>')
+    nnoremap('gD', '<cmd>lua vim.lsp.buf.declaration({reuse_win=true})<CR>')
+    nnoremap('gd', '<cmd>lua vim.lsp.buf.definition({reuse_win=true})<CR>')
     nnoremap('gs', '<cmd>ClangdSwitchSourceHeader<CR>')
     nnoremap('gi', '<cmd>lua vim.lsp.buf.implementation()<CR>')
     nnoremap('<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
-    nnoremap('<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
+    inoremap('<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
+    nnoremap('<leader>D', '<cmd>lua vim.lsp.buf.type_definition({reuse_win=true})<CR>')
     nnoremap('<F2>', '<cmd>lua vim.lsp.buf.rename()<CR>')
     nnoremap('<leader>.', '<cmd>lua vim.lsp.buf.code_action()<CR>')
     nnoremap('gr', '<cmd>Telescope lsp_references<CR>')

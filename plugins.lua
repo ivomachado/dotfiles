@@ -326,6 +326,7 @@ return require('packer').startup(function()
                             ["<C-o>"] = "smart_send_to_qflist",
                             ["<C-a>"] = "smart_add_to_qflist",
                             ["<esc>"] = "close",
+                            ["<CR>"]  = "select_drop",
                         },
                         n = {
                             ["<C-k>"] = "move_selection_previous",

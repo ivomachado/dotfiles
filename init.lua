@@ -1,4 +1,5 @@
-require('plugins')
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
 
 vim.opt.compatible = false
 vim.opt.mouse="a"
@@ -20,14 +21,11 @@ vim.opt.hlsearch = true
 vim.opt.incsearch = true
 vim.opt.expandtab = true
 vim.opt.fixendofline = true
-vim.opt.lazyredraw = false
 vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
 vim.opt.showtabline = 0
 
 vim.opt.termguicolors = true
-
-vim.cmd("filetype plugin on")
 
 vim.opt.list = true
 vim.opt.listchars:append("eol:↴")
@@ -38,18 +36,23 @@ vim.opt.listchars:append("extends:>")
 vim.opt.listchars:append("precedes:<")
 vim.opt.ffs="unix"
 
+vim.cmd("filetype plugin on")
+
+require("lazy_plugins")
+
 vim.cmd([[
 augroup DetectIndent
 autocmd!
 autocmd BufReadPost *  DetectIndent
 augroup END
-
-command! RemoveIostream g/iostream\|cout/d
 ]])
 
 vim.cmd([[
 set titlestring=%{fnamemodify(getcwd(),':h:t')}/%{fnamemodify(getcwd(),':t')}
 ]])
+
+vim.api.nvim_create_user_command('ClearNotifications', "lua require'notify'.dismiss()", {})
+vim.api.nvim_create_user_command('RemoveIostream', 'g/iostream\\|cout/d', {})
 
 local function noremap(mode, shortcut, command)
     vim.api.nvim_set_keymap(mode, shortcut, command, { noremap = true, silent = true })
@@ -92,14 +95,14 @@ nmap('<leader>B', "<cmd>Neotree left focus reveal<cr>")
 nmap("<leader>a", "<cmd>Neotree float buffers<cr>")
 
 nmap("<leader>o", "<cmd>Telescope lsp_document_symbols theme=ivy<cr>")
-nmap("<leader>s", "<cmd>Telescope session-lens search_session<cr>")
+nmap("<leader>s", "<cmd>Autosession search<cr>")
 nmap("<leader>l", "<cmd>Telescope live_grep<cr>")
 nmap("<leader>p", "<cmd>Telescope commands<cr>")
 nmap("<c-p>", "<cmd>Telescope find_files<cr>")
 nmap("<leader>P", "<cmd>Telescope <cr>")
 
 nmap("<leader>w", "<c-w>")
-nmap("<leader>,", ":tabnew ~/.config/nvim/init.lua<CR>:vsplit ~/.config/nvim/lua/plugins.lua<CR>")
+nmap("<leader>,", ":tabnew ~/.config/nvim/init.lua<CR>:vsplit ~/.config/nvim/lua/lazy_plugins.lua<CR>")
 
 nmap("<leader>q", "<cmd>Bdelete<CR>")
 nmap("<leader>Q", "<cmd>bdelete<CR>")
@@ -113,9 +116,6 @@ nmap("<C-w>M", "<cmd>Neotree close<CR><cmd>FocusMaximise<CR>")
 nmap("<C-w>m", "<cmd>Neotree close<CR><cmd>FocusToggle<CR>")
 nmap("<C-w>=", "<cmd>FocusEqualise<CR>")
 
-nnoremap("<space>", "<Nop>")
-nmap("<space>", "<leader>")
-vmap("<space>", "<leader>")
 tmap("<Esc>", "<C-\\><C-n>")
 
 nmap("<F5>", "<cmd>lua require'dap'.continue()<CR>")
@@ -131,15 +131,7 @@ nnoremap(']e', '<cmd>lua vim.diagnostic.goto_next()<CR>')
 
 vim.cmd([[set guifont=FiraCode\ Nerd\ Font\ Font\ Mono:h11]])
 
-vim.cmd([[colorscheme catppuccin-frappe]])
-
 vim.o.sessionoptions="buffers,curdir,folds,help,tabpages,winsize"
-
-require("indent_blankline").setup {
-    show_end_of_line = true,
-    show_current_context = true,
-    indent_blankline_show_first_indent_level = false,
-}
 
 require('dressing').setup()
 
@@ -161,13 +153,12 @@ local on_attach = function(client, bufnr)
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
     -- Mappings.
-    nnoremap('gD', '<cmd>lua vim.lsp.buf.declaration({reuse_win=true})<CR>')
-    nnoremap('gd', '<cmd>lua vim.lsp.buf.definition({reuse_win=true})<CR>')
+    nnoremap('gd', '<cmd>Telescope lsp_definitions<CR>')
     nnoremap('gs', '<cmd>ClangdSwitchSourceHeader<CR>')
     nnoremap('gi', '<cmd>lua vim.lsp.buf.implementation()<CR>')
     nnoremap('<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
     inoremap('<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
-    nnoremap('<leader>D', '<cmd>lua vim.lsp.buf.type_definition({reuse_win=true})<CR>')
+    nnoremap('<leader>D', '<cmd>Telescope lsp_definitions<CR>')
     nnoremap('<F2>', '<cmd>lua vim.lsp.buf.rename()<CR>')
     nnoremap('<leader>.', '<cmd>lua vim.lsp.buf.code_action()<CR>')
     nnoremap('gr', '<cmd>Telescope lsp_references<CR>')
@@ -189,7 +180,6 @@ end
 
 cmp.setup({
     snippet = {
-        -- REQUIRED - you must specify a snippet engine
         expand = function(args)
             vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
         end,
@@ -348,11 +338,11 @@ require'dap'.configurations.cpp = {
             { name =  "GST_PLUGIN_PATH", value = "${workspaceFolder}/output/tpv_mw_emulator_gl/debug/usr/lib/gstreamer-1.0" },
             { name =  "LIBGL_DRIVERS_PATH", value = "${workspaceFolder}/output/tpv_mw_emulator_gl/debug/usr/lib/dri" }
         },
-        setupCommands = {  
-            { 
+        setupCommands = {
+            {
                 text = '-enable-pretty-printing',
                 description =  'enable pretty printing',
-                ignoreFailures = false 
+                ignoreFailures = false
             },
         },
     },
@@ -369,11 +359,11 @@ require'dap'.configurations.cpp = {
             { name =  "GST_PLUGIN_PATH", value = "${workspaceFolder}/output/tpv_mw_emulator_gl/debugfull/usr/lib/gstreamer-1.0" },
             { name =  "LIBGL_DRIVERS_PATH", value = "${workspaceFolder}/output/tpv_mw_emulator_gl/debugfull/usr/lib/dri" }
         },
-        setupCommands = {  
-            { 
+        setupCommands = {
+            {
                 text = '-enable-pretty-printing',
                 description =  'enable pretty printing',
-                ignoreFailures = false 
+                ignoreFailures = false
             },
         },
     },

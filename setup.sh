@@ -6,6 +6,7 @@ initluadir=~/.config/nvim/
 pluginsluadir=~/.config/nvim/lua/
 initluapath=$initluadir"init.lua"
 pluginsluapath=$pluginsluadir"plugins.lua"
+lazy_pluginsluapath=$pluginsluadir"lazy_plugins.lua"
 tmuxconfpath=~/.tmux.conf
 kittyconfdir=~/.config/kitty/
 tmuxinatorconfdir=~/.tmuxinator
@@ -17,6 +18,8 @@ ln -sf $backupfolder/init.lua $initluapath
 
 mkdir -p $pluginsluadir
 ln -sf $backupfolder/plugins.lua $pluginsluapath
+
+ln -sf $backupfolder/lazy_plugins.lua $lazy_pluginsluapath
 
 rm $tmuxinatorconfdir -rf 2> /dev/null
 ln -s $backupfolder/.tmuxinator $tmuxinatorconfdir

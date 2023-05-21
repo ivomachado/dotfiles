@@ -25,10 +25,8 @@ require("lazy").setup({
     'tpope/vim-abolish',
     'jghauser/mkdir.nvim',
     "folke/neodev.nvim",
-    'mfussenegger/nvim-dap',
-    'brooth/far.vim',
+    { 'mfussenegger/nvim-dap', lazy = true },
     'rcarriga/nvim-notify',
-
     'roryokane/detectindent',
     'michaeljsmith/vim-indent-object',
     'PeterRincker/vim-argumentative',
@@ -83,7 +81,7 @@ require("lazy").setup({
     'folke/trouble.nvim',
     'stevearc/dressing.nvim',
     'kevinhwang91/nvim-bqf',
-    'CoatiSoftware/vim-sourcetrail',
+    { 'CoatiSoftware/vim-sourcetrail', lazy = true },
     'moll/vim-bbye',
     {
         "kylechui/nvim-surround",
@@ -116,6 +114,7 @@ require("lazy").setup({
     },
     {
         'rcarriga/nvim-dap-ui',
+        lazy = true,
         config = function ()
             require("dapui").setup()
             local dap, dapui = require("dap"), require("dapui")

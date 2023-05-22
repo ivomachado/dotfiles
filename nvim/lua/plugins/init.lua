@@ -3,7 +3,7 @@ return {
     'tpope/vim-abolish',
     'jghauser/mkdir.nvim',
     "folke/neodev.nvim",
-    { 'mfussenegger/nvim-dap', lazy = true },
+    { 'mfussenegger/nvim-dap', event = "VeryLazy" },
     'rcarriga/nvim-notify',
     'roryokane/detectindent',
     'michaeljsmith/vim-indent-object',
@@ -40,15 +40,14 @@ return {
             }
             vim.cmd [[highlight IndentBlanklineSpaceChar guifg=nocombine]]
         end,
-        lazy = false,
     },
     'folke/trouble.nvim',
     {
         'stevearc/dressing.nvim',
-        enabled = false,
+        enabled = true,
     },
     'kevinhwang91/nvim-bqf',
-    { 'CoatiSoftware/vim-sourcetrail', lazy = true },
+    { 'CoatiSoftware/vim-sourcetrail', event = "VeryLazy"},
     'moll/vim-bbye',
     {
         "kylechui/nvim-surround",
@@ -81,7 +80,7 @@ return {
     },
     {
         'rcarriga/nvim-dap-ui',
-        lazy = true,
+        event = "VeryLazy",
         config = function ()
             require("dapui").setup()
             local dap, dapui = require("dap"), require("dapui")
@@ -192,6 +191,7 @@ return {
     {
         "nvim-neo-tree/neo-tree.nvim",
         branch = "v2.x",
+        event = "VeryLazy",
         dependencies = {
             "nvim-lua/plenary.nvim",
             "kyazdani42/nvim-web-devicons", -- not strictly required, but recommended

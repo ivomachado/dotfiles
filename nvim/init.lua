@@ -111,10 +111,6 @@ nnoremap(']e', '<cmd>lua vim.diagnostic.goto_next()<CR>')
 
 vim.cmd([[set guifont=FiraCode\ Nerd\ Font\ Font\ Mono:h11]])
 
-vim.o.sessionoptions="buffers,curdir,folds,help,tabpages,winsize"
-
-vim.notify = require("notify")
-
 require('gitsigns').setup{
     on_attach = function(bufnr)
         nnoremap(']c', '<cmd>Gitsigns next_hunk<CR>')
@@ -144,26 +140,6 @@ local on_attach = function(client, bufnr)
 end
 
 require("clangd_extensions").setup()
-
-require'nvim-treesitter.configs'.setup {
-    -- A list of parser names, or "all"
-    ensure_installed = { "c", "svelte", "cpp", "lua", "rust" , "typescript", "css", "html", "javascript", "vim"},
-    auto_install = true,
-
-    -- Install parsers synchronously (only applied to `ensure_installed`)
-    sync_install = false,
-
-    -- List of parsers to ignore installing (for "all")
-    --
-    indent = {
-        enable = false,
-    },
-
-    highlight = {
-        enable = true,
-        additional_vim_regex_highlighting = false,
-    },
-}
 
 local cmp = require'cmp'
 local lspkind = require('lspkind')

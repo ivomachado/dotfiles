@@ -32,3 +32,5 @@ vim.opt.listchars:append("trail:·")
 vim.opt.listchars:append("extends:>")
 vim.opt.listchars:append("precedes:<")
 vim.opt.ffs="unix"
+
+vim.o.sessionoptions="buffers,curdir,folds,help,tabpages,winsize"

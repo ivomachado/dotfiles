@@ -1,25 +1,4 @@
--- vim.cmd([[
---   augroup packer_user_config
---     autocmd!
---     autocmd BufWritePost plugins.lua source <afile> | PackerCompile
---   augroup end
--- ]])
-
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
-    lazypath,
-  })
-end
-
-vim.opt.rtp:prepend(lazypath)
-
-require("lazy").setup({
+return {
     'wbthomason/packer.nvim',
     'tpope/vim-repeat',
     'tpope/vim-abolish',
@@ -63,20 +42,6 @@ require("lazy").setup({
             vim.cmd [[highlight IndentBlanklineSpaceChar guifg=nocombine]]
         end,
         lazy = false,
-    },
-    {
-        'hrsh7th/nvim-cmp',
-        'hrsh7th/cmp-vsnip',
-        'hrsh7th/vim-vsnip',
-        'rafamadriz/friendly-snippets',
-        'hrsh7th/cmp-nvim-lsp',
-        'hrsh7th/cmp-nvim-lua',
-        'hrsh7th/cmp-path',
-        'hrsh7th/cmp-buffer',
-        'hrsh7th/cmp-cmdline',
-        'hrsh7th/cmp-nvim-lsp-signature-help',
-        'hrsh7th/cmp-nvim-lsp-document-symbol',
-        'onsails/lspkind-nvim',
     },
     'folke/trouble.nvim',
     'stevearc/dressing.nvim',
@@ -422,4 +387,4 @@ require("lazy").setup({
             })
         end
     },
-})
+}

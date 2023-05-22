@@ -39,7 +39,7 @@ return {
     'folke/trouble.nvim',
     {
         'stevearc/dressing.nvim',
-        enabled = true,
+        enabled = false,
     },
     'kevinhwang91/nvim-bqf',
     { 'CoatiSoftware/vim-sourcetrail', event = "VeryLazy"},
@@ -118,18 +118,20 @@ return {
         end
     },
     {
-        "beauwilliams/focus.nvim",
+        "anuvyklack/windows.nvim",
+        dependencies = {
+            "anuvyklack/middleclass",
+        },
         config = function()
-            require("focus").setup{
-                bufnew =  false,
-                hybridnumber = false,
-                number = false,
-                autoresize = false,
-                signcolumn = false,
-                compatible_filetrees = {"neo-tree"},
-                excluded_filetypes = {'TelescopePrompt'}
-            }
-        end,
+            vim.o.winwidth = 10
+            vim.o.winminwidth = 10
+            vim.o.equalalways = false
+            require('windows').setup({
+                ignore = {
+                    buftype = { "quickfix", "terminal" }
+                }
+            })
+        end
     },
     {
         'neovim/nvim-lspconfig',

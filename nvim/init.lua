@@ -92,9 +92,8 @@ nmap("[b", "<cmd>bp<CR>")
 nmap("<leader>hftest", "p^ceFRIEND_TEST<esc>$r;X>>")
 nmap("<leader>cs", "<cmd>'a,'bS#")
 
-nmap("<C-w>M", "<cmd>Neotree close<CR><cmd>FocusMaximise<CR>")
-nmap("<C-w>m", "<cmd>Neotree close<CR><cmd>FocusToggle<CR>")
-nmap("<C-w>=", "<cmd>FocusEqualise<CR>")
+nmap("<C-w>M", "<cmd>Neotree close<CR><cmd>WindowsMaximize<CR>")
+nmap("<C-w>=", "<cmd>WindowsEqualize<CR>")
 
 tmap("<Esc>", "<C-\\><C-n>")
 
@@ -129,10 +128,9 @@ local on_attach = function(client, bufnr)
     -- Mappings.
     nnoremap('gd', '<cmd>Telescope lsp_definitions<CR>')
     nnoremap('gs', '<cmd>ClangdSwitchSourceHeader<CR>')
-    nnoremap('gi', '<cmd>lua vim.lsp.buf.implementation()<CR>')
+    nnoremap('gi', '<cmd>Telescope lsp_implementations<CR>')
     nnoremap('<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
     inoremap('<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
-    nnoremap('<leader>D', '<cmd>Telescope lsp_definitions<CR>')
     nnoremap('<F2>', '<cmd>lua vim.lsp.buf.rename()<CR>')
     nnoremap('<leader>.', '<cmd>lua vim.lsp.buf.code_action()<CR>')
     nnoremap('gr', '<cmd>Telescope lsp_references<CR>')
@@ -192,7 +190,7 @@ cmp.setup({
     },
     sources = cmp.config.sources({
         { name = 'nvim_lsp' },
-        { name = 'nvim_lsp_signature_help' },
+        -- { name = 'nvim_lsp_signature_help' },
         { name = 'vsnip' },
         { name = 'buffer', keyword_length = 2 },
         { name = 'path' },

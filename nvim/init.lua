@@ -113,8 +113,6 @@ vim.cmd([[set guifont=FiraCode\ Nerd\ Font\ Font\ Mono:h11]])
 
 vim.o.sessionoptions="buffers,curdir,folds,help,tabpages,winsize"
 
-require('dressing').setup()
-
 vim.notify = require("notify")
 
 require('gitsigns').setup{

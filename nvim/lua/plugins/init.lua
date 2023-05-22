@@ -43,7 +43,10 @@ return {
         lazy = false,
     },
     'folke/trouble.nvim',
-    'stevearc/dressing.nvim',
+    {
+        'stevearc/dressing.nvim',
+        enabled = false,
+    },
     'kevinhwang91/nvim-bqf',
     { 'CoatiSoftware/vim-sourcetrail', lazy = true },
     'moll/vim-bbye',

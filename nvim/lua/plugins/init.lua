@@ -1,5 +1,4 @@
 return {
-    'wbthomason/packer.nvim',
     'tpope/vim-repeat',
     'tpope/vim-abolish',
     'jghauser/mkdir.nvim',

@@ -14,16 +14,11 @@ return {
     'PeterRincker/vim-argumentative',
     {
         'johnfrankmorgan/whitespace.nvim',
-        config = function ()
-            require('whitespace-nvim').setup({
-                highlight = 'DiffDelete',
-                ignored_filetypes = { 'TelescopePrompt', 'Trouble', 'help' },
-                ignore_terminal = true,
-            })
-
-            -- remove trailing whitespace with a keybinding
-            vim.keymap.set('n', '<Leader>t', require('whitespace-nvim').trim)
-        end
+        opts = {
+            highlight = 'DiffDelete',
+            ignored_filetypes = { 'TelescopePrompt', 'Trouble', 'help' },
+            ignore_terminal = true,
+        },
     },
     {
         'lukas-reineke/indent-blankline.nvim',
@@ -39,7 +34,6 @@ return {
     'folke/trouble.nvim',
     {
         'stevearc/dressing.nvim',
-        enabled = false,
     },
     'kevinhwang91/nvim-bqf',
     { 'CoatiSoftware/vim-sourcetrail', event = "VeryLazy"},
@@ -48,11 +42,7 @@ return {
         "kylechui/nvim-surround",
         version = "*", -- Use for stability; omit to use `main` branch for the latest features
         event = "VeryLazy",
-        config = function()
-            require("nvim-surround").setup({
-                -- Configuration here, or leave empty to use defaults
-            })
-        end
+        config = true,
     },
     {
         "catppuccin/nvim",
@@ -94,44 +84,31 @@ return {
     },
     {
         "lewis6991/hover.nvim",
-        config = function()
-            require("hover").setup {
-                init = function()
-                    require("hover.providers.lsp")
-                end,
-                preview_opts = {
-                    border = nil
-                },
-                preview_window = false,
-                title = true
-            }
-
-            -- Setup keymaps
-            vim.keymap.set("n", "K", require("hover").hover, {desc = "hover.nvim"})
-            vim.keymap.set("n", "gK", require("hover").hover_select, {desc = "hover.nvim (select)"})
-        end
+        opts = {
+            init = function()
+                require("hover.providers.lsp")
+            end,
+            preview_opts = {
+                border = nil
+            },
+            preview_window = false,
+            title = true
+        },
     },
     {
         'numToStr/Comment.nvim',
-        config = function()
-            require('Comment').setup()
-        end
+        config = true,
     },
     {
         "anuvyklack/windows.nvim",
         dependencies = {
             "anuvyklack/middleclass",
         },
-        config = function()
-            vim.o.winwidth = 10
-            vim.o.winminwidth = 10
-            vim.o.equalalways = false
-            require('windows').setup({
-                ignore = {
-                    buftype = { "quickfix", "terminal" }
-                }
-            })
-        end
+        opts = {
+            ignore = {
+                buftype = { "quickfix", "terminal" }
+            }
+        },
     },
     {
         'neovim/nvim-lspconfig',
@@ -146,59 +123,63 @@ return {
     {
         'nvim-treesitter/nvim-treesitter',
         build = ':TSUpdate',
-        config = function()
-            require'nvim-treesitter.configs'.setup {
-                -- A list of parser names, or "all"
-                ensure_installed = { "c", "svelte", "cpp", "lua", "rust" , "typescript", "css", "html", "javascript", "vim"},
-                auto_install = true,
+        opts = {
+            -- A list of parser names, or "all"
+            ensure_installed = { "c", "svelte", "cpp", "lua", "rust" , "typescript", "css", "html", "javascript", "vim"},
+            auto_install = true,
 
-                -- Install parsers synchronously (only applied to `ensure_installed`)
-                sync_install = false,
+            -- Install parsers synchronously (only applied to `ensure_installed`)
+            sync_install = false,
 
-                -- List of parsers to ignore installing (for "all")
-                --
-                indent = {
-                    enable = false,
-                },
+            -- List of parsers to ignore installing (for "all")
+            --
+            indent = {
+                enable = false,
+            },
 
-                highlight = {
-                    enable = true,
-                    additional_vim_regex_highlighting = false,
-                },
-            }
-        end
+            highlight = {
+                enable = true,
+                additional_vim_regex_highlighting = false,
+            },
+        },
     },
 
     {
         'rmagatti/auto-session',
-        config = function()
-            require('auto-session').setup {
-                log_level = 'error',
-                auto_session_suppress_dirs = {'~/', '~/projects'}
-            }
-        end,
+        opts = {
+            log_level = 'error',
+            auto_session_suppress_dirs = {'~/', '~/projects'}
+        },
     },
 
     {
         's1n7ax/nvim-terminal',
-        config = function()
-            vim.o.hidden = true
-            require('nvim-terminal').setup({
-                window_height_change_amount = 10,
-            })
-        end,
+        opts = {
+            window_height_change_amount = 10,
+        },
     },
 
     {
         'dstein64/nvim-scrollview',
-        config = function()
-            require('scrollview').setup({
-                excluded_filetypes = {'nerdtree'},
-                current_only = true,
-                winblend = 50,
-                scrollview_base = 'right',
-                scrollview_column = 1
-            })
-        end
+        opts = {
+            excluded_filetypes = {'nerdtree'},
+            current_only = true,
+            winblend = 50,
+            scrollview_base = 'right',
+            scrollview_column = 1
+        },
     },
+    {
+        'willothy/flatten.nvim',
+        config = true,
+        lazy = false, priority = 1001,
+    },
+    {
+        "andrewferrier/debugprint.nvim",
+        opts = {},
+        dependencies = {
+            "nvim-treesitter/nvim-treesitter"
+        },
+        version = "*"
+    }
 }

@@ -1,21 +1,24 @@
 return {
-    'tpope/vim-repeat',
-    'tpope/vim-abolish',
-    'jghauser/mkdir.nvim',
-    "folke/neodev.nvim",
+    { 'tpope/vim-repeat', event = "VeryLazy", },
+    { 'tpope/vim-abolish', event = "VeryLazy", },
+    { 'jghauser/mkdir.nvim', event = "VeryLazy", },
+    { "folke/neodev.nvim", event = "VeryLazy", },
     { 'mfussenegger/nvim-dap', event = "VeryLazy" },
     {
-        'rcarriga/nvim-notify', config = function()
+        'rcarriga/nvim-notify',
+        event = "VeryLazy",
+        config = function()
             vim.notify = require("notify")
 
             require('telescope').load_extension('notify')
         end
     },
-    'roryokane/detectindent',
-    'michaeljsmith/vim-indent-object',
-    'PeterRincker/vim-argumentative',
+    { 'roryokane/detectindent', event = "BufEnter", },
+    { 'michaeljsmith/vim-indent-object', event = "VeryLazy", },
+    { 'PeterRincker/vim-argumentative', event = "VeryLazy", },
     {
         'johnfrankmorgan/whitespace.nvim',
+        event = "VeryLazy",
         opts = {
             highlight = 'DiffDelete',
             ignored_filetypes = { 'TelescopePrompt', 'Trouble', 'help' },
@@ -24,6 +27,7 @@ return {
     },
     {
         'lukas-reineke/indent-blankline.nvim',
+        event = "VeryLazy",
         config = function()
             require("indent_blankline").setup {
                 show_end_of_line = true,
@@ -33,13 +37,11 @@ return {
             vim.cmd [[highlight IndentBlanklineSpaceChar guifg=nocombine]]
         end,
     },
-    'folke/trouble.nvim',
-    {
-        'stevearc/dressing.nvim',
-    },
-    'kevinhwang91/nvim-bqf',
-    { 'CoatiSoftware/vim-sourcetrail', event = "VeryLazy"},
-    'moll/vim-bbye',
+    { 'folke/trouble.nvim', event = "VeryLazy", },
+    { 'stevearc/dressing.nvim', event = "VeryLazy", },
+    { 'kevinhwang91/nvim-bqf', event = "VeryLazy", },
+    { 'CoatiSoftware/vim-sourcetrail', cmd = "SourcetrailStartServer"},
+    { 'moll/vim-bbye', cmd = "Bdelete", },
     {
         "kylechui/nvim-surround",
         version = "*", -- Use for stability; omit to use `main` branch for the latest features
@@ -156,6 +158,7 @@ return {
 
     {
         's1n7ax/nvim-terminal',
+        event = "VeryLazy",
         opts = {
             window_height_change_amount = 10,
         },
@@ -163,6 +166,7 @@ return {
 
     {
         'dstein64/nvim-scrollview',
+        event = "VeryLazy",
         opts = {
             excluded_filetypes = {'nerdtree'},
             current_only = true,
@@ -183,6 +187,7 @@ return {
     {
         "andrewferrier/debugprint.nvim",
         opts = {},
+        event = "VeryLazy",
         dependencies = {
             "nvim-treesitter/nvim-treesitter"
         },

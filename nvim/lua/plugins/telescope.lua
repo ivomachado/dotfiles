@@ -1,6 +1,7 @@
 return {
     {
         'nvim-telescope/telescope-fzf-native.nvim',
+        event = "VeryLazy",
         dependencies = { 'nvim-telescope/telescope.nvim' },
         build = 'make',
         config = function()
@@ -8,13 +9,25 @@ return {
         end
     },
     {
+        'prochri/telescope-all-recent.nvim',
+        event = "VeryLazy",
+        dependencies = { 'nvim-telescope/telescope.nvim', 'kkharji/sqlite.lua' },
+        config = function()
+            require'telescope-all-recent'.setup{}
+        end
+    },
+    {
         'nvim-telescope/telescope.nvim',
+        event = "VeryLazy",
         branch = '0.1.x',
         dependencies = {
             'nvim-lua/plenary.nvim'
         },
         opts = {
             defaults = {
+                preview = {
+                    treesitter = false,
+                },
                 mappings = {
                     i = {
                         ["<C-k>"] = "move_selection_previous",
@@ -48,7 +61,7 @@ return {
                 find_files = {
                     -- theme = "dropdown",
                     search_dirs = {
-                        './',
+                        '.',
                         'externals/certi_common_libs',
                         'externals/smart_platform',
                         'externals/certi_formatter',
@@ -60,7 +73,7 @@ return {
                 },
                 live_grep = {
                     search_dirs = {
-                        './',
+                        '.',
                         'externals/certi_common_libs',
                         'externals/smart_platform',
                         'buildroot',

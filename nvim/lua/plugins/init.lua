@@ -7,6 +7,8 @@ return {
     {
         'rcarriga/nvim-notify', config = function()
             vim.notify = require("notify")
+
+            require('telescope').load_extension('notify')
         end
     },
     'roryokane/detectindent',
@@ -171,7 +173,11 @@ return {
     },
     {
         'willothy/flatten.nvim',
-        config = true,
+        opts = {
+            window = {
+                open = "alternate",
+            },
+        },
         lazy = false, priority = 1001,
     },
     {

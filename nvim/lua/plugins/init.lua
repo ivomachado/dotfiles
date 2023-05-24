@@ -38,7 +38,7 @@ return {
         end,
     },
     { 'folke/trouble.nvim', event = "VeryLazy", },
-    { 'stevearc/dressing.nvim', event = "VeryLazy", },
+    { 'stevearc/dressing.nvim', },
     { 'kevinhwang91/nvim-bqf', event = "VeryLazy", },
     { 'CoatiSoftware/vim-sourcetrail', cmd = "SourcetrailStartServer"},
     { 'moll/vim-bbye', cmd = "Bdelete", },

@@ -1,4 +1,9 @@
 return {
+    {
+        "folke/todo-comments.nvim",
+        dependencies = { "nvim-lua/plenary.nvim" },
+        opts = {}
+    },
     { 'tpope/vim-repeat', event = "VeryLazy", },
     { 'tpope/vim-abolish', event = "VeryLazy", },
     { 'jghauser/mkdir.nvim', event = "VeryLazy", },
@@ -142,7 +147,7 @@ return {
             -- List of parsers to ignore installing (for "all")
             --
             indent = {
-                enable = false,
+                enable = true,
             },
 
             highlight = {
@@ -150,6 +155,9 @@ return {
                 additional_vim_regex_highlighting = false,
             },
         },
+        config = function(_, opts)
+            require('nvim-treesitter.configs').setup(opts)
+        end,
     },
 
     {

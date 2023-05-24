@@ -108,8 +108,6 @@ nnoremap('<leader>e', '<cmd>lua vim.diagnostic.open_float()<CR>')
 nnoremap('[e', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
 nnoremap(']e', '<cmd>lua vim.diagnostic.goto_next()<CR>')
 
-vim.keymap.set("n", "K", "<cmd>lua require('hover').hover<CR>", {desc = "hover.nvim"})
-vim.keymap.set("n", "gK", "<cmd>lua require('hover').hover_select<CR>", {desc = "hover.nvim (select)"})
 vim.keymap.set('n', '<Leader>t', require('whitespace-nvim').trim)
 
 vim.cmd([[set guifont=FiraCode\ Nerd\ Font\ Font\ Mono:h11]])

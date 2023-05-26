@@ -89,24 +89,8 @@ return {
             dap.listeners.before.event_exited["dapui_config"] = function()
                 dapui.close()
             end
-        end
-    },
-    {
-        "lewis6991/hover.nvim",
-        opts = {
-            init = function()
-                require("hover.providers.lsp")
-            end,
-            preview_opts = {
-                border = nil
-            },
-            preview_window = false,
-            title = true
-        },
-        config = function (_, opts)
-            vim.keymap.set("n", "K", require('hover').hover, {desc = "hover.nvim"})
-            vim.keymap.set("n", "gK", require('hover').hover_select, {desc = "hover.nvim (select)"})
         end,
+        lazy = true,
     },
     {
         'numToStr/Comment.nvim',

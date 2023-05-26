@@ -139,8 +139,6 @@ local on_attach = function(client, bufnr)
     nnoremap('<leader>o', '<cmd>Telescope lsp_document_symbols<CR>')
 end
 
-require("clangd_extensions").setup()
-
 local cmp = require'cmp'
 local lspkind = require('lspkind')
 
@@ -259,14 +257,16 @@ require("mason-lspconfig").setup_handlers{
         }
     end,
     ["clangd"] = function ()
-        require('lspconfig')['clangd'].setup{
-            on_attach = on_attach,
-            capabilities = capabilities,
-            root_dir = require('lspconfig').util.root_pattern('compile_commands.json'),
-            flags = {
-                debounce_text_changes = 150,
+        require("clangd_extensions").setup({
+            server = {
+                on_attach = on_attach,
+                capabilities = capabilities,
+                root_dir = require('lspconfig').util.root_pattern('compile_commands.json'),
+                flags = {
+                    debounce_text_changes = 150,
+                }
             }
-        }
+        })
     end
 }
 require("mason-nvim-dap").setup({

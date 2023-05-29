@@ -213,6 +213,8 @@ return {
     {
         "echasnovski/mini.animate",
         version = false,
-        config = true,
+        opts = {
+            cursor = { enable = false, },
+        }
     },
 }

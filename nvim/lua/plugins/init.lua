@@ -212,7 +212,7 @@ return {
     },
     {
         "echasnovski/mini.animate",
-        version = "*",
+        version = false,
         config = true,
-    }
+    },
 }

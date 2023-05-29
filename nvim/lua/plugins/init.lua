@@ -54,19 +54,40 @@ return {
         config = true,
     },
     {
+        "Mofiqul/vscode.nvim",
+        lazy = false,
+        priority = 1001,
+        config = function(_, opts)
+            require'vscode'.setup(opts)
+            require'vscode'.load()
+        end,
+    },
+    {
         "catppuccin/nvim",
         name = "catppuccin",
-        config = function()
-            require'catppuccin'.setup({
-                integrations = {
-                    neotree = {
-                        enabled = true
-                    },
+        opts = {
+            flavour = "frappe",
+            background = {
+                light = "latte",
+                dark = "frappe",
+            },
+            integrations = {
+                neotree = true,
+                cmp = true,
+                gitsigns = true,
+            },
+            color_overrides = {
+                frappe = {
+                    comment = "#ffffff",
                 },
-            })
-            vim.cmd([[colorscheme catppuccin-frappe]])
+            },
+        },
+        config = function(_, opts)
+            require'catppuccin'.setup(opts)
+            vim.cmd([[colorscheme catppuccin]])
         end,
         priority = 1000,
+        enabled = false,
     },
     {
         'williamboman/mason.nvim',
@@ -188,5 +209,10 @@ return {
             "nvim-treesitter/nvim-treesitter"
         },
         version = "*"
+    },
+    {
+        "echasnovski/mini.animate",
+        version = "*",
+        config = true,
     }
 }

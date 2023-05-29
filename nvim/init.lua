@@ -46,18 +46,6 @@ local function nnoremap(shortcut, command)
     noremap('n', shortcut, command)
 end
 
-local function nmap(shortcut, command)
-    map('n', shortcut, command)
-end
-
-local function vmap(shortcut, command)
-    map('v', shortcut, command)
-end
-
-local function tmap(shortcut, command)
-    map('t', shortcut, command)
-end
-
 local function inoremap(shortcut, command)
     noremap('i', shortcut, command)
 end
@@ -68,55 +56,73 @@ end
 
 inoremap('jk', '<Esc>')
 snoremap('jk', '<Esc>')
-
--- Alterna a exibição do project drawer
-nmap('<leader>b', "<cmd>Neotree left toggle=true<cr>")
-nmap('<leader>B', "<cmd>Neotree left focus reveal<cr>")
-nmap("<leader>a", "<cmd>Neotree float buffers<cr>")
-
-nmap("<leader>o", "<cmd>Telescope lsp_document_symbols theme=ivy<cr>")
-nmap("<leader>s", "<cmd>Autosession search<cr>")
-nmap("<leader>l", "<cmd>Telescope live_grep<cr>")
-nmap("<leader>p", "<cmd>Telescope commands<cr>")
-nmap("<c-p>", "<cmd>Telescope find_files<cr>")
-nmap("<leader>P", "<cmd>Telescope <cr>")
-
-nmap("<leader>w", "<c-w>")
-nmap("<leader>,", ":tabnew ~/.config/nvim/init.lua<CR>:vsplit ~/.config/nvim/lua/lazy_plugins.lua<CR>")
-
-nmap("<leader>q", "<cmd>Bdelete<CR>")
-nmap("<leader>Q", "<cmd>bdelete<CR>")
-nmap("]b", "<cmd>bn<CR>")
-nmap("[b", "<cmd>bp<CR>")
-
-nmap("<leader>hftest", "p^ceFRIEND_TEST<esc>$r;X>>")
-nmap("<leader>cs", "<cmd>'a,'bS#")
-
-nmap("<C-w>M", "<cmd>Neotree close<CR><cmd>WindowsMaximize<CR>")
-nmap("<C-w>=", "<cmd>WindowsEqualize<CR>")
-
-tmap("<Esc>", "<C-\\><C-n>")
-
-nmap("<F5>", "<cmd>lua require'dap'.continue()<CR>")
-nmap("<F9>", "<cmd>lua require'dap'.toggle_breakpoint()<CR>")
-nmap("<F10>", "<cmd>lua require'dap'.step_over()<CR>")
-nmap("<F11>", "<cmd>lua require'dap'.step_into()<CR>")
-nmap("<leader>K", "<cmd>lua require'dap.ui.widgets'.cursor_float()<CR>")
-nmap("<leader>D", "<cmd>lua require'dapui'.toggle()<CR>")
-
-nnoremap('<leader>e', '<cmd>lua vim.diagnostic.open_float()<CR>')
-nnoremap('[e', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
-nnoremap(']e', '<cmd>lua vim.diagnostic.goto_next()<CR>')
-
-vim.keymap.set('n', '<Leader>t', require('whitespace-nvim').trim)
+map('t', "<Esc>", "<C-\\><C-n>")
 
 vim.cmd([[set guifont=FiraCode\ Nerd\ Font\ Font\ Mono:h11]])
 
+wk = require('which-key')
+wk.register({
+    b = {
+        name = "Neotree",
+        b = { "<cmd>Neotree left toggle=true<cr>", "Toggle Project Drawer" },
+        B = { "<cmd>Neotree left focus reveal<cr>", "Open Project Drawer on Current File" },
+        a = { "<cmd>Neotree left float buffers<cr>", "Show Opened Buffers" },
+    },
+    f = {
+        name = "Telescope",
+        f = { "<cmd>Telescope find_files<cr>", "Find Files"},
+        b = { "<cmd>Telescope buffers<cr>", "Buffers"},
+        O = { "<cmd>Telescope oldfiles<cr>", "Recent Files"},
+        o = { "<cmd>Telescope lsp_document_symbols<cr>", "Document Symbols"},
+        s = { "<cmd>Autosession search<cr>", "Sessions" },
+        l = { "<cmd>Telescope live_grep theme=dropdown<cr>", "Live Grep" },
+        p = { "<cmd>Telescope commands<cr>", "Commands" },
+    },
+    w = { "<C-W>", "Windows", noremap = false,},
+    q = { "<cmd>Bdelete<CR>", "Close Buffer"},
+    Q = { "<cmd>bdelete<CR>", "Close Buffer and Window"},
+    K = { "<cmd>lua require'dap.ui.widgets'.cursor_float()<CR>", "Show Debug Hover" },
+    D = { "<cmd>lua require'dapui'.toggle()<CR>", "Toggle Debug UI" },
+    e = { "<cmd>lua vim.diagnostic.open_float()<CR>", "Show Diagnostic Hover" },
+    t = { require('whitespace-nvim').trim, "Trim Whitespace" },
+},
+{ prefix = "<leader>" })
+
+wk.register({
+    "Navigation",
+    ["]"] = {
+        "Navigate Next",
+        b = { "<cmd>bn<CR>", "Buffer" },
+        e = { "<cmd>lua vim.diagnostic.goto_next()<CR>", "Diganostic" },
+    },
+    ["["] = {
+        "Navigate Previous",
+        b = { "<cmd>bp<CR>", "Buffer" },
+        e = { "<cmd>lua vim.diagnostic.goto_prev()<CR>", "Diganostic" },
+    },
+    ["<F5>"] = { "<cmd>lua require'dap'.continue()<CR>", "Continue Debugging" },
+    ["<F9>"] = { "<cmd>lua require'dap'.toggle_breakpoint()<CR>", "Toggle Breakpoint" },
+    ["<F10>"] = { "<cmd>lua require'dap'.step_over()<CR>", "Step Over" },
+    ["<F11>"] = { "<cmd>lua require'dap'.step_into()<CR>", "Step Into" },
+})
+
 require('gitsigns').setup{
     on_attach = function(bufnr)
-        nnoremap(']c', '<cmd>Gitsigns next_hunk<CR>')
-        nnoremap('[c', '<cmd>Gitsigns prev_hunk<CR>')
-        nnoremap('<leader>hb', '<cmd>Gitsigns blame_line<CR>')
+        wk.register({
+            "Navigation",
+            ["]"] = {
+                "Navigate Next",
+                c = {"<cmd>Gitsigns next_hunk<CR>", "Hunk"},
+            },
+            ["["] = {
+                "Navigate Previous",
+                c = {"<cmd>Gitsigns prev_hunk<CR>", "Hunk"},
+            }
+        })
+
+        wk.register({
+            ["hb"] = { "<cmd>Gitsigns blame_line<CR>", "Toggle Git Blame" },
+        }, { prefix = "<leader>" })
     end,
     current_line_blame = false,
 }
@@ -137,7 +143,6 @@ local on_attach = function(client, bufnr)
     nnoremap('<F2>', '<cmd>lua vim.lsp.buf.rename()<CR>')
     nnoremap('<leader>.', '<cmd>lua vim.lsp.buf.code_action()<CR>')
     nnoremap('gr', '<cmd>Telescope lsp_references<CR>')
-    nnoremap('<leader>o', '<cmd>Telescope lsp_document_symbols<CR>')
 end
 
 local cmp = require'cmp'

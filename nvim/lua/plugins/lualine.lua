@@ -3,7 +3,7 @@ return {
         'nvim-lualine/lualine.nvim',
         dependencies =  'nvim-tree/nvim-web-devicons',
         opts = {
-            extensions = {'quickfix', 'neo-tree'},
+            extensions = {'quickfix'},
             options = {
                 icons_enabled = true,
                 component_separators = { left = '', right = ''},
@@ -18,13 +18,17 @@ return {
                 lualine_b = {'branch', 'diff'},
                 lualine_c = {{'filename', path = 1}, 'diagnostics'},
                 lualine_x = {'encoding', 'fileformat', 'filetype'},
-                lualine_y = {'progress', function()
-                    if vim.bo.expandtab then
-                        return [[Spaces: ]]..vim.bo.shiftwidth
-                    else
-                        return [[Tab size: ]]..vim.bo.tabstop
-                    end
-                end, 'location'},
+                lualine_y = {
+                    { 'lsp_progress', spinner_symbols = { '🌑 ', '🌒 ', '🌓 ',
+                        '🌔 ', '🌕 ', '🌖 ', '🌗 ', '🌘 ' }, },
+                    'progress',
+                    function()
+                        if vim.bo.expandtab then
+                            return [[Spaces: ]]..vim.bo.shiftwidth
+                        else
+                            return [[Tab size: ]]..vim.bo.tabstop
+                        end
+                    end, 'location'},
                 lualine_z = {'tabs'}
             },
             inactive_winbar = {
@@ -44,5 +48,6 @@ return {
                 lualine_z = {}
             },
         },
-    }
+    },
+    "arkav/lualine-lsp-progress",
 }

@@ -43,7 +43,16 @@ return {
         end,
     },
     { 'folke/trouble.nvim', event = "VeryLazy", },
-    { 'stevearc/dressing.nvim', },
+    {
+        'stevearc/dressing.nvim',
+        config = function()
+            require("dressing").setup({
+                select = {
+                    telescope = require('telescope.themes').get_cursor({}),
+                }
+            })
+        end,
+    },
     { 'kevinhwang91/nvim-bqf', event = "VeryLazy", },
     { 'CoatiSoftware/vim-sourcetrail', cmd = "SourcetrailStartServer"},
     { 'moll/vim-bbye', cmd = "Bdelete", },
@@ -60,6 +69,17 @@ return {
         config = function(_, opts)
             require'vscode'.setup(opts)
             require'vscode'.load()
+        end,
+        enabled = false,
+    },
+    {
+        "loctvl842/monokai-pro.nvim",
+        lazy = false,
+        priority = 1001,
+        opts = {},
+        config = function(_, opts)
+            require'monokai-pro'.setup(opts)
+            vim.cmd([[colorscheme monokai-pro]])
         end,
     },
     {
@@ -215,6 +235,27 @@ return {
         version = false,
         opts = {
             cursor = { enable = false, },
+            scroll = { enable = true, },
         }
     },
+    {
+        "folke/which-key.nvim",
+        -- event = "VeryLazy",
+        init = function()
+            vim.o.timeout = true
+            vim.o.timeoutlen = 600
+        end,
+        opts = {
+            plugins = {
+                registers = false,
+                marks = false,
+            },
+            presets = {
+                operators = false,
+                motions = false,
+                text_objects = false,
+            }
+        }
+    },
+    { "windwp/nvim-autopairs", config = true, }
 }

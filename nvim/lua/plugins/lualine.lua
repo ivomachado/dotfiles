@@ -19,8 +19,19 @@ return {
                 lualine_c = {{'filename', path = 1}, 'diagnostics'},
                 lualine_x = {'encoding', 'fileformat', 'filetype'},
                 lualine_y = {
-                    { 'lsp_progress', spinner_symbols = { '🌑 ', '🌒 ', '🌓 ',
-                        '🌔 ', '🌕 ', '🌖 ', '🌗 ', '🌘 ' }, },
+                    {
+                        'lsp_progress',
+                        spinner_symbols = {
+                            '🌑 ',
+                            '🌒 ',
+                            '🌓 ',
+                            '🌔 ',
+                            '🌕 ',
+                            '🌖 ',
+                            '🌗 ',
+                            '🌘 ',
+                        },
+                    },
                     'progress',
                     function()
                         if vim.bo.expandtab then

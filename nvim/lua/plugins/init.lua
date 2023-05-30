@@ -257,5 +257,13 @@ return {
             }
         }
     },
-    { "windwp/nvim-autopairs", config = true, }
+    { "windwp/nvim-autopairs", config = true, },
+    {
+        'Wansmer/treesj',
+        keys = { '<space>m', '<space>j', '<space>s' },
+        dependencies = { 'nvim-treesitter/nvim-treesitter' },
+        config = function()
+            require('treesj').setup({--[[ your config ]]})
+        end,
+    },
 }

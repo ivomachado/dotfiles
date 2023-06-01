@@ -122,16 +122,22 @@ local on_attach = function(client, bufnr)
     -- Enable completion triggered by <c-x><c-o>
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-    -- Mappings.
-    nnoremap('gd', '<cmd>Telescope lsp_definitions<CR>')
-    nnoremap('gs', '<cmd>ClangdSwitchSourceHeader<CR>')
-    nnoremap('gi', '<cmd>Telescope lsp_implementations<CR>')
-    nnoremap('<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
-    inoremap('<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
-    nnoremap('K', '<cmd>lua vim.lsp.buf.hover()<CR>')
-    nnoremap('<F2>', '<cmd>lua vim.lsp.buf.rename()<CR>')
-    nnoremap('<leader>.', '<cmd>lua vim.lsp.buf.code_action()<CR>')
-    nnoremap('gr', '<cmd>Telescope lsp_references<CR>')
+    wk.register({
+        ["gd"] = { "<cmd>Telescope lsp_definitions<CR>", "Go To Definition" },
+        ["gs"] = { "<cmd>ClangdSwitchSourceHeader<CR>", "Switch C++ Source and Header" },
+        ["gi"] = { "<cmd>Telescope lsp_implementations<CR>", "Go to Implementatino" },
+        ["gr"] = { "<cmd>Telescope lsp_references<CR>", "View References" },
+        ["K"] = { "<cmd>lua vim.lsp.buf.hover()<CR>", "Hover" },
+        ["<F2>"] = { "<cmd>lua vim.lsp.buf.rename()<CR>", "Rename Symbol" },
+        ["<leader>."] = { "<cmd>lua vim.lsp.buf.code_action()<CR>", "Code Action" },
+    })
+
+    wk.register({
+        ["<C-k>"] = {
+            "<cmd>lua vim.lsp.buf.signature_help()<CR>",
+            "Signature Help",
+        },
+    }, { mode = {"i", "n"} })
 end
 
 local cmp = require'cmp'

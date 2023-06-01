@@ -116,27 +116,6 @@ wk.register({
     ["<F11>"] = { "<cmd>lua require'dap'.step_into()<CR>", "Step Into" },
 })
 
-require('gitsigns').setup{
-    on_attach = function(bufnr)
-        wk.register({
-            "Navigation",
-            ["]"] = {
-                "Navigate Next",
-                c = {"<cmd>Gitsigns next_hunk<CR>", "Hunk"},
-            },
-            ["["] = {
-                "Navigate Previous",
-                c = {"<cmd>Gitsigns prev_hunk<CR>", "Hunk"},
-            }
-        })
-
-        wk.register({
-            ["hb"] = { "<cmd>Gitsigns blame_line<CR>", "Toggle Git Blame" },
-        }, { prefix = "<leader>" })
-    end,
-    current_line_blame = false,
-}
-
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 local on_attach = function(client, bufnr)

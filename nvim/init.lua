@@ -73,7 +73,7 @@ wk.register({
         b = { "<cmd>Telescope buffers<cr>", "Buffers"},
         O = { "<cmd>Telescope oldfiles<cr>", "Recent Files"},
         o = { "<cmd>Telescope lsp_document_symbols<cr>", "Document Symbols"},
-        s = { "<cmd>Autosession search<cr>", "Sessions" },
+        s = { require("auto-session.session-lens").search_session, "Sessions" },
         l = { "<cmd>Telescope live_grep theme=dropdown<cr>", "Live Grep" },
         p = { "<cmd>Telescope commands<cr>", "Commands" },
     },

@@ -76,6 +76,7 @@ wk.register({
         s = { require("auto-session.session-lens").search_session, "Sessions" },
         l = { "<cmd>Telescope live_grep theme=dropdown<cr>", "Live Grep" },
         p = { "<cmd>Telescope commands<cr>", "Commands" },
+        c = { "<cmd>Telescope colorscheme<cr>", "Colorschemes" },
     },
     w = { "<C-W>", "Windows", noremap = false,},
     q = { "<cmd>Bdelete<CR>", "Close Buffer"},

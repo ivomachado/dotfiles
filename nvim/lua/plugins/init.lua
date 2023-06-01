@@ -192,15 +192,14 @@ return {
             auto_session_suppress_dirs = {'~/', '~/projects'}
         },
     },
-
     {
-        's1n7ax/nvim-terminal',
+        "akinsho/toggleterm.nvim",
         event = "VeryLazy",
         opts = {
-            window_height_change_amount = 10,
-        },
+            start_in_insert = true,
+            shading_factor = '-40',
+        }
     },
-
     {
         'dstein64/nvim-scrollview',
         event = "VeryLazy",
@@ -236,11 +235,12 @@ return {
         opts = {
             cursor = { enable = false, },
             scroll = { enable = true, },
-        }
+        },
+        enabled = false,
     },
     {
         "folke/which-key.nvim",
-        -- event = "VeryLazy",
+        event = "VeryLazy",
         init = function()
             vim.o.timeout = true
             vim.o.timeoutlen = 600

@@ -50,29 +50,12 @@ return {
                         ["<C-a>"] = "smart_add_to_qflist",
                     },
                 },
-                layout_strategy = "vertical",
+                layout_strategy = "horizontal",
                 fuzzy = true,                    -- false will only do exact matching
                 dynamic_preview_title = true,
-                layout_config = {
-                    width = 0.75,
-                },
             },
-            pickers = {
-                find_files = {
-                    theme = "dropdown",
-                },
-                live_grep = {
-                    theme = "dropdown",
-                },
-                lsp_document_symbols = {
-                    fname_width = 50,
-                },
-                commands = {
-                    theme = "dropdown",
-                },
-            },
-            extensions = {
-            }
+            pickers = { },
+            extensions = { }
         },
     }
 }

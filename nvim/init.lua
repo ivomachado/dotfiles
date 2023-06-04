@@ -88,6 +88,7 @@ wk.register({
     f = {
         name = "Telescope",
         f = { "<cmd>Telescope find_files<cr>", "Find Files"},
+        g = { "<cmd>Telescope git_files<cr>", "Git Files"},
         F = { expanded_builtin_picker("find_files"), "Find Files With Externals"},
         b = { "<cmd>Telescope buffers<cr>", "Buffers"},
         O = { "<cmd>Telescope oldfiles<cr>", "Recent Files"},

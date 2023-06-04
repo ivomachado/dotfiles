@@ -59,6 +59,24 @@ snoremap('jk', '<Esc>')
 
 vim.cmd([[set guifont=FiraCode\ Nerd\ Font\ Font\ Mono:h11]])
 
+function expanded_builtin_picker(builtin_picker)
+    return function()
+        local builtin = require("telescope.builtin")
+        return builtin[builtin_picker]({
+            search_dirs = {
+                '',
+                'externals/certi_common_libs',
+                'externals/smart_platform',
+                'externals/certi_formatter',
+                'buildroot',
+                'externals/certi_libwpe',
+                'externals/certi_wpe',
+                'externals/wpebackend-certi',
+            },
+        })
+    end
+end
+
 wk = require('which-key')
 wk.register({
     b = {
@@ -70,11 +88,13 @@ wk.register({
     f = {
         name = "Telescope",
         f = { "<cmd>Telescope find_files<cr>", "Find Files"},
+        F = { expanded_builtin_picker("find_files"), "Find Files With Externals"},
         b = { "<cmd>Telescope buffers<cr>", "Buffers"},
         O = { "<cmd>Telescope oldfiles<cr>", "Recent Files"},
         o = { "<cmd>Telescope lsp_document_symbols<cr>", "Document Symbols"},
         s = { require("auto-session.session-lens").search_session, "Sessions" },
-        l = { "<cmd>Telescope live_grep theme=dropdown<cr>", "Live Grep" },
+        l = { "<cmd>Telescope live_grep<cr>", "Live Grep" },
+        L = { expanded_builtin_picker("live_grep"), "Live Grep" },
         p = { "<cmd>Telescope commands<cr>", "Commands" },
         c = { "<cmd>Telescope colorscheme<cr>", "Colorschemes" },
     },
@@ -208,11 +228,11 @@ cmp.setup({
     },
     sorting = {
         comparators = {
-            cmp.config.compare.offset,
-            cmp.config.compare.exact,
-            cmp.config.compare.recently_used,
             require("clangd_extensions.cmp_scores"),
             cmp.config.compare.kind,
+            cmp.config.compare.exact,
+            cmp.config.compare.recently_used,
+            cmp.config.compare.offset,
             cmp.config.compare.sort_text,
             cmp.config.compare.length,
             cmp.config.compare.order,

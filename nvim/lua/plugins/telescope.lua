@@ -59,28 +59,10 @@ return {
             },
             pickers = {
                 find_files = {
-                    -- theme = "dropdown",
-                    search_dirs = {
-                        '.',
-                        'externals/certi_common_libs',
-                        'externals/smart_platform',
-                        'externals/certi_formatter',
-                        'buildroot',
-                        'externals/certi_libwpe',
-                        'externals/certi_wpe',
-                        'externals/wpebackend-certi',
-                    },
+                    theme = "dropdown",
                 },
                 live_grep = {
-                    search_dirs = {
-                        '.',
-                        'externals/certi_common_libs',
-                        'externals/smart_platform',
-                        'buildroot',
-                        'externals/certi_libwpe',
-                        'externals/certi_wpe',
-                        'externals/wpebackend-certi',
-                    },
+                    theme = "dropdown",
                 },
                 lsp_document_symbols = {
                     fname_width = 50,

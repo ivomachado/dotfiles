@@ -219,6 +219,7 @@ return {
         opts = {
             start_in_insert = true,
             shading_factor = '-40',
+            size = 23,
         }
     },
     {

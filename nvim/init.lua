@@ -72,6 +72,7 @@ function expanded_builtin_picker(builtin_picker)
                 'externals/certi_libwpe',
                 'externals/certi_wpe',
                 'externals/wpebackend-certi',
+                'externals/surrogate',
             },
         })
     end

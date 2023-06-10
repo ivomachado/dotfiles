@@ -79,9 +79,9 @@ return {
         opts = {},
         config = function(_, opts)
             require'monokai-pro'.setup(opts)
-            vim.cmd([[colorscheme monokai-pro]])
+            vim.cmd([[colorscheme monokai-pro-machine]])
         end,
-        enabled = false,
+        enabled = true,
     },
     {
         "catppuccin/nvim",
@@ -108,7 +108,7 @@ return {
             vim.cmd([[colorscheme catppuccin]])
         end,
         priority = 1000,
-        enabled = true,
+        enabled = false,
     },
     {
         'williamboman/mason.nvim',

@@ -18,7 +18,7 @@ return {
             require('telescope').load_extension('notify')
         end
     },
-    { 'roryokane/detectindent', event = "BufEnter", },
+    { 'NMAC427/guess-indent.nvim', event = "BufEnter", config = true},
     { 'michaeljsmith/vim-indent-object', event = "VeryLazy", },
     { 'PeterRincker/vim-argumentative', event = "VeryLazy", },
     {

@@ -21,13 +21,6 @@ require("lazy").setup("plugins")
 vim.cmd("filetype plugin on")
 
 vim.cmd([[
-augroup DetectIndent
-autocmd!
-autocmd BufReadPost *  DetectIndent
-augroup END
-]])
-
-vim.cmd([[
 set titlestring=%{fnamemodify(getcwd(),':h:t')}/%{fnamemodify(getcwd(),':t')}
 ]])
 

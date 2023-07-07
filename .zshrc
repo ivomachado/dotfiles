@@ -118,3 +118,21 @@ setopt HIST_BEEP
 merge_compile_commands() {
     find .build_"$1" -name compile_commands.json -type f -print0 | xargs -0 jq -s '[.[][]]' > compile_commands.json
 }
+
+function build-dev-image {
+    docker build --build-arg UID=$(id -u) \
+                 --build-arg GID=$(id -g) \
+                 --build-arg USER=$(id -un) \
+                 --build-arg HOME=$HOME \
+                 -t ivo-dev-container $HOME/Workspace/dotfiles
+}
+
+function start-dev-container {
+    docker run \
+        --network host \
+        -it \
+        -v /opt/certi-x-tools/:/opt/certi-x-tools/  \
+        -u $(id -un) \
+        -v $HOME:$HOME  \
+        -it --rm ivo-dev-container bash
+}

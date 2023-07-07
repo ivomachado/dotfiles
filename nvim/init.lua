@@ -157,7 +157,6 @@ local on_attach = function(client, bufnr)
 end
 
 local cmp = require'cmp'
-local lspkind = require('lspkind')
 
 local has_words_before = function()
     local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -208,15 +207,38 @@ cmp.setup({
     sources = cmp.config.sources({
         { name = 'nvim_lsp' },
         -- { name = 'nvim_lsp_signature_help' },
+        -- { name = 'buffer', keyword_length = 2 },
+        { name = 'async_path' },
         { name = 'vsnip' },
-        { name = 'buffer', keyword_length = 2 },
-        { name = 'path' },
     }),
+    window = {
+        completion = {
+            -- winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
+            col_offset = -3,
+            side_padding = 0,
+        },
+    },
     formatting = {
-        format = lspkind.cmp_format({
-            mode = 'symbol',
-            maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-        })
+        fields = { "kind", "abbr", "menu", },
+        format = function(entry, vim_item)
+            local kind = require('lspkind').cmp_format({
+                mode = 'symbol_text',
+                maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+                menu = ({
+                    buffer = "[Buffer]",
+                    nvim_lsp = "[LSP]",
+                    luasnip = "[LuaSnip]",
+                    nvim_lua = "[Lua]",
+                    latex_symbols = "[Latex]",
+                })
+            })(entry, vim_item)
+
+            local strings = vim.split(kind.kind, "%s", { trimempty = true})
+            kind.kind = " " .. (strings[1] or "") .. " "
+            kind.menu = "    (" .. (strings[2] or "") .. ")"
+
+            return kind
+        end,
     },
     experimental = {
         ghost_text = false,
@@ -246,7 +268,7 @@ cmp.setup.cmdline('/', {
 -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline(':', {
     sources = cmp.config.sources({
-        { name = 'path' },
+        -- { name = 'async_path' },
         { name = 'cmdline' },
     })
 })
@@ -262,6 +284,10 @@ require("mason-lspconfig").setup(
         'svelte', 'tsserver', 'pylsp',
     },
     automatic_installation = true,
+    completion = {
+        keyword_length = 3,
+        autocomplete = false,
+    },
 })
 require("mason-lspconfig").setup_handlers{
     function (server_name)

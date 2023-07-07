@@ -79,7 +79,7 @@ return {
         opts = {},
         config = function(_, opts)
             require'monokai-pro'.setup(opts)
-            vim.cmd([[colorscheme monokai-pro-machine]])
+            vim.cmd([[colorscheme monokai-pro-classic]])
         end,
         enabled = true,
     },
@@ -328,7 +328,7 @@ return {
             }
         }
     },
-    { "windwp/nvim-autopairs", config = true, },
+    -- { "windwp/nvim-autopairs", config = true, },
     {
         'Wansmer/treesj',
         keys = { '<space>m', '<space>j', '<space>s' },

@@ -79,7 +79,7 @@ return {
         opts = {},
         config = function(_, opts)
             require'monokai-pro'.setup(opts)
-            vim.cmd([[colorscheme monokai-pro-classic]])
+            vim.cmd([[colorscheme monokai-pro-spectrum]])
         end,
         enabled = true,
     },

@@ -137,6 +137,7 @@ wk.register({
 local on_attach = function(client, bufnr)
     -- Enable completion triggered by <c-x><c-o>
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+    client.server_capabilities.semanticTokensProvider = nil
 
     wk.register({
         ["gd"] = { "<cmd>Telescope lsp_definitions<CR>", "Go To Definition" },
@@ -245,11 +246,11 @@ cmp.setup({
     },
     sorting = {
         comparators = {
-            require("clangd_extensions.cmp_scores"),
-            cmp.config.compare.kind,
+            cmp.config.compare.offset,
             cmp.config.compare.exact,
             cmp.config.compare.recently_used,
-            cmp.config.compare.offset,
+            require("clangd_extensions.cmp_scores"),
+            cmp.config.compare.kind,
             cmp.config.compare.sort_text,
             cmp.config.compare.length,
             cmp.config.compare.order,
@@ -301,6 +302,11 @@ require("mason-lspconfig").setup_handlers{
     end,
     ["clangd"] = function ()
         require("clangd_extensions").setup({
+            extensions = {
+                inlay_hints = {
+                    only_current_line = true,
+                },
+            },
             server = {
                 on_attach = on_attach,
                 capabilities = capabilities,

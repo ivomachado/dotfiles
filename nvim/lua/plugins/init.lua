@@ -63,29 +63,32 @@ return {
         config = true,
     },
     {
-        "Mofiqul/vscode.nvim",
+        "sainnhe/sonokai",
         lazy = false,
         priority = 1001,
-        config = function(_, opts)
-            require'vscode'.setup(opts)
-            require'vscode'.load()
+        config = function ()
+            vim.cmd([[]])
+            vim.cmd([[
+                let g:sonokai_style="andromeda"
+                colorscheme sonokai
+            ]])
         end,
-        enabled = false,
+        enabled = true,
     },
     {
-        "loctvl842/monokai-pro.nvim",
-        lazy = false,
+        "EdenEast/nightfox.nvim",
+        lazy = true,
         priority = 1001,
         opts = {},
         config = function(_, opts)
-            require'monokai-pro'.setup(opts)
-            vim.cmd([[colorscheme monokai-pro-spectrum]])
+            vim.cmd([[colorscheme nightfox]])
         end,
         enabled = true,
     },
     {
         "catppuccin/nvim",
         name = "catppuccin",
+        lazy = true,
         opts = {
             flavour = "frappe",
             background = {
@@ -108,7 +111,7 @@ return {
             vim.cmd([[colorscheme catppuccin]])
         end,
         priority = 1000,
-        enabled = false,
+        enabled = true,
     },
     {
         'williamboman/mason.nvim',
@@ -198,7 +201,7 @@ return {
 
             highlight = {
                 enable = true,
-                additional_vim_regex_highlighting = false,
+                additional_vim_regex_highlighting = true,
             },
         },
         config = function(_, opts)

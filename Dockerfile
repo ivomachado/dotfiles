@@ -11,6 +11,12 @@ ARG USER
 ARG GID
 ARG HOME
 
+RUN groupadd -g $GID $USER
+RUN useradd -u $UID -g $GID $USER -m -d $HOME -p "$(openssl passwd -1 123456)"
+# RUN useradd -g $GID $USER -m -d $HOME
+
+RUN usermod -aG sudo $USER
+
 RUN apt-get update
 RUN apt-get install -y apt-utils \
  wget \
@@ -66,13 +72,8 @@ RUN apt-get install -y apt-utils \
  cpio \
  rsync \
  zsh \
+ bc \
  cmake
-
-RUN groupadd -g $GID $USER
-RUN useradd -u $UID -g $GID $USER -m -d $HOME
-# RUN useradd -g $GID $USER -m -d $HOME
-# -p "$(openssl passwd -1 123456)"
-RUN usermod -aG sudo $USER
 
 # Install NodeJS 12
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -

@@ -132,7 +132,9 @@ function start-dev-container {
         --network host \
         -it \
         -v /opt/certi-x-tools/:/opt/certi-x-tools/  \
+        -v /var/cache/buildroot-dl/:/var/cache/buildroot-dl/  \
         -u $(id -un) \
+        -w $PWD \
         -v $HOME:$HOME  \
         -it --rm ivo-dev-container bash
 }

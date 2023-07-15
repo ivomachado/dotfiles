@@ -38,7 +38,7 @@ wk.register({
     b = {
         name = "Neotree",
         b = { "<cmd>Neotree left toggle=true<cr>", "Toggle Project Drawer" },
-        B = { "<cmd>Neotree left focus reveal<cr>", "Open Project Drawer on Current File" },
+        B = { "<cmd>Neotree float focus reveal<cr>", "Open Project Drawer on Current File" },
         a = { "<cmd>Neotree left float buffers<cr>", "Show Opened Buffers" },
     },
     f = {

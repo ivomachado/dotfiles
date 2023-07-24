@@ -26,7 +26,7 @@ return {
         event = "VeryLazy",
         opts = {
             highlight = 'DiffDelete',
-            ignored_filetypes = { 'TelescopePrompt', 'Trouble', 'help' },
+            ignored_filetypes = { 'TelescopePrompt', 'Trouble', 'help', 'lpinfo', 'toggleterm', 'neo-tree', 'lazy'},
             ignore_terminal = true,
         },
     },

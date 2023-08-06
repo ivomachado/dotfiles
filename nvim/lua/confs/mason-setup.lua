@@ -51,6 +51,17 @@ require("mason-lspconfig").setup_handlers{
         }
     end,
     ["clangd"] = function ()
+        local root_dir = require('lspconfig').util.root_pattern('compile_commands.json')
+        require('lint').linters_by_ft = {
+            cpp = {'cppcheck',}
+        }
+        if (not root_dir) then
+            cppcheck_linter = require('lint').linters.cppcheck
+            cppcheck_linter.args = {
+                '--enable-all',
+                '--project='..root_dir()..'/compile_commands',
+            }
+        end
         require("clangd_extensions").setup({
             extensions = {
                 inlay_hints = {

@@ -73,6 +73,8 @@ RUN apt-get install -y apt-utils \
  rsync \
  zsh \
  bc \
+ libmount1:i386 \
+ libuuid1:i386 \
  cmake
 
 # Install NodeJS 12

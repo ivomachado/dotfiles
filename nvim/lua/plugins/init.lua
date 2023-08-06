@@ -128,12 +128,12 @@ return {
             dap.listeners.after.event_initialized["dapui_config"] = function()
                 dapui.open()
             end
-            dap.listeners.before.event_terminated["dapui_config"] = function()
-                dapui.close()
-            end
-            dap.listeners.before.event_exited["dapui_config"] = function()
-                dapui.close()
-            end
+            -- dap.listeners.before.event_terminated["dapui_config"] = function()
+            --     dapui.close()
+            -- end
+            -- dap.listeners.before.event_exited["dapui_config"] = function()
+            --     dapui.close()
+            -- end
         end,
         lazy = true,
     },
@@ -196,7 +196,7 @@ return {
             -- List of parsers to ignore installing (for "all")
             --
             indent = {
-                enable = true,
+                enable = false,
             },
 
             highlight = {
@@ -208,7 +208,6 @@ return {
             require('nvim-treesitter.configs').setup(opts)
         end,
     },
-
     {
         'rmagatti/auto-session',
         opts = {
@@ -338,6 +337,19 @@ return {
         dependencies = { 'nvim-treesitter/nvim-treesitter' },
         config = function()
             require('treesj').setup({--[[ your config ]]})
+        end,
+    },
+    {
+        'mfussenegger/nvim-lint',
+        config = function ()
+            require('lint').linters_by_ft = {
+                cpp = {'cppcheck',}
+            }
+            vim.api.nvim_create_autocmd({ "BufReadPost", "BufWritePost" }, {
+                callback = function()
+                    require("lint").try_lint()
+                end,
+            })
         end,
     },
 }

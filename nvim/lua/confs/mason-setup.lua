@@ -68,15 +68,15 @@ require("mason-lspconfig").setup_handlers{
                     only_current_line = true,
                 },
             },
-            server = {
-                on_attach = on_attach,
-                capabilities = capabilities,
-                root_dir = require('lspconfig').util.root_pattern('compile_commands.json'),
-                flags = {
-                    debounce_text_changes = 150,
-                }
-            }
         })
+        require("lspconfig")['clangd'].setup{
+            on_attach = on_attach,
+            capabilities = capabilities,
+            root_dir = require('lspconfig').util.root_pattern('compile_commands.json'),
+            flags = {
+                debounce_text_changes = 150,
+            }
+        }
     end
 }
 require("mason-nvim-dap").setup({

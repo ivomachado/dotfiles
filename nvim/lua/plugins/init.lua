@@ -55,7 +55,7 @@ return {
     },
     { 'kevinhwang91/nvim-bqf', event = "VeryLazy", },
     { 'CoatiSoftware/vim-sourcetrail', cmd = "SourcetrailStartServer"},
-    { 'moll/vim-bbye', cmd = "Bdelete", },
+    { 'famiu/bufdelete.nvim', cmd = { "Bdelete", "Bwipeout" }, },
     {
         "kylechui/nvim-surround",
         version = "*", -- Use for stability; omit to use `main` branch for the latest features
@@ -278,7 +278,7 @@ return {
                                 callback = vim.schedule_wrap(function()
                                     -- This is a bit of a hack, but if you run bufdelete immediately
                                     -- the shell can occasionally freeze
-                                    vim.api.nvim_buf_delete(bufnr, {})
+                                    require('bufdelete').bufdelete(bufnr)
                                 end
                                 )
                             }

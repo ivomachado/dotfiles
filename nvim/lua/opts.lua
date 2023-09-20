@@ -34,4 +34,9 @@ vim.opt.listchars:append("extends:>")
 vim.opt.listchars:append("precedes:<")
 vim.opt.ffs="unix"
 
+vim.diagnostic.config({
+    virtual_text = false,
+    signs = false,
+})
+
 vim.o.sessionoptions="buffers,curdir,folds,help,tabpages,winsize"

@@ -1,6 +1,7 @@
 return {
     {
         "folke/todo-comments.nvim",
+        event = "VeryLazy",
         dependencies = { "nvim-lua/plenary.nvim" },
         opts = {}
     },
@@ -139,6 +140,7 @@ return {
     },
     {
         'numToStr/Comment.nvim',
+        event = "VeryLazy",
         config = true,
     },
     {
@@ -184,6 +186,7 @@ return {
     },
     {
         'nvim-treesitter/nvim-treesitter',
+        event = "VeryLazy",
         build = ':TSUpdate',
         opts = {
             -- A list of parser names, or "all"
@@ -243,6 +246,7 @@ return {
     },
     {
         'willothy/flatten.nvim',
+        event = "VeryLazy",
         opts = {
             window = {
                 open = "alternate",

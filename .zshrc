@@ -5,8 +5,6 @@ export PATH=$HOME/.cargo/bin:$HOME/.local/bin:$HOME/.local/share/bob/nvim-bin:$P
 
 export EDITOR='nvim'
 
-bindkey '^ ' autosuggest-accept
-
 setopt EXTENDED_HISTORY
 setopt HIST_EXPIRE_DUPS_FIRST
 setopt HIST_IGNORE_DUPS
@@ -106,6 +104,8 @@ EOPLUGINS
 
     # theme
     zgenom ohmyzsh themes/eastwood
+    zgenom load agkozak/zsh-z
+    zgenom load zsh-users/zsh-autosuggestions
 
     # save all to init script
     zgenom save
@@ -125,3 +125,5 @@ fi
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 [ -f /usr/share/fzf/key-bindings.zsh ] && source /usr/share/fzf/key-bindings.zsh
 [ -f /usr/share/fzf/completion.zsh ] && source /usr/share/fzf/completion.zsh
+
+bindkey '^ ' autosuggest-accept

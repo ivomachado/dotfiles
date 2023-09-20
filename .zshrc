@@ -40,10 +40,6 @@ function start-dev-container {
         -it --rm ivo-dev-container bash
 }
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-[ -f /usr/share/fzf/key-bindings.zsh ] && source /usr/share/fzf/key-bindings.zsh
-[ -f /usr/share/fzf/completion.zsh ] && source /usr/share/fzf/completion.zsh
-
 source "${HOME}/.zgenom/zgenom.zsh"
 zgenom autoupdate
 
@@ -125,3 +121,7 @@ EOPLUGINS
 
     # rbenv rehash
 fi
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f /usr/share/fzf/key-bindings.zsh ] && source /usr/share/fzf/key-bindings.zsh
+[ -f /usr/share/fzf/completion.zsh ] && source /usr/share/fzf/completion.zsh

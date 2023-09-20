@@ -50,6 +50,20 @@ require("mason-lspconfig").setup_handlers{
             }
         }
     end,
+    ["tsserver"] = function ()
+        require("lspconfig").tsserver.setup{
+            on_attach = on_attach,
+            capabilities = capabilities,
+            flags = {
+                debounce_text_changes = 150,
+            },
+            root_dir = require('lspconfig').util.root_pattern(
+                "package.json",
+                "tsconfig.json",
+                "jsconfig.json", ".git")
+            or vim.fn.getcwd(),
+        }
+    end,
     ["clangd"] = function ()
         local root_dir = require('lspconfig').util.root_pattern('compile_commands.json')
         require('lint').linters_by_ft = {

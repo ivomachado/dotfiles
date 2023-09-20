@@ -187,7 +187,7 @@ return {
         build = ':TSUpdate',
         opts = {
             -- A list of parser names, or "all"
-            ensure_installed = { "c", "svelte", "cpp", "lua", "rust" , "typescript", "css", "html", "javascript", "vim"},
+            -- ensure_installed = { "c", "svelte", "cpp", "lua", "rust" , "typescript", "css", "html", "javascript", "vim"},
             auto_install = true,
 
             -- Install parsers synchronously (only applied to `ensure_installed`)
@@ -196,12 +196,18 @@ return {
             -- List of parsers to ignore installing (for "all")
             --
             indent = {
-                enable = false,
+                enable = true,
+                disable = {
+                    "cpp",
+                },
             },
 
             highlight = {
                 enable = true,
-                additional_vim_regex_highlighting = true,
+                disable = {
+                    "bash",
+                },
+                additional_vim_regex_highlighting = false,
             },
         },
         config = function(_, opts)

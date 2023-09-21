@@ -28,6 +28,7 @@ function expanded_builtin_picker(builtin_picker)
                 'externals/certi_wpe',
                 'externals/wpebackend-certi',
                 'externals/surrogate',
+                'externals/photoframe_cc',
             },
         })
     end

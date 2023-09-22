@@ -3,13 +3,13 @@
 backupfolder=~/Workspace/dotfiles
 
 nvimconfigfolder=~/.config/nvim
-kittyconfdir=~/.config/kitty/
+alacrittyconfdir=~/.config/alacritty/
 zshrcpath=~/.zshrc
-kittyconfpath=$kittyconfdir"kitty.conf"
+alacrittyconfpath=$alacrittyconfdir"alacritty.yml"
 
 ln -sf $backupfolder/nvim $nvimconfigfolder
 
-mkdir -p $kittyconfdir
-ln -sf $backupfolder/kitty.conf $kittyconfpath
+mkdir -p $alacrittyconfdir
+ln -sf $backupfolder/alacritty.yml $alacrittyconfpath
 
 ln -sf $backupfolder/.zshrc $zshrcpath

@@ -5,29 +5,30 @@ return {
         dependencies = { "nvim-lua/plenary.nvim" },
         opts = {}
     },
-    { 'tpope/vim-repeat', event = "VeryLazy", },
-    { 'tpope/vim-abolish', event = "VeryLazy", },
-    { 'jghauser/mkdir.nvim', event = "VeryLazy", },
-    { "folke/neodev.nvim", event = "VeryLazy", },
-    { 'mfussenegger/nvim-dap', event = "VeryLazy" },
+    { 'tpope/vim-repeat', event = "BufEnter", },
+    { 'tpope/vim-abolish', event = "BufEnter", },
+    { 'jghauser/mkdir.nvim', event = "BufWritePre", },
+    { 'mfussenegger/nvim-dap', lazy = true },
+    { "folke/neodev.nvim", lazy = true, ft = "lua", opts = {}, } ,
     {
         'rcarriga/nvim-notify',
-        event = "VeryLazy",
-        config = function()
-            vim.notify = require("notify")
-
-            require('telescope').load_extension('notify')
-        end
+        lazy = true,
+        init = function()
+            vim.notify = function(msg, level, opts)
+                vim.notify = require("notify")
+                vim.notify(msg, level, opts)
+           end
+        end,
     },
     { 'NMAC427/guess-indent.nvim', event = "BufEnter", config = true},
-    { 'michaeljsmith/vim-indent-object', event = "VeryLazy", },
-    { 'PeterRincker/vim-argumentative', event = "VeryLazy", },
+    { 'michaeljsmith/vim-indent-object', event = "BufEnter", },
+    { 'PeterRincker/vim-argumentative', event = "BufEnter", },
     {
         'johnfrankmorgan/whitespace.nvim',
         event = "VeryLazy",
         opts = {
             highlight = 'DiffDelete',
-            ignored_filetypes = { 'TelescopePrompt', 'Trouble', 'help', 'lpinfo', 'toggleterm', 'neo-tree', 'lazy'},
+            ignored_filetypes = { 'TelescopePrompt', 'Trouble', 'help', 'lspinfo', 'toggleterm', 'neo-tree', 'lazy', 'mason'},
             ignore_terminal = true,
         },
     },
@@ -43,9 +44,10 @@ return {
             vim.cmd [[highlight IndentBlanklineSpaceChar guifg=nocombine]]
         end,
     },
-    { 'folke/trouble.nvim', event = "VeryLazy", },
+    { 'folke/trouble.nvim', cmd = {"Trouble", "TroubleToggle"}, },
     {
         'stevearc/dressing.nvim',
+        event = "VeryLazy",
         config = function()
             require("dressing").setup({
                 select = {
@@ -54,19 +56,20 @@ return {
             })
         end,
     },
-    { 'kevinhwang91/nvim-bqf', event = "VeryLazy", },
+    { 'kevinhwang91/nvim-bqf', },
     { 'CoatiSoftware/vim-sourcetrail', cmd = "SourcetrailStartServer"},
     { 'famiu/bufdelete.nvim', cmd = { "Bdelete", "Bwipeout" }, },
     {
         "kylechui/nvim-surround",
         version = "*", -- Use for stability; omit to use `main` branch for the latest features
-        event = "VeryLazy",
+        event = "BufEnter",
         config = true,
     },
     {
         "sainnhe/sonokai",
         lazy = false,
-        priority = 1001,
+        event = "VeryLazy",
+        -- priority = 1001,
         config = function ()
             vim.cmd([[]])
             vim.cmd([[
@@ -81,7 +84,7 @@ return {
         lazy = true,
         priority = 1001,
         opts = {},
-        config = function(_, opts)
+        config = function ()
             vim.cmd([[colorscheme nightfox]])
         end,
         enabled = true,
@@ -115,13 +118,27 @@ return {
         enabled = true,
     },
     {
-        'williamboman/mason.nvim',
-        'williamboman/mason-lspconfig.nvim',
-        'jay-babu/mason-nvim-dap.nvim',
+        {
+            'williamboman/mason.nvim',
+            event = "VeryLazy",
+            config = function()
+                require("confs/mason-setup")
+            end,
+        },
+        {
+            'williamboman/mason-lspconfig.nvim',
+            event = "VeryLazy",
+        },
+        {
+            'jay-babu/mason-nvim-dap.nvim',
+            event = "VeryLazy",
+            config = function()
+                require("confs/dap")
+            end,
+        },
     },
     {
         'rcarriga/nvim-dap-ui',
-        event = "VeryLazy",
         config = function ()
             require("dapui").setup()
             local dap, dapui = require("dap"), require("dapui")
@@ -140,11 +157,12 @@ return {
     },
     {
         'numToStr/Comment.nvim',
-        event = "VeryLazy",
+        event = "BufEnter",
         config = true,
     },
     {
         "anuvyklack/windows.nvim",
+        event = "VeryLazy",
         dependencies = {
             "anuvyklack/middleclass",
         },
@@ -155,16 +173,22 @@ return {
         },
     },
     {
-        'neovim/nvim-lspconfig',
-        'p00f/clangd_extensions.nvim',
+        {'neovim/nvim-lspconfig', event = "VeryLazy", },
+        {
+            'p00f/clangd_extensions.nvim',
+            ft = { "c", "cpp", },
+            dependencies = { "neovim/nvim-lspconfig" },
+        },
     },
     {
         'lewis6991/gitsigns.nvim',
+        event = "VeryLazy",
         dependencies = {
             'nvim-lua/plenary.nvim'
         },
         opts = {
-            on_attach = function(bufnr)
+            on_attach = function(_)
+                local wk = require("which-key")
                 wk.register({
                     "Navigation",
                     ["]"] = {
@@ -221,7 +245,10 @@ return {
         'rmagatti/auto-session',
         opts = {
             log_level = 'error',
-            auto_session_suppress_dirs = {'~/', '~/projects'}
+            auto_session_suppress_dirs = {'~/', '~/projects'},
+            session_lens = {
+                load_on_setup = false,
+            },
         },
     },
     {
@@ -267,11 +294,11 @@ return {
                 pre_open = function()
                     local term = require("toggleterm.terminal")
                     local termid = term.get_focused_id()
-                    saved_terminal = term.get(termid)
+                    SavedTerminal = term.get(termid)
                 end,
                 post_open = function(bufnr, winnr, ft, is_blocking)
-                    if is_blocking and saved_terminal then
-                        saved_terminal:close()
+                    if is_blocking and SavedTerminal then
+                        SavedTerminal:close()
                     else
                         -- If it's a normal file, just switch to its window
                         vim.api.nvim_set_current_win(winnr)
@@ -298,9 +325,9 @@ return {
                 block_end = function()
                     -- After blocking ends (for a git commit, etc), reopen the terminal
                     vim.schedule(function()
-                        if saved_terminal then
-                            saved_terminal:open()
-                            saved_terminal = nil
+                        if SavedTerminal then
+                            SavedTerminal:open()
+                            SavedTerminal = nil
                         end
                     end)
                 end,
@@ -311,7 +338,7 @@ return {
     {
         "andrewferrier/debugprint.nvim",
         opts = {},
-        event = "VeryLazy",
+        keys = "g?",
         dependencies = {
             "nvim-treesitter/nvim-treesitter"
         },
@@ -343,7 +370,11 @@ return {
                 motions = false,
                 text_objects = false,
             }
-        }
+        },
+        config = function(_, opts)
+            require("which-key").setup(opts)
+            require("keymaps")
+        end,
     },
     -- { "windwp/nvim-autopairs", config = true, },
     {
@@ -371,7 +402,6 @@ return {
     {
         "folke/noice.nvim",
         enabled = false,
-        event = "VeryLazy",
         opts = {
             lsp = {
                 -- override markdown rendering so that **cmp** and other plugins use **Treesitter**

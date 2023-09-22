@@ -10,8 +10,8 @@ return {
         },
         opts = {
             close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
-            enable_git_status = true,
-            enable_diagnostics = true,
+            enable_git_status = false,
+            enable_diagnostics = false,
             sources = {
                 "filesystem",
                 "buffers",

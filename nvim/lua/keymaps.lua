@@ -10,11 +10,10 @@ local function snoremap(shortcut, command)
     noremap('s', shortcut, command)
 end
 
-
 inoremap('jk', '<Esc>')
 snoremap('jk', '<Esc>')
 
-function expanded_builtin_picker(builtin_picker)
+local function expanded_builtin_picker(builtin_picker)
     return function()
         local builtin = require("telescope.builtin")
         return builtin[builtin_picker]({
@@ -34,7 +33,8 @@ function expanded_builtin_picker(builtin_picker)
     end
 end
 
-wk = require("which-key")
+local wk = require("which-key")
+
 wk.register({
     b = {
         name = "Neotree",

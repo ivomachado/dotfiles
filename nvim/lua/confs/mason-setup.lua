@@ -3,10 +3,10 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
-local on_attach = function(client, bufnr)
+local on_attach = function(_, bufnr)
     -- Enable completion triggered by <c-x><c-o>
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-    vim.lsp.inlay_hint(bufnr, false)
+    -- vim.lsp.inlay_hint(bufnr, false)
     -- client.server_capabilities.semanticTokensProvider = nil
     local wk = require("which-key")
 
@@ -32,8 +32,7 @@ require("mason").setup()
 require("mason-lspconfig").setup(
 {
     ensure_installed = {
-        'clangd', 'cmake', 'html', 'lemminx', 'rust_analyzer',
-        'svelte', 'tsserver', 'pylsp',
+        'clangd', 'cmake',
     },
     automatic_installation = true,
     completion = {
@@ -71,7 +70,7 @@ require("mason-lspconfig").setup_handlers{
             cpp = {'cppcheck',}
         }
         if (not root_dir) then
-            cppcheck_linter = require('lint').linters.cppcheck
+            local cppcheck_linter = require('lint').linters.cppcheck
             cppcheck_linter.args = {
                 '--enable-all',
                 '--project='..root_dir()..'/compile_commands',
@@ -87,7 +86,7 @@ require("mason-lspconfig").setup_handlers{
         require("lspconfig")['clangd'].setup{
             on_attach = on_attach,
             capabilities = capabilities,
-            root_dir = require('lspconfig').util.root_pattern('compile_commands.json'),
+            root_dir = root_dir,
             flags = {
                 debounce_text_changes = 150,
             }
@@ -97,5 +96,6 @@ require("mason-lspconfig").setup_handlers{
 require("mason-nvim-dap").setup({
     automatic_setup = true,
     ensure_installed = {'cppdbg'},
-    handlers = {}
+    handlers = {},
+    automatic_installation = false,
 })

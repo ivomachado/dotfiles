@@ -27,8 +27,3 @@ vim.cmd([[set guifont=FiraCode\ Nerd\ Font\ Font\ Mono:h11]])
 
 require("opts")
 require("lazy").setup("plugins")
-
-require("keymaps")
-require("confs/completion")
-require("confs/mason-setup")
-require("confs/dap")

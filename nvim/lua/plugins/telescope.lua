@@ -18,7 +18,7 @@ return {
     },
     {
         'nvim-telescope/telescope.nvim',
-        event = "VeryLazy",
+        lazy = true,
         branch = '0.1.x',
         dependencies = {
             'nvim-lua/plenary.nvim'
@@ -57,5 +57,10 @@ return {
             pickers = { },
             extensions = { }
         },
+        config = function(_, opts)
+            require("telescope").setup(opts)
+            require("auto-session").setup_session_lens()
+            require("telescope").load_extension "session-lens"
+        end,
     }
 }

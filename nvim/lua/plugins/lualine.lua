@@ -61,5 +61,5 @@ return {
             },
         },
     },
-    "arkav/lualine-lsp-progress",
+    {"arkav/lualine-lsp-progress", event = "VeryLazy"},
 }

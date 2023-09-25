@@ -1,24 +1,18 @@
 return {
     {
         'nvim-telescope/telescope-fzf-native.nvim',
-        event = "VeryLazy",
+        lazy = true,
         dependencies = { 'nvim-telescope/telescope.nvim' },
         build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build',
-        config = function()
-            require('telescope').load_extension('fzf')
-        end
     },
     {
         'prochri/telescope-all-recent.nvim',
-        event = "VeryLazy",
+        lazy = true,
         dependencies = { 'nvim-telescope/telescope.nvim', 'kkharji/sqlite.lua' },
-        config = function()
-            require'telescope-all-recent'.setup{}
-        end
     },
     {
         'nvim-telescope/telescope.nvim',
-        lazy = true,
+        cmd = "Telescope",
         branch = '0.1.x',
         dependencies = {
             'nvim-lua/plenary.nvim'
@@ -61,6 +55,8 @@ return {
             require("telescope").setup(opts)
             require("auto-session").setup_session_lens()
             require("telescope").load_extension "session-lens"
+            require'telescope-all-recent'.setup{}
+            require('telescope').load_extension('fzf')
         end,
     }
 }

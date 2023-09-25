@@ -6,7 +6,7 @@ return {
         opts = {}
     },
     { 'tpope/vim-repeat', event = "BufEnter", },
-    { 'tpope/vim-abolish', event = "BufEnter", },
+    { 'tpope/vim-abolish', cmd = {"Subvert", "S"} },
     { 'jghauser/mkdir.nvim', event = "BufWritePre", },
     { 'mfussenegger/nvim-dap', lazy = true },
     { "folke/neodev.nvim", lazy = true, ft = "lua", opts = {}, } ,
@@ -47,22 +47,33 @@ return {
     { 'folke/trouble.nvim', cmd = {"Trouble", "TroubleToggle"}, },
     {
         'stevearc/dressing.nvim',
-        event = "VeryLazy",
-        config = function()
-            require("dressing").setup({
-                select = {
-                    telescope = require('telescope.themes').get_cursor({}),
-                }
-            })
+        lazy = true,
+        init = function()
+            local setup_dressing = function()
+                require("dressing").setup({
+                    select = {
+                        telescope = require('telescope.themes').get_cursor({}),
+                    }
+                })
+            end
+            vim.ui.select = function(items, opts, on_choice)
+                setup_dressing()
+                vim.ui.select(items, opts, on_choice)
+            end
+
+            vim.ui.input = function(opts, on_confirm)
+                setup_dressing()
+                vim.ui.input(opts, on_confirm)
+            end
         end,
     },
-    { 'kevinhwang91/nvim-bqf', },
+    { 'kevinhwang91/nvim-bqf', event = "QuickFixCmdPre", },
     { 'CoatiSoftware/vim-sourcetrail', cmd = "SourcetrailStartServer"},
     { 'famiu/bufdelete.nvim', cmd = { "Bdelete", "Bwipeout" }, },
     {
         "kylechui/nvim-surround",
         version = "*", -- Use for stability; omit to use `main` branch for the latest features
-        event = "BufEnter",
+        keys = {"ys", "ds", "cs"},
         config = true,
     },
     {
@@ -131,8 +142,15 @@ return {
         },
         {
             'jay-babu/mason-nvim-dap.nvim',
-            event = "VeryLazy",
-            config = function()
+            keys = {"<F5>", "<F9>", "<F10>", "<F11>"},
+            opts = {
+                automatic_setup = true,
+                ensure_installed = {'cppdbg'},
+                handlers = {},
+                automatic_installation = false,
+            },
+            config = function(_, opts)
+                require("mason-nvim-dap").setup(opts)
                 require("confs/dap")
             end,
         },
@@ -157,7 +175,7 @@ return {
     },
     {
         'numToStr/Comment.nvim',
-        event = "BufEnter",
+        keys = {"gc", "gb"},
         config = true,
     },
     {
@@ -172,13 +190,10 @@ return {
             }
         },
     },
+    { 'neovim/nvim-lspconfig', event = "VeryLazy", },
     {
-        {'neovim/nvim-lspconfig', event = "VeryLazy", },
-        {
-            'p00f/clangd_extensions.nvim',
-            ft = { "c", "cpp", },
-            dependencies = { "neovim/nvim-lspconfig" },
-        },
+        'p00f/clangd_extensions.nvim',
+        ft = { "c", "cpp", },
     },
     {
         'lewis6991/gitsigns.nvim',
@@ -254,7 +269,7 @@ return {
     },
     {
         "akinsho/toggleterm.nvim",
-        event = "VeryLazy",
+        cmd = "ToggleTerm",
         opts = {
             start_in_insert = true,
             shading_factor = '-40',
@@ -274,7 +289,6 @@ return {
     },
     {
         'willothy/flatten.nvim',
-        event = "VeryLazy",
         opts = {
             window = {
                 open = "alternate",
@@ -388,6 +402,7 @@ return {
     },
     {
         'mfussenegger/nvim-lint',
+        event = "VeryLazy",
         config = function ()
             require('lint').linters_by_ft = {
                 cpp = {'cppcheck',}

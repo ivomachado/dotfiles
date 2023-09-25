@@ -5,7 +5,7 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities()
 -- after the language server attaches to the current buffer
 local on_attach = function(_, bufnr)
     -- Enable completion triggered by <c-x><c-o>
-    vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+    -- vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
     -- vim.lsp.inlay_hint(bufnr, false)
     -- client.server_capabilities.semanticTokensProvider = nil
     local wk = require("which-key")
@@ -93,9 +93,3 @@ require("mason-lspconfig").setup_handlers{
         }
     end
 }
-require("mason-nvim-dap").setup({
-    automatic_setup = true,
-    ensure_installed = {'cppdbg'},
-    handlers = {},
-    automatic_installation = false,
-})

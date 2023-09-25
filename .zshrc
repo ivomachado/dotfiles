@@ -3,8 +3,6 @@
 export PATH=$HOME/.cargo/bin:$HOME/.local/bin:$HOME/.local/share/bob/nvim-bin:$PATH
 # export PATH=$HOME/.cargo/bin:$HOME/.local/bin:$PATH
 
-export EDITOR='nvim'
-
 setopt EXTENDED_HISTORY
 setopt HIST_EXPIRE_DUPS_FIRST
 setopt HIST_IGNORE_DUPS
@@ -127,3 +125,6 @@ fi
 [ -f /usr/share/fzf/completion.zsh ] && source /usr/share/fzf/completion.zsh
 
 bindkey '^ ' autosuggest-accept
+
+export EDITOR='nvim'
+export VISUAL='nvim'

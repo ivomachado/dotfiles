@@ -233,6 +233,7 @@ return {
                 enable = true,
                 disable = {
                     "bash",
+                    "cmake",
                 },
                 additional_vim_regex_highlighting = false,
             },

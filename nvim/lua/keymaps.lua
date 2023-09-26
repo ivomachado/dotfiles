@@ -1,18 +1,3 @@
-local function noremap(mode, shortcut, command)
-    vim.api.nvim_set_keymap(mode, shortcut, command, { noremap = true, silent = true })
-end
-
-local function inoremap(shortcut, command)
-    noremap('i', shortcut, command)
-end
-
-local function snoremap(shortcut, command)
-    noremap('s', shortcut, command)
-end
-
-inoremap('jk', '<Esc>')
-snoremap('jk', '<Esc>')
-
 local function expanded_builtin_picker(builtin_picker)
     return function()
         local builtin = require("telescope.builtin")
@@ -82,12 +67,12 @@ wk.register({
     ["]"] = {
         "Navigate Next",
         b = { "<cmd>bn<CR>", "Buffer" },
-        e = { "<cmd>lua vim.diagnostic.goto_next()<CR>", "Diganostic" },
+        e = { "<cmd>lua vim.diagnostic.goto_next()<CR>", "Diagnostic" },
     },
     ["["] = {
         "Navigate Previous",
         b = { "<cmd>bp<CR>", "Buffer" },
-        e = { "<cmd>lua vim.diagnostic.goto_prev()<CR>", "Diganostic" },
+        e = { "<cmd>lua vim.diagnostic.goto_prev()<CR>", "Diagnostic" },
     },
     ["<F5>"] = { "<cmd>lua require'dap'.continue()<CR>", "Continue Debugging" },
     ["<F9>"] = { "<cmd>lua require'dap'.toggle_breakpoint()<CR>", "Toggle Breakpoint" },

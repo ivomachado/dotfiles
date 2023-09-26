@@ -131,14 +131,14 @@ return {
     {
         {
             'williamboman/mason.nvim',
-            event = "VeryLazy",
+            -- event = "VeryLazy",
             config = function()
                 require("confs/mason-setup")
             end,
         },
         {
             'williamboman/mason-lspconfig.nvim',
-            event = "VeryLazy",
+            lazy = true,
         },
         {
             'jay-babu/mason-nvim-dap.nvim',
@@ -190,10 +190,15 @@ return {
             }
         },
     },
-    { 'neovim/nvim-lspconfig', event = "VeryLazy", },
+    {
+        'neovim/nvim-lspconfig',
+        event = "VeryLazy",
+        dependencies = "williamboman/mason.nvim",
+    },
     {
         'p00f/clangd_extensions.nvim',
-        ft = { "c", "cpp", },
+        lazy = true,
+        dependencies = "neovim/nvim-lspconfig"
     },
     {
         'lewis6991/gitsigns.nvim',
@@ -225,7 +230,7 @@ return {
     },
     {
         'nvim-treesitter/nvim-treesitter',
-        event = "VeryLazy",
+        version = false,
         build = ':TSUpdate',
         opts = {
             -- A list of parser names, or "all"
@@ -370,10 +375,10 @@ return {
     },
     {
         "folke/which-key.nvim",
-        event = "VeryLazy",
+        keys = {"<leader>", "[", "]" , "<M-;>",},
         init = function()
             vim.o.timeout = true
-            vim.o.timeoutlen = 5000
+            vim.o.timeoutlen = 3000
         end,
         opts = {
             plugins = {

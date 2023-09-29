@@ -37,6 +37,7 @@ return {
         event = "VeryLazy",
         config = function()
             require("ibl").setup {
+                scope = { enabled = false, },
                 show_end_of_line = true,
                 show_current_context = true,
                 indent_blankline_show_first_indent_level = false,
@@ -231,7 +232,7 @@ return {
     {
         'nvim-treesitter/nvim-treesitter',
         version = false,
-        enabled = false,
+        enabled = true,
         build = ':TSUpdate',
         opts = {
             -- A list of parser names, or "all"
@@ -284,6 +285,7 @@ return {
     },
     {
         'dstein64/nvim-scrollview',
+        enabled = false,
         event = "VeryLazy",
         opts = {
             excluded_filetypes = {'nerdtree'},

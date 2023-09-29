@@ -44,11 +44,20 @@ return {
                         ["<C-a>"] = "smart_add_to_qflist",
                     },
                 },
-                layout_strategy = "horizontal",
+                -- layout_strategy = "horizontal",
                 fuzzy = true,                    -- false will only do exact matching
-                dynamic_preview_title = true,
+                dynamic_preview_title = false,
+                path_display = { "truncate" },
             },
-            pickers = { },
+            pickers = {
+                find_files = {
+                    preview = {
+                        hide_on_startup = true,
+                    },
+                    hidden = true,
+                    theme = "dropdown",
+                }
+            },
             extensions = { }
         },
         config = function(_, opts)

@@ -1,6 +1,7 @@
 local cmp = require("cmp")
 
 local has_words_before = function()
+    unpack = unpack or table.unpack
     local line, col = unpack(vim.api.nvim_win_get_cursor(0))
     return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 end
@@ -15,6 +16,22 @@ cmp.setup({
             vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
         end,
     },
+    keyword_length = 3,
+    matching = {
+        disallow_fuzzy_matching = true,
+    },
+    window = {
+        completion = {
+            -- winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
+            col_offset = -3,
+            side_padding = 0,
+            completion = cmp.config.window.bordered(),
+            documentation = cmp.config.window.bordered(),
+        },
+    },
+    performance = {
+        max_view_entries = 20,
+    },
     mapping = {
         ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
         ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
@@ -22,50 +39,57 @@ cmp.setup({
         ['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item(), { 'i', 'c' }),
         ["<Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
-                cmp.select_next_item()
-            elseif vim.fn["vsnip#available"](1) == 1 then
-                feedkey("<Plug>(vsnip-expand-or-jump)", "")
-            -- elseif has_words_before() then
-            --     cmp.complete()
+                    cmp.select_next_item()
             else
-                fallback() -- The fallback function sends a already mapped key. In this case, it's probably `<Tab>`.
+                fallback()
             end
-        end, { "i", "s" }),
-        ["<S-Tab>"] = cmp.mapping(function()
+        end, {"i","s","c",}),
+        ["<S-Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
-                cmp.select_prev_item()
-            elseif vim.fn["vsnip#jumpable"](-1) == 1 then
-                feedkey("<Plug>(vsnip-jump-prev)", "")
+                    cmp.select_prev_item()
+            else
+                fallback()
             end
-        end, { "i", "s" }),
-        ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+        end, {"i","s","c",}),
+        ['<C-Space>'] = function ()
+            if cmp.visible() then
+                cmp.confirm({select = true})
+            else
+                cmp.complete()
+            end
+        end,
         ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
         ['<C-e>'] = cmp.mapping({
             i = cmp.mapping.abort(),
             c = cmp.mapping.close(),
         }),
-        ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+        ['<CR>'] = function(fallback)
+            if cmp.visible() then
+                local entry = cmp.get_selected_entry()
+                if not entry then
+                    fallback()
+                else
+                    cmp.confirm()
+                cmp.confirm({select = false})
+                end
+            else
+                fallback() -- If you use vim-endwise, this fallback will behave the same as vim-endwise.
+            end
+        end,
     },
-    sources = cmp.config.sources({
-        { name = 'nvim_lsp' },
-        -- { name = 'nvim_lsp_signature_help' },
-        { name = 'buffer', keyword_length = 2 },
+    sources = {
+        { name = 'nvim_lsp', group_index = 1 },
+        { name = 'nvim_lsp_signature_help' },
+        { name = 'buffer', group_index = 2 },
         { name = 'async_path' },
         { name = 'vsnip' },
-    }),
-    window = {
-        completion = {
-            -- winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
-            col_offset = -3,
-            side_padding = 0,
-        },
     },
     formatting = {
         fields = { "kind", "abbr", "menu", },
         format = function(entry, vim_item)
             local kind = require('lspkind').cmp_format({
                 mode = 'symbol_text',
-                maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+                maxwidth = 80, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
                 menu = ({
                     buffer = "[Buffer]",
                     nvim_lsp = "[LSP]",
@@ -87,14 +111,14 @@ cmp.setup({
     },
     sorting = {
         comparators = {
-            cmp.config.compare.offset,
             cmp.config.compare.exact,
             cmp.config.compare.recently_used,
             require("clangd_extensions.cmp_scores"),
+            cmp.config.compare.offset,
             cmp.config.compare.kind,
             cmp.config.compare.sort_text,
-            cmp.config.compare.length,
             cmp.config.compare.order,
+            cmp.config.compare.length,
         },
     },
 })
@@ -109,8 +133,8 @@ cmp.setup.cmdline('/', {
 
 -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline(':', {
-    sources = cmp.config.sources({
+    sources = {
         -- { name = 'async_path' },
         { name = 'cmdline' },
-    })
+    }
 })

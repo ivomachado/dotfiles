@@ -36,7 +36,7 @@ return {
         'lukas-reineke/indent-blankline.nvim',
         event = "VeryLazy",
         config = function()
-            require("indent_blankline").setup {
+            require("ibl").setup {
                 show_end_of_line = true,
                 show_current_context = true,
                 indent_blankline_show_first_indent_level = false,
@@ -84,7 +84,7 @@ return {
         config = function ()
             vim.cmd([[]])
             vim.cmd([[
-                let g:sonokai_style="andromeda"
+                " let g:sonokai_style="espresso"
                 colorscheme sonokai
             ]])
         end,
@@ -231,6 +231,7 @@ return {
     {
         'nvim-treesitter/nvim-treesitter',
         version = false,
+        enabled = false,
         build = ':TSUpdate',
         opts = {
             -- A list of parser names, or "all"
@@ -396,7 +397,20 @@ return {
             require("keymaps")
         end,
     },
-    -- { "windwp/nvim-autopairs", config = true, },
+    {
+        "windwp/nvim-autopairs",
+        event = "InsertEnter",
+        config = function ()
+            require("nvim-autopairs").setup{}
+
+            local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+            local cmp = require('cmp')
+            cmp.event:on(
+                'confirm_done',
+                cmp_autopairs.on_confirm_done()
+            )
+        end
+    },
     {
         'Wansmer/treesj',
         keys = { '<space>m', '<space>j', '<space>s' },

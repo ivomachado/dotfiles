@@ -78,9 +78,19 @@ return {
         config = true,
     },
     {
+        "RRethy/nvim-base16",
+        priority = 1001,
+        config = function()
+            require('base16-colorscheme').with_config({
+                telescope = false,
+            })
+            vim.cmd[[colorscheme base16-monokai]]
+        end,
+    },
+    {
         "sainnhe/sonokai",
-        lazy = false,
-        event = "VeryLazy",
+        lazy = true,
+        -- event = "VeryLazy",
         -- priority = 1001,
         config = function ()
             vim.cmd([[]])

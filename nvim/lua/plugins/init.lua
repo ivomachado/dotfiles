@@ -78,7 +78,35 @@ return {
         config = true,
     },
     {
+        "polirritmico/monokai-nightasty.nvim",
+        lazy = false,
+        priority = 1000,
+        terminal_colors = false,
+        opts = {
+            hl_styles = {
+                -- Background styles for sidebars (panels) and floating windows:
+                floats = "dark", -- default, dark, transparent
+                sidebars = "dark", -- default, dark, transparent
+            },
+            sidebars = { "qf", "help", "neo-tree"},
+            lualine_bold = false,
+            on_colors = function(colors)
+                colors.border = colors.grey
+                colors.comment = "#2d7e79"
+            end,
+        },
+        config = function(_, opts)
+            require("monokai-nightasty").setup(opts)
+            vim.cmd[[colorscheme monokai-nightasty]]
+        end,
+        on_highlights = function(highlights, colors)
+            highlights.TelescopeNormal = { fg = colors.magenta, bg = colors.charcoal }
+            highlights.WinSeparator = { fg = colors.grey }
+        end,
+    },
+    {
         "RRethy/nvim-base16",
+        lazy = true,
         priority = 1001,
         config = function()
             require('base16-colorscheme').with_config({
@@ -91,7 +119,7 @@ return {
         "sainnhe/sonokai",
         lazy = true,
         -- event = "VeryLazy",
-        -- priority = 1001,
+        priority = 1001,
         config = function ()
             vim.cmd([[]])
             vim.cmd([[
@@ -197,7 +225,7 @@ return {
         },
         opts = {
             ignore = {
-                buftype = { "quickfix", "terminal" }
+                buftype = { "quickfix", "terminal", "neo-tree"}
             }
         },
     },
@@ -289,7 +317,7 @@ return {
         cmd = "ToggleTerm",
         opts = {
             start_in_insert = true,
-            shading_factor = '-40',
+            shading_factor = '-55',
             size = 23,
         }
     },

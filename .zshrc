@@ -101,7 +101,7 @@ EOPLUGINS
     zgenom load zsh-users/zsh-completions
 
     # theme
-    zgenom ohmyzsh themes/eastwood
+    zgenom ohmyzsh themes/sorin
     zgenom load agkozak/zsh-z
     zgenom load zsh-users/zsh-autosuggestions
 

@@ -1,7 +1,7 @@
 return {
     {
         "polirritmico/monokai-nightasty.nvim",
-        lazy = false,
+        lazy = true,
         priority = 1000,
         terminal_colors = false,
         opts = {
@@ -15,6 +15,7 @@ return {
             on_colors = function(colors)
                 colors.border = colors.black
                 colors.comment = "#2d7e79"
+                colors.fg_gutter = "#5e5e5e"
             end,
             on_highlights = function(highlights, colors)
                 -- highlights.TelescopeNormal = { fg = colors.magenta, bg = colors.charcoal }
@@ -88,5 +89,27 @@ return {
         end,
         priority = 1000,
         enabled = true,
+    },
+    {
+        "folke/tokyonight.nvim",
+        lazy = true,
+        priority = 1000,
+        opts = {},
+        config = function(_, opts)
+            require'tokyonight'.setup(opts)
+            vim.cmd([[colorscheme tokyonight]])
+        end,
+    },
+    {
+        "rebelot/kanagawa.nvim",
+        lazy = false,
+        priority = 1000,
+        opts = {
+            compile = true,
+        },
+        config = function(_, opts)
+            require'kanagawa'.setup(opts)
+            vim.cmd([[colorscheme kanagawa]])
+        end,
     },
 }

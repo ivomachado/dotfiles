@@ -194,9 +194,9 @@ return {
             --
             indent = {
                 enable = true,
-                disable = {
-                    "cpp",
-                },
+                -- disable = {
+                --     "cpp",
+                -- },
             },
 
             highlight = {
@@ -228,6 +228,7 @@ return {
         opts = {
             start_in_insert = true,
             shading_factor = '-55',
+            auto_scroll = false,
             size = 23,
         }
     },

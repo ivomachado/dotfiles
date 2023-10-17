@@ -35,25 +35,34 @@ cmp.setup({
     mapping = {
         ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
         ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
-        ['<C-n>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i', 'c' }),
-        ['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item(), { 'i', 'c' }),
+        ['<C-n>'] = cmp.mapping(cmp.mapping.select_next_item({behavior = cmp.SelectBehavior.Insert}), { 'i', 'c' }),
+        ['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item({behavior = cmp.SelectBehavior.Insert}), { 'i', 'c' }),
         ["<Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
-                    cmp.select_next_item()
+                local entry = cmp.get_selected_entry()
+                if not entry then
+                    cmp.select_next_item({behavior = cmp.SelectBehavior.Select})
+                else
+                    cmp.confirm()
+                end
+            elseif vim.fn["vsnip#available"](1) == 1 then
+                feedkey("<Plug>(vsnip-expand-or-jump)", "")
+            elseif has_words_before() then
+                cmp.complete()
             else
                 fallback()
             end
         end, {"i","s","c",}),
-        ["<S-Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-                    cmp.select_prev_item()
-            else
-                fallback()
-            end
-        end, {"i","s","c",}),
+        -- ["<S-Tab>"] = cmp.mapping(function(fallback)
+        --     if cmp.visible() then
+        --             cmp.select_prev_item()
+        --     else
+        --         fallback()
+        --     end
+        -- end, {"i","s","c",}),
         ['<C-Space>'] = function ()
             if cmp.visible() then
-                cmp.confirm({select = true})
+                cmp.confirm({cmp.ConfirmBehavior.Insert, select = true})
             else
                 cmp.complete()
             end
@@ -64,14 +73,8 @@ cmp.setup({
             c = cmp.mapping.close(),
         }),
         ['<CR>'] = function(fallback)
-            if cmp.visible() then
-                local entry = cmp.get_selected_entry()
-                if not entry then
-                    fallback()
-                else
-                    cmp.confirm()
-                cmp.confirm({select = false})
-                end
+            if cmp.visible() and cmp.get_active_entry() then
+                cmp.confirm({behavior = cmp.ConfirmBehavior.Replace, select = false})
             else
                 fallback() -- If you use vim-endwise, this fallback will behave the same as vim-endwise.
             end

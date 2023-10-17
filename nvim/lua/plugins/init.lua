@@ -6,7 +6,7 @@ return {
         opts = {}
     },
     { 'tpope/vim-repeat', event = "BufEnter", },
-    { 'tpope/vim-abolish', cmd = {"Subvert", "S"} },
+    { 'tpope/vim-abolish', cmd = {"Subvert", "S"}, keys = {"cr",}, },
     { 'jghauser/mkdir.nvim', event = "BufWritePre", },
     { 'mfussenegger/nvim-dap', lazy = true },
     { "folke/neodev.nvim", lazy = true, ft = "lua", opts = {}, } ,

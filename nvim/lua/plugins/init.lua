@@ -36,12 +36,20 @@ return {
         'lukas-reineke/indent-blankline.nvim',
         event = "VeryLazy",
         config = function()
+            local hooks = require "ibl.hooks"
+            hooks.register(
+                hooks.type.WHITESPACE,
+                hooks.builtin.hide_first_space_indent_level
+            )
             require("ibl").setup {
-                scope = { enabled = false, },
-                show_end_of_line = true,
-                show_current_context = true,
-                indent_blankline_show_first_indent_level = false,
+                indent = { char = "┋" },
+                scope = {
+                    enabled = false,
+                    show_start = false,
+                    show_end = false,
+                },
             }
+
             vim.cmd [[highlight IndentBlanklineSpaceChar guifg=nocombine]]
         end,
     },

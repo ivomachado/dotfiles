@@ -187,7 +187,7 @@ return {
     },
     {
         'nvim-treesitter/nvim-treesitter',
-        version = false,
+        version = "main",
         enabled = true,
         build = ':TSUpdate',
         opts = {
@@ -370,6 +370,7 @@ return {
             )
         end
     },
+    -- { "bfrg/vim-cpp-modern", ft = {"c", "cpp",}, },
     {
         'Wansmer/treesj',
         keys = { '<space>m', '<space>j', '<space>s' },

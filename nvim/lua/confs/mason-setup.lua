@@ -20,12 +20,12 @@ local on_attach = function(_, bufnr)
         ["<leader>."] = { "<cmd>lua vim.lsp.buf.code_action()<CR>", "Code Action" },
     })
 
-    wk.register({
-        ["<C-k>"] = {
-            "<cmd>lua vim.lsp.buf.signature_help()<CR>",
-            "Signature Help",
-        },
-    }, { mode = {"i", "n"} })
+    -- wk.register({
+    --     ["<C-k>"] = {
+    --         "<cmd>lua vim.lsp.buf.signature_help()<CR>",
+    --         "Signature Help",
+    --     },
+    -- }, { mode = {"i", "n"} })
 end
 
 require("mason").setup()

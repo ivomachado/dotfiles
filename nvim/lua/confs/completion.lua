@@ -16,9 +16,10 @@ cmp.setup({
             vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
         end,
     },
-    keyword_length = 3,
+    keyword_length = 2,
+    autocomplete = false,
     matching = {
-        disallow_fuzzy_matching = true,
+        disallow_fuzzy_matching = false,
     },
     window = {
         completion = {
@@ -30,13 +31,19 @@ cmp.setup({
         },
     },
     performance = {
-        max_view_entries = 20,
+        max_view_entries = 150,
+    },
+    view ={
+        docs = {
+            auto_open = true,
+        },
     },
     mapping = {
         ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
         ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
         ['<C-n>'] = cmp.mapping(cmp.mapping.select_next_item({behavior = cmp.SelectBehavior.Insert}), { 'i', 'c' }),
         ['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item({behavior = cmp.SelectBehavior.Insert}), { 'i', 'c' }),
+        ['<C-l>'] = cmp.mapping.complete({config = {sources = {{name = 'vsnip'}}}}),
         ["<Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
                 if not cmp.get_selected_entry() then
@@ -58,13 +65,7 @@ cmp.setup({
         --         fallback()
         --     end
         -- end, {"i","s","c",}),
-        ['<C-Space>'] = function ()
-            if cmp.visible() then
-                cmp.confirm({cmp.ConfirmBehavior.Insert, select = true})
-            else
-                cmp.complete()
-            end
-        end,
+        ['<C-Space>'] = cmp.mapping.complete(),
         ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
         ['<C-e>'] = cmp.mapping({
             i = cmp.mapping.abort(),
@@ -79,11 +80,18 @@ cmp.setup({
         end,
     },
     sources = {
-        { name = 'nvim_lsp', group_index = 1 },
-        { name = 'nvim_lsp_signature_help' },
-        { name = 'buffer', group_index = 2 },
-        { name = 'async_path' },
-        { name = 'vsnip' },
+        {
+            name = 'nvim_lsp',
+            priority_weight = 15,
+            dup = 0,
+            -- entry_filter = function(entry, ctx)
+            --     return require('cmp.types').lsp.CompletionItemKind[entry:get_kind()] ~= 'Keyword'
+            -- end
+        },
+        { name = 'nvim_lsp_signature_help', dup = 0, },
+        { name = 'buffer', max_item_count = 3, dup = 0},
+        { name = 'async_path', dup = 0, },
+        { name = 'vsnip', max_item_count = 3, priority_weight = 1, dup = 0, },
     },
     formatting = {
         fields = { "kind", "abbr", "menu", },
@@ -112,12 +120,12 @@ cmp.setup({
     },
     sorting = {
         comparators = {
-            cmp.config.compare.exact,
-            cmp.config.compare.recently_used,
             require("clangd_extensions.cmp_scores"),
+            cmp.config.compare.sort_text,
             cmp.config.compare.offset,
             cmp.config.compare.kind,
-            cmp.config.compare.sort_text,
+            cmp.config.compare.recently_used,
+            cmp.config.compare.exact,
             cmp.config.compare.order,
             cmp.config.compare.length,
         },

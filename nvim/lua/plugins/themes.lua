@@ -41,7 +41,6 @@ return {
     {
         "sainnhe/sonokai",
         lazy = true,
-        -- event = "VeryLazy",
         priority = 1000,
         config = function ()
             vim.cmd([[]])
@@ -54,11 +53,11 @@ return {
     },
     {
         "EdenEast/nightfox.nvim",
-        lazy = true,
+        lazy = false,
         priority = 1000,
         opts = {},
         config = function ()
-            vim.cmd([[colorscheme nightfox]])
+            vim.cmd([[colorscheme nordfox]])
         end,
         enabled = true,
     },
@@ -102,7 +101,7 @@ return {
     },
     {
         "rebelot/kanagawa.nvim",
-        lazy = false,
+        lazy = true,
         priority = 1000,
         opts = {
             compile = true,

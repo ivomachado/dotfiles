@@ -61,27 +61,27 @@ if ! zgenom saved; then
     zgenom ohmyzsh plugins/git
     zgenom ohmyzsh plugins/sudo
     # just load the completions
-    zgenom ohmyzsh --completion plugins/docker-compose
+    # zgenom ohmyzsh --completion plugins/docker-compose
 
     # Install ohmyzsh osx plugin if on macOS
     [[ "$(uname -s)" = Darwin ]] && zgenom ohmyzsh plugins/macos
 
     # prezto options
-    zgenom prezto editor key-bindings 'emacs'
-    zgenom prezto prompt theme 'sorin'
+    # zgenom prezto editor key-bindings 'emacs'
+    # zgenom prezto prompt theme 'sorin'
 
     # prezto and modules
     # If you use prezto and ohmyzsh - load ohmyzsh first.
-    zgenom prezto
-    zgenom prezto command-not-found
+    # zgenom prezto
+    # zgenom prezto command-not-found
 
     # Load prezto tmux when tmux is installed
-    if hash tmux &>/dev/null; then
-        zgenom prezto tmux
-    fi
+    # if hash tmux &>/dev/null; then
+    #     zgenom prezto tmux
+    # fi
 
-    zgenom load zsh-users/zsh-syntax-highlighting
-    zgenom load /path/to/super-secret-private-plugin
+    # zgenom load zsh-users/zsh-syntax-highlighting
+    # zgenom load /path/to/super-secret-private-plugin
 
     # use a plugin file
     # The file must only contain valid parameters for `zgenom load`
@@ -95,13 +95,13 @@ EOPLUGINS
     # ^ can't indent this EOPLUGINS
 
     # add binaries
-    zgenom bin tj/git-extras
+    # zgenom bin tj/git-extras
 
     # completions
     zgenom load zsh-users/zsh-completions
 
     # theme
-    zgenom ohmyzsh themes/sorin
+    zgenom load agkozak/agkozak-zsh-prompt
     zgenom load agkozak/zsh-z
     zgenom load zsh-users/zsh-autosuggestions
 

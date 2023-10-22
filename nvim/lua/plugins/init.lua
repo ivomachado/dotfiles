@@ -188,7 +188,7 @@ return {
     {
         'nvim-treesitter/nvim-treesitter',
         version = "main",
-        enabled = true,
+        enabled = false,
         build = ':TSUpdate',
         opts = {
             -- A list of parser names, or "all"
@@ -316,15 +316,6 @@ return {
         lazy = false, priority = 1001,
     },
     {
-        "andrewferrier/debugprint.nvim",
-        opts = {},
-        keys = "g?",
-        dependencies = {
-            "nvim-treesitter/nvim-treesitter"
-        },
-        version = "*"
-    },
-    {
         "echasnovski/mini.animate",
         version = false,
         opts = {
@@ -370,15 +361,7 @@ return {
             )
         end
     },
-    -- { "bfrg/vim-cpp-modern", ft = {"c", "cpp",}, },
-    {
-        'Wansmer/treesj',
-        keys = { '<space>m', '<space>j', '<space>s' },
-        dependencies = { 'nvim-treesitter/nvim-treesitter' },
-        config = function()
-            require('treesj').setup({--[[ your config ]]})
-        end,
-    },
+    { "bfrg/vim-cpp-modern", ft = {"c", "cpp",}, },
     {
         'mfussenegger/nvim-lint',
         event = "VeryLazy",
@@ -392,36 +375,5 @@ return {
                 end,
             })
         end,
-    },
-    -- lazy.nvim
-    {
-        "folke/noice.nvim",
-        enabled = false,
-        opts = {
-            lsp = {
-                -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
-                override = {
-                    ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-                    ["vim.lsp.util.stylize_markdown"] = true,
-                    ["cmp.entry.get_documentation"] = true,
-                },
-            },
-            -- you can enable a preset for easier configuration
-            presets = {
-                bottom_search = true, -- use a classic bottom cmdline for search
-                command_palette = true, -- position the cmdline and popupmenu together
-                long_message_to_split = true, -- long messages will be sent to a split
-                inc_rename = false, -- enables an input dialog for inc-rename.nvim
-                lsp_doc_border = false, -- add a border to hover docs and signature help
-            },
-        },
-        dependencies = {
-            -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
-            "MunifTanjim/nui.nvim",
-            -- OPTIONAL:
-            --   `nvim-notify` is only needed, if you want to use the notification view.
-            --   If not available, we use `mini` as the fallback
-            "rcarriga/nvim-notify",
-        }
     },
 }

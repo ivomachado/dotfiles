@@ -73,7 +73,7 @@ require("mason-lspconfig").setup_handlers{
             local cppcheck_linter = require('lint').linters.cppcheck
             cppcheck_linter.args = {
                 '--enable-all',
-                '--project='..root_dir()..'/compile_commands',
+                '--project='..root_dir()..'/compile_commands.json',
             }
         end
         require("clangd_extensions").setup({

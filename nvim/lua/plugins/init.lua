@@ -135,18 +135,18 @@ return {
         keys = {"gc", "gb"},
         config = true,
     },
-    {
-        "anuvyklack/windows.nvim",
-        event = "VeryLazy",
-        dependencies = {
-            "anuvyklack/middleclass",
-        },
-        opts = {
-            ignore = {
-                buftype = { "quickfix", "terminal", "neo-tree"}
-            }
-        },
-    },
+    -- {
+    --     "anuvyklack/windows.nvim",
+    --     event = "VeryLazy",
+    --     dependencies = {
+    --         "anuvyklack/middleclass",
+    --     },
+    --     opts = {
+    --         ignore = {
+    --             buftype = { "quickfix", "terminal", "neo-tree"}
+    --         }
+    --     },
+    -- },
     {
         'neovim/nvim-lspconfig',
         event = "VeryLazy",

@@ -26,7 +26,6 @@
   "mason-lspconfig.nvim": { "branch": "main", "commit": "09be3766669bfbabbe2863c624749d8da392c916" },
   "mason-nvim-dap.nvim": { "branch": "main", "commit": "f0cd12f7a8a310c58cecebddb6b219ffad1cfd0f" },
   "mason.nvim": { "branch": "main", "commit": "cd7835b15f5a4204fc37e0aa739347472121a54c" },
-  "middleclass": { "branch": "master", "commit": "9fab4d5bca67262614960960ca35c4740eb2be2c" },
   "mkdir.nvim": { "branch": "main", "commit": "c55d1dee4f099528a1853b28bb28caa802eba217" },
   "monokai-nightasty.nvim": { "branch": "main", "commit": "f60dea5157fca44b557962b8a62fc607accdb361" },
   "neo-tree.nvim": { "branch": "v3.x", "commit": "63ebe879ad4798b66d29c0b2c8d04942389d438e" },
@@ -62,6 +61,5 @@
   "vim-sourcetrail": { "branch": "master", "commit": "c9c621a7ab81c52a661457ccf33a64fd7c56fd9d" },
   "vim-vsnip": { "branch": "master", "commit": "be277461265f1e5c7db470aa479f30956597ea9e" },
   "which-key.nvim": { "branch": "main", "commit": "4433e5ec9a507e5097571ed55c02ea9658fb268a" },
-  "whitespace.nvim": { "branch": "master", "commit": "fe9ca0ba3c6e6cc1dd14c0d6cbe49d97496700dd" },
-  "windows.nvim": { "branch": "main", "commit": "c7492552b23d0ab30325e90b56066ec51242adc8" }
+  "whitespace.nvim": { "branch": "master", "commit": "fe9ca0ba3c6e6cc1dd14c0d6cbe49d97496700dd" }
 }

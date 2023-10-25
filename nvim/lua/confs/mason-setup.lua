@@ -66,14 +66,15 @@ require("mason-lspconfig").setup_handlers{
     end,
     ["clangd"] = function ()
         local root_dir = require('lspconfig').util.root_pattern('compile_commands.json')
-        require('lint').linters_by_ft = {
-            cpp = {'cppcheck',}
-        }
-        if (not root_dir) then
+        local compile_commands = vim.fs.find("compile_commands.json", {})
+
+        if (compile_commands[1]) then
+            require('lint').linters_by_ft = {
+                cpp = {'cppcheck',}
+            }
             local cppcheck_linter = require('lint').linters.cppcheck
             cppcheck_linter.args = {
-                '--enable-all',
-                '--project='..root_dir()..'/compile_commands.json',
+                '--project='..compile_commands[1],
             }
         end
         require("clangd_extensions").setup({

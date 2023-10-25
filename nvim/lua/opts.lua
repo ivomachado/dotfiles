@@ -23,6 +23,7 @@ vim.opt.tabstop = 4
 vim.opt.showtabline = 0
 vim.opt.scrolloff = 7
 vim.opt.signcolumn = "yes"
+vim.opt.guifont = "FiraCode Nerd Font Mono:h12"
 
 vim.opt.termguicolors = true
 

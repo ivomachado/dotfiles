@@ -85,12 +85,10 @@ if ! zgenom saved; then
 
     # use a plugin file
     # The file must only contain valid parameters for `zgenom load`
-    zgenom loadall < path/to/plugin/file
 
     # bulk load
     zgenom loadall <<EOPLUGINS
         zsh-users/zsh-history-substring-search
-        /path/to/local/plugin
 EOPLUGINS
     # ^ can't indent this EOPLUGINS
 
@@ -101,7 +99,11 @@ EOPLUGINS
     zgenom load zsh-users/zsh-completions
 
     # theme
-    zgenom load agkozak/agkozak-zsh-prompt
+    # zgenom load agkozak/agkozak-zsh-prompt
+    zgenom load spaceship-prompt/spaceship-prompt spaceship
+    # zgenom load eendroroy/alien
+    # zgenom load eendroroy/alien-minimal
+
     zgenom load agkozak/zsh-z
     zgenom load zsh-users/zsh-autosuggestions
 
@@ -128,3 +130,52 @@ bindkey '^ ' autosuggest-accept
 
 export EDITOR='nvim'
 export VISUAL='nvim'
+
+export ALIEN_THEME="bnw"
+
+export ALIEN_SECTIONS_LEFT=(
+  # battery
+  user
+  path
+  # newline
+  # ssh
+  # venv
+  prompt
+)
+
+export ALIEN_SECTIONS_RIGHT=(
+  exit
+  vcs_branch:async
+  vcs_status:async
+  vcs_dirty:async
+  time
+)
+
+export AM_PROMPT_END_TAG=' $'       # previously `PROMPT_END_TAG`
+export AM_PROMPT_START_TAG_COLOR=81  # previously `PROMPT_START_TAG_COLOR`
+export AM_PROMPT_END_TAG_COLOR=81    # previously `PROMPT_END_TAG_COLOR`
+export AM_DIR_EXPANSION_LEVEL=3
+export AM_HIDE_EXIT_CODE=1
+
+
+SPACESHIP_PROMPT_ORDER=(
+  user           # Username section
+  host           # Hostname section
+  dir            # Current directory section
+  sudo           # Sudo indicator
+  char           # Prompt character
+)
+
+SPACESHIP_EXIT_CODE_SHOW=true
+SPACESHIP_USER_SHOW=true
+SPACESHIP_PROMPT_ADD_NEWLINE=false
+SPACESHIP_PROMPT_SEPARATE_LINE=false
+SPACESHIP_CHAR_SYMBOL_ROOT="#"
+SPACESHIP_CHAR_SYMBOL="$"
+
+SPACESHIP_RPROMPT_ORDER=(
+  exit_code      # Exit code section
+  exec_time      # Execution time
+  git            # Git section (git_branch + git_status)
+  time           # Time stamps section
+)

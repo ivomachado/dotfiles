@@ -187,8 +187,8 @@ return {
     },
     {
         'nvim-treesitter/nvim-treesitter',
-        version = "main",
-        enabled = false,
+        -- version = "main",
+        enabled = true,
         build = ':TSUpdate',
         opts = {
             -- A list of parser names, or "all"

@@ -201,10 +201,7 @@ return {
             -- List of parsers to ignore installing (for "all")
             --
             indent = {
-                enable = true,
-                -- disable = {
-                --     "cpp",
-                -- },
+                enable = disable,
             },
 
             highlight = {
@@ -361,7 +358,19 @@ return {
             )
         end
     },
-    { "bfrg/vim-cpp-modern", ft = {"c", "cpp",}, },
+    -- { "bfrg/vim-cpp-modern", ft = {"c", "cpp",}, },
+    {
+        "nvimdev/hlsearch.nvim",
+        event = "BufRead",
+        opts = {},
+    },
+    {
+        "kdheepak/lazygit.nvim",
+        -- optional for floating window border decoration
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+        },
+    },
     {
         'mfussenegger/nvim-lint',
         event = "VeryLazy",

@@ -1,5 +1,5 @@
 # OS version
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 # Add i386 architecture to allow installation of 32-bit libs
 RUN dpkg --add-architecture i386
@@ -18,13 +18,19 @@ RUN useradd -u $UID -g $GID $USER -m -d $HOME -p "$(openssl passwd -1 123456)"
 RUN usermod -aG sudo $USER
 
 RUN apt-get update
+RUN apt-get install -y ca-certificates curl gnupg
+RUN mkdir -p /etc/apt/keyrings
+RUN curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+
+RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
+
+RUN apt-get update
 RUN apt-get install -y apt-utils \
  wget \
  sudo \
  net-tools \
  bzip2 \
  lib32stdc++6 \
- python \
  python3 python3-dev \
  git \
  lcov \
@@ -45,7 +51,7 @@ RUN apt-get install -y apt-utils \
  gcc-multilib \
  g++-multilib \
  openssh-client \
- clang-format-6.0 \
+ clang-format \
  iwyu \
  mesa-common-dev \
  ccache \
@@ -75,11 +81,8 @@ RUN apt-get install -y apt-utils \
  bc \
  libmount1:i386 \
  libuuid1:i386 \
- cmake
-
-# Install NodeJS 12
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
-RUN apt-get install -y nodejs
+ cmake \
+ nodejs
 
 # Get latest cmake version
 #RUN wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | sudo apt-key add -

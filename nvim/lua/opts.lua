@@ -21,14 +21,15 @@ vim.opt.fixendofline = true
 vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
 vim.opt.showtabline = 0
-vim.opt.scrolloff = 7
+vim.opt.scrolloff = 5
 vim.opt.signcolumn = "yes"
 vim.opt.guifont = "FiraCode Nerd Font Mono:h12"
+-- vim.opt.cmdheight = 0
 
 vim.opt.termguicolors = true
 
 vim.opt.list = true
-vim.opt.listchars:append("eol:⏎")
+vim.opt.listchars:append("eol:↴")
 -- vim.opt.listchars:append("tab:>- ")
 -- vim.opt.listchars:append("lead:·")
 -- vim.opt.listchars:append("trail:·")

@@ -53,7 +53,7 @@ return {
     },
     {
         "EdenEast/nightfox.nvim",
-        lazy = false,
+        lazy = true,
         priority = 1000,
         opts = {},
         config = function ()
@@ -101,10 +101,19 @@ return {
     },
     {
         "rebelot/kanagawa.nvim",
-        lazy = true,
+        lazy = false,
         priority = 1000,
         opts = {
             compile = true,
+            colors = {
+                theme = {
+                    all = {
+                        ui = {
+                            bg_gutter = "none"
+                        }
+                    }
+                }
+            }
         },
         config = function(_, opts)
             require'kanagawa'.setup(opts)

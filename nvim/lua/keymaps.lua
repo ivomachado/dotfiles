@@ -52,18 +52,6 @@ wk.register({
 }, { prefix = "<leader>" })
 
 wk.register({
-    name = "Terminal",
-    ["<M-;>"] = {"<cmd>ToggleTerm direction=horizontal<cr>", "Toggle Terminal"},
-    ["<M-j><M-k>"] = {"<C-\\><C-n>", "Exit Terminal Mode"},
-    ["<M-f>"] = {"<cmd>ToggleTerm direction=float<cr>", "Toggle Float Terminal"},
-    ["<M-1>"] = {"<cmd>1ToggleTerm<cr>", "Toggle Terminal 1"},
-    ["<M-2>"] = {"<cmd>2ToggleTerm<cr>", "Toggle Terminal 2"},
-    ["<M-3>"] = {"<cmd>3ToggleTerm<cr>", "Toggle Terminal 3"},
-    ["<M-4>"] = {"<cmd>4ToggleTerm<cr>", "Toggle Terminal 4"},
-    ["<M-5>"] = {"<cmd>5ToggleTerm<cr>", "Toggle Terminal 5"},
-}, { mode = {"t", "n"} })
-
-wk.register({
     "Navigation",
     ["]"] = {
         "Navigate Next",

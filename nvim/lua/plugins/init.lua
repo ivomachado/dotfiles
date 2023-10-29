@@ -229,7 +229,21 @@ return {
     },
     {
         "akinsho/toggleterm.nvim",
+        enabled = false,
         cmd = "ToggleTerm",
+        init = function ()
+            require("which-key").register({
+                name = "Terminal",
+                ["<M-;>"] = {"<cmd>ToggleTerm direction=horizontal<cr>", "Toggle Terminal"},
+                ["<M-j><M-k>"] = {"<C-\\><C-n>", "Exit Terminal Mode"},
+                ["<M-f>"] = {"<cmd>ToggleTerm direction=float<cr>", "Toggle Float Terminal"},
+                ["<M-1>"] = {"<cmd>1ToggleTerm<cr>", "Toggle Terminal 1"},
+                ["<M-2>"] = {"<cmd>2ToggleTerm<cr>", "Toggle Terminal 2"},
+                ["<M-3>"] = {"<cmd>3ToggleTerm<cr>", "Toggle Terminal 3"},
+                ["<M-4>"] = {"<cmd>4ToggleTerm<cr>", "Toggle Terminal 4"},
+                ["<M-5>"] = {"<cmd>5ToggleTerm<cr>", "Toggle Terminal 5"},
+            }, { mode = {"t", "n"} })
+        end,
         opts = {
             start_in_insert = true,
             shading_factor = '-55',
@@ -323,7 +337,7 @@ return {
     },
     {
         "folke/which-key.nvim",
-        keys = {"<leader>", "[", "]" , "<M-;>",},
+        -- keys = {"<leader>", "[", "]" , "<M-;>",},
         init = function()
             vim.o.timeout = true
             vim.o.timeoutlen = 3000
@@ -366,6 +380,7 @@ return {
     },
     {
         "kdheepak/lazygit.nvim",
+        enabled = false,
         -- optional for floating window border decoration
         dependencies = {
             "nvim-lua/plenary.nvim",

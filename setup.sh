@@ -1,15 +1,21 @@
 #!/bin/bash
 
-backupfolder=~/Workspace/dotfiles
+backupdir=~/Workspace/dotfiles
 
-nvimconfigfolder=~/.config/nvim
-alacrittyconfdir=~/.config/alacritty/
+nvimconfigdir=~/.config/nvim
+helixconfigdir=~/.config/helix
+zellijconfigdir=~/.config/zellij
+
 zshrcpath=~/.zshrc
-alacrittyconfpath=$alacrittyconfdir"alacritty.yml"
 
-ln -sf $backupfolder/nvim $nvimconfigfolder
+alacritryconfigdir=~/.config/alacritty/
+alacrittyconfigpath=$alacritryconfigdir"alacritty.yml"
 
-mkdir -p $alacrittyconfdir
-ln -sf $backupfolder/alacritty.yml $alacrittyconfpath
+ln -sf $backupdir/nvim $nvimconfigdir
+ln -sf $backupdir/helix $helixconfigdir
+ln -sf $backupdir/zellij $zellijconfigdir
 
-ln -sf $backupfolder/.zshrc $zshrcpath
+mkdir -p $alacritryconfigdir
+ln -sf $backupdir/alacritty.yml $alacrittyconfigpath
+
+ln -sf $backupdir/.zshrc $zshrcpath

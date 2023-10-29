@@ -1,20 +1,27 @@
 local function expanded_builtin_picker(builtin_picker)
     return function()
         local builtin = require("telescope.builtin")
+        local cwDir = vim.fn.getcwd()
+        local directories = vim.split(vim.fn.glob(cwDir.."/externals/*/"), '\n', {trimempty=true})
+        table.insert(directories, 1, cwDir);
         return builtin[builtin_picker]({
-            search_dirs = {
-                '',
-                'externals/certi_common_libs',
-                'externals/smart_platform',
-                'externals/certi_formatter',
-                'buildroot',
-                'externals/certi_libwpe',
-                'externals/certi_wpe',
-                'externals/wpebackend-certi',
-                'externals/surrogate',
-                'externals/photoframe_cc',
-            },
+            search_dirs = directories,
         })
+
+        -- return builtin[builtin_picker]({
+        --     search_dirs = {
+        --         '',
+        --         'externals/certi_common_libs',
+        --         'externals/smart_platform',
+        --         'externals/certi_formatter',
+        --         'buildroot',
+        --         'externals/certi_libwpe',
+        --         'externals/certi_wpe',
+        --         'externals/wpebackend-certi',
+        --         'externals/surrogate',
+        --         'externals/photoframe_cc',
+        --     },
+        -- })
     end
 end
 
@@ -29,15 +36,15 @@ wk.register({
     },
     f = {
         name = "Telescope",
-        f = { "<cmd>Telescope find_files<cr>", "Find Files"},
+        -- f = { "<cmd>Telescope find_files<cr>", "Find Files"},
         g = { "<cmd>Telescope git_files<cr>", "Git Files"},
-        F = { expanded_builtin_picker("find_files"), "Find Files With Externals"},
+        f = { expanded_builtin_picker("find_files"), "Find Files With Externals"},
         b = { "<cmd>Telescope buffers<cr>", "Buffers"},
         O = { "<cmd>Telescope oldfiles<cr>", "Recent Files"},
         o = { "<cmd>Telescope lsp_document_symbols<cr>", "Document Symbols"},
         s = { require("auto-session.session-lens").search_session, "Sessions" },
-        l = { "<cmd>Telescope live_grep<cr>", "Live Grep" },
-        L = { expanded_builtin_picker("live_grep"), "Live Grep with Externals" },
+        -- l = { "<cmd>Telescope live_grep<cr>", "Live Grep" },
+        l = { expanded_builtin_picker("live_grep"), "Live Grep with Externals" },
         p = { "<cmd>Telescope commands<cr>", "Commands" },
         c = { "<cmd>Telescope colorscheme<cr>", "Colorschemes" },
         t = { "<cmd>Telescope builtin<cr>", "Builtin Pickers" },

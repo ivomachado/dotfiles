@@ -2,20 +2,10 @@
 
 backupdir=~/Workspace/dotfiles
 
-nvimconfigdir=~/.config/nvim
-helixconfigdir=~/.config/helix
-zellijconfigdir=~/.config/zellij
+configdir=~/.config
 
 zshrcpath=~/.zshrc
 
-alacritryconfigdir=~/.config/alacritty/
-alacrittyconfigpath=$alacritryconfigdir"alacritty.yml"
-
-ln -sf $backupdir/nvim $nvimconfigdir
-ln -sf $backupdir/helix $helixconfigdir
-ln -sf $backupdir/zellij $zellijconfigdir
-
-mkdir -p $alacritryconfigdir
-ln -sf $backupdir/alacritty.yml $alacrittyconfigpath
+ls dotconfig/ | xargs -I {} ln -T -sf $backupdir/dotconfig/{} $configdir/{}
 
 ln -sf $backupdir/.zshrc $zshrcpath

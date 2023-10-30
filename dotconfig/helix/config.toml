@@ -1,0 +1,26 @@
+theme = "kanagawa"
+[keys.insert.j]
+k = "normal_mode" # Maps `jk` to exit insert mode
+
+[editor]
+line-number = "relative"
+cursorline = true
+bufferline = "always"
+whitespace.render.nbsp = "all"
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[editor.file-picker]
+hidden = false
+
+[editor.statusline]
+left = ["mode", "version-control", "spinner"]
+center = ["file-name"]
+right = ["diagnostics", "selections", "position", "position-percentage", "file-encoding", "file-line-ending", "file-type"]
+separator = "│"
+mode.normal = "NORMAL"
+mode.insert = "INSERT"
+mode.select = "SELECT"

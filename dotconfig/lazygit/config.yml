@@ -1,0 +1,2 @@
+services:
+  'rd-git.aoc.com.br': 'gitlab:rd-git.aoc.com.br:8122/api/v4'

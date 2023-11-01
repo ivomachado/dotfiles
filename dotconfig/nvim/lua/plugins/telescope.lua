@@ -1,15 +1,9 @@
 return {
     {
-        'nvim-telescope/telescope-fzf-native.nvim',
-        lazy = true,
+        'nvim-telescope/telescope-fzy-native.nvim',
         dependencies = { 'nvim-telescope/telescope.nvim' },
-        build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build',
+        lazy = true,
     },
-    -- {
-    --     'prochri/telescope-all-recent.nvim',
-    --     lazy = true,
-    --     dependencies = { 'nvim-telescope/telescope.nvim', 'kkharji/sqlite.lua' },
-    -- },
     {
         'nvim-telescope/telescope.nvim',
         cmd = "Telescope",
@@ -59,14 +53,39 @@ return {
                     layout_config = { width = 0.80, height = 0.40, },
                 }
             },
-            extensions = { }
+            extensions = {
+                ["zf-native"] = {
+                    -- options for sorting file-like items
+                    file = {
+                        -- override default telescope file sorter
+                        enable = true,
+
+                        -- highlight matching text in results
+                        highlight_results = true,
+
+                        -- enable zf filename match priority
+                        match_filename = true,
+                    },
+
+                    -- options for sorting all other items
+                    generic = {
+                        -- override default telescope generic item sorter
+                        enable = true,
+
+                        -- highlight matching text in results
+                        highlight_results = true,
+
+                        -- disable zf filename match priority
+                        match_filename = false,
+                    },
+                }
+            }
         },
         config = function(_, opts)
             require("telescope").setup(opts)
             require("auto-session").setup_session_lens()
             require("telescope").load_extension "session-lens"
-            -- require'telescope-all-recent'.setup{}
-            require('telescope').load_extension('fzf')
+            require('telescope').load_extension('zf-native')
         end,
     }
 }

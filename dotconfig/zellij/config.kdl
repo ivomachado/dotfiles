@@ -147,6 +147,7 @@ keybinds {
     shared_except "locked" {
         bind "Ctrl g" { SwitchToMode "Locked"; }
         bind "Ctrl q" { Quit; }
+        bind "Alt g" { Run "lazygit" { floating true; }; Resize "Increase"; Resize "Increase"; Resize "Increase"; Resize "Increase";Resize "Increase"; Resize "Increase"; Resize "Increase"; Resize "Increase";Resize "Increase"; Resize "Increase"; Resize "Increase"; Resize "Increase";   Resize "Increase"; Resize "Increase"; Resize "Increase"; Resize "Increase"; }
         bind "Alt n" { NewPane; }
         bind "Alt h" "Alt Left" { MoveFocusOrTab "Left"; }
         bind "Alt l" "Alt Right" { MoveFocusOrTab "Right"; }

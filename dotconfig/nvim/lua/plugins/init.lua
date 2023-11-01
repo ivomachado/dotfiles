@@ -200,16 +200,16 @@ return {
 
             -- List of parsers to ignore installing (for "all")
             --
-            indent = {
-                enable = disable,
-            },
+            -- indent = {
+            --     enable = disable,
+            -- },
 
             highlight = {
                 enable = true,
-                disable = {
-                    "bash",
-                    "cmake",
-                },
+                -- disable = {
+                --     "bash",
+                --     "cmake",
+                -- },
                 additional_vim_regex_highlighting = false,
             },
         },

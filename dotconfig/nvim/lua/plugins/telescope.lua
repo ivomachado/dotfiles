@@ -52,7 +52,12 @@ return {
                         ["<C-a>"] = "smart_add_to_qflist",
                     },
                 },
-                -- layout_strategy = "horizontal",
+                layout_strategy = "horizontal",
+                layout_config = {
+                    prompt_position = "top",
+                    width = 0.9,
+                },
+                sorting_strategy = "ascending",
                 dynamic_preview_title = false,
                 path_display = { "truncate" },
             },
@@ -64,6 +69,10 @@ return {
                     hidden = true,
                     theme = "dropdown",
                     layout_config = { width = 0.80, height = 0.40, },
+                },
+                colorscheme = {
+                    enable_preview = true,
+                    treesitter = true,
                 }
             },
             extensions = {

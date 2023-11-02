@@ -30,6 +30,7 @@ return {
     {
         "RRethy/nvim-base16",
         lazy = true,
+        enabled = false,
         priority = 1000,
         config = function()
             require('base16-colorscheme').with_config({
@@ -117,7 +118,7 @@ return {
         },
         config = function(_, opts)
             require'kanagawa'.setup(opts)
-            vim.cmd([[colorscheme kanagawa]])
+            vim.cmd([[colorscheme kanagawa-dragon]])
         end,
     },
 }

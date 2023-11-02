@@ -17,33 +17,22 @@ return {
             },
             sections = {
                 lualine_a = {'mode'},
-                lualine_b = {'branch', 'diff'},
-                lualine_c = {{'filename', path = 1}, 'diagnostics'},
-                lualine_x = {'encoding', 'fileformat', 'filetype'},
-                lualine_y = {
-                    {
-                        'lsp_progress',
-                        spinner_symbols = {
-                            '🌑 ',
-                            '🌒 ',
-                            '🌓 ',
-                            '🌔 ',
-                            '🌕 ',
-                            '🌖 ',
-                            '🌗 ',
-                            '🌘 ',
-                        },
-                    },
+                -- lualine_b = {'branch', 'diff'},
+                lualine_b = {},
+                lualine_c = {'filetype', {'filename', path = 1}, 'diagnostics'},
+                lualine_y = {},
+                lualine_x = {
+                    'fileformat',
                     'progress',
+                    'location',
                     function()
                         if vim.bo.expandtab then
-                            return [[Spaces: ]]..vim.bo.shiftwidth
                             return "\u{f1050} "..vim.bo.shiftwidth
                         else
-                            return [[Tab size: ]]..vim.bo.tabstop
                             return "\u{f0312} "..vim.bo.tabstop
                         end
-                    end, 'location'},
+                    end,
+                },
                 lualine_z = {'tabs'}
             },
             inactive_winbar = {
@@ -55,14 +44,13 @@ return {
                 lualine_z = {}
             },
             winbar = {
-                lualine_a = {{'filename', path = 0}},
+                lualine_a = {},
                 lualine_b = {},
-                lualine_c = {},
+                lualine_c = {{'filename', path = 0}},
                 lualine_x = {},
                 lualine_y = {},
                 lualine_z = {}
             },
         },
     },
-    {"arkav/lualine-lsp-progress", event = "VeryLazy"},
 }

@@ -15,7 +15,7 @@ return {
         opts = {
             defaults = {
                 preview = {
-                    treesitter = false,
+                    treesitter = true,
                 },
                 file_ignore_patterns = {
                     "toolchains",
@@ -68,7 +68,11 @@ return {
                     },
                     hidden = true,
                     theme = "dropdown",
-                    layout_config = { width = 0.80, height = 0.40, },
+                    layout_config = {
+                        width = 0.80,
+                        height = 0.40,
+                        prompt_position = "top",
+                    },
                 },
                 colorscheme = {
                     enable_preview = true,

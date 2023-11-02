@@ -31,9 +31,7 @@ end
 require("mason").setup()
 require("mason-lspconfig").setup(
 {
-    ensure_installed = {
-        'clangd', 'cmake',
-    },
+    ensure_installed = {},
     automatic_installation = true,
     completion = {
         keyword_length = 3,

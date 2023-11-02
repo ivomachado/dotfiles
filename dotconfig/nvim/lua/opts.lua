@@ -29,10 +29,10 @@ vim.opt.guifont = "FiraCode Nerd Font Mono:h12"
 vim.opt.termguicolors = true
 
 vim.opt.list = true
-vim.opt.listchars:append("eol:↴")
--- vim.opt.listchars:append("tab:>- ")
+vim.opt.listchars:append("eol:\u{ebea}")
+vim.opt.listchars:append("tab:\u{f0312}  ")
 -- vim.opt.listchars:append("lead:·")
--- vim.opt.listchars:append("trail:·")
+vim.opt.listchars:append("trail:·")
 -- vim.opt.listchars:append("extends:>")
 -- vim.opt.listchars:append("precedes:<")
 vim.opt.ffs="unix"

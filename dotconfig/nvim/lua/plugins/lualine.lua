@@ -6,8 +6,10 @@ return {
             extensions = {'quickfix'},
             options = {
                 icons_enabled = true,
-                component_separators = { left = '\u{E0B9}', right = '\u{E0BB}'},
-                section_separators = { left = "\u{E0B8}", right = "\u{E0BA}" },
+                component_separators = { left = "", right = ""},
+                section_separators = { left = "", right = "" },
+                -- component_separators = { left = '\u{E0B9}', right = '\u{E0BB}'},
+                -- section_separators = { left = "\u{E0B8}", right = "\u{E0BA}" },
                 disabled_filetypes = {},
                 theme = 'auto',
                 always_divide_middle = true,
@@ -36,8 +38,10 @@ return {
                     function()
                         if vim.bo.expandtab then
                             return [[Spaces: ]]..vim.bo.shiftwidth
+                            return "\u{f1050} "..vim.bo.shiftwidth
                         else
                             return [[Tab size: ]]..vim.bo.tabstop
+                            return "\u{f0312} "..vim.bo.tabstop
                         end
                     end, 'location'},
                 lualine_z = {'tabs'}

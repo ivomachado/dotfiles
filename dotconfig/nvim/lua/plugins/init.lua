@@ -339,16 +339,34 @@ return {
     {
         "folke/which-key.nvim",
         -- keys = {"<leader>", "[", "]" , "<M-;>",},
+        --
+        init = function()
+            vim.o.timeout = true
+            vim.o.timeoutlen = 300
+        end,
         opts = {
             plugins = {
-                registers = false,
-                marks = false,
+                registers = true,
+                marks = true,
             },
             presets = {
                 operators = false,
                 motions = false,
                 text_objects = false,
-            }
+            },
+            window = {
+                border = "single", -- none, single, double, shadow
+                position = "bottom", -- bottom, top
+                margin = { 0, 0, 1, 0.7 }, -- extra window margin [top, right, bottom, left]. When between 0 and 1, will be treated as a percentage of the screen size.
+                padding = { 0, 0, 0, -1 }, -- extra window padding [top, right, bottom, left]
+                winblend = 20, -- value between 0-100 0 for fully opaque and 100 for fully transparent
+                zindex = 1000, -- positive value to position WhichKey above other floating windows.
+            },
+            layout = {
+                height = { min = 4, max = 40 }, -- min and max height of the columns
+                spacing = 3, -- spacing between columns
+                align = "left", -- align columns left, center or right
+            },
         },
         config = function(_, opts)
             require("which-key").setup(opts)

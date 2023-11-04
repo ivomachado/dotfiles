@@ -403,10 +403,10 @@ return {
     },
     {
         'mfussenegger/nvim-lint',
-        event = "VeryLazy",
-        config = function ()
+        event = { "BufReadPost", "BufWritePost" },
+        config = function()
             require('lint').linters_by_ft = {
-                cpp = {'cppcheck',}
+                cpp = { 'cppcheck', }
             }
             vim.api.nvim_create_autocmd({ "BufReadPost", "BufWritePost" }, {
                 callback = function()
@@ -420,5 +420,18 @@ return {
         tag = "legacy",
         event = "LspAttach",
         opts = {},
-    }
+    },
+    {
+        'stevearc/conform.nvim',
+        opts = {
+            formatters_by_ft = {
+                cpp = { "clang_format", },
+                lua = { "stylua", }
+            }
+        },
+
+        config = function(_, opts)
+            vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
+        end,
+    },
 }

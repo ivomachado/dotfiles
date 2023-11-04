@@ -2,7 +2,7 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 local wk = require("which-key")
 
-local generic_on_attach = function(_, bufnr)
+local generic_on_attach = function(_, _)
     wk.register({
         ["gd"] = { "<cmd>Telescope lsp_definitions<CR>", "Go To Definition" },
         ["gs"] = { "<cmd>ClangdSwitchSourceHeader<CR>", "Switch C++ Source and Header" },
@@ -12,9 +12,14 @@ local generic_on_attach = function(_, bufnr)
         ["<F2>"] = { "<cmd>lua vim.lsp.buf.rename()<CR>", "Rename Symbol" },
         ["<leader>."] = { "<cmd>lua vim.lsp.buf.code_action()<CR>", "Code Action" },
     })
+
+    -- vim.cmd[[ sign define DiagnosticSignError text=E texthl=DiagnosticSignError linehl= numhl= ]]
+    -- vim.cmd[[ sign define DiagnosticSignWarn text=W texthl=DiagnosticSignWarn linehl= numhl= ]]
+    -- vim.cmd[[ sign define DiagnosticSignInfo text=I texthl=DiagnosticSignInfo linehl= numhl= ]]
+    vim.cmd [[ sign define DiagnosticSignHint text=󰌵 texthl=DiagnosticSignHint linehl= numhl= ]]
 end
 
-local clangd_on_attach = function(_, bufnr)
+local clangd_on_attach = function(first_parameter, bufnr)
     local compile_commands = vim.fs.find("compile_commands.json", {
         upward = true,
         path = vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr)),
@@ -27,6 +32,7 @@ local clangd_on_attach = function(_, bufnr)
         }
     end
 
+    generic_on_attach(first_parameter, bufnr)
     wk.register({
         ["gs"] = { "<cmd>ClangdSwitchSourceHeader<CR>", "Switch C++ Source and Header" },
     })

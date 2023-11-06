@@ -28,15 +28,11 @@ end
 local wk = require("which-key")
 
 wk.register({
-    b = {
-        name = "Neotree",
-        b = { "<cmd>Neotree left toggle=true<cr>", "Toggle Project Drawer" },
-        B = { "<cmd>Neotree float focus reveal<cr>", "Open Project Drawer on Current File" },
-        a = { "<cmd>Neotree left float buffers<cr>", "Show Opened Buffers" },
-    },
+    B = { "<cmd>Neotree float focus reveal<cr>", "Open Project Drawer on Current File" },
     g = { "<cmd>Telescope git_files<cr>", "Find Git Files"},
     f = { expanded_builtin_picker("find_files"), "Find Files With Externals Subdir"},
-    o = { "<cmd>Telescope buffers<cr>", "Buffers"},
+    b = { "<cmd>Telescope buffers<cr>", "Buffers"},
+    n = { "<cmd>Neotree left toggle=true<cr>", "Toggle Project Drawer" },
     s = { "<cmd>Telescope lsp_document_symbols<cr>", "Document Symbols"},
     S = { require("auto-session.session-lens").search_session, "Sessions" },
     l = { expanded_builtin_picker("live_grep"), "Live Grep with Externals" },

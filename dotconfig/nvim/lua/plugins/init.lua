@@ -28,7 +28,7 @@ return {
         event = "VeryLazy",
         opts = {
             highlight = 'DiffDelete',
-            ignored_filetypes = { 'TelescopePrompt', 'Trouble', 'help', 'lspinfo', 'toggleterm', 'neo-tree', 'lazy', 'mason'},
+            ignored_filetypes = { 'TelescopePrompt', 'Trouble', 'help', 'lspinfo', 'toggleterm', 'neo-tree', 'lazy', 'mason', 'checkhealth'},
             ignore_terminal = true,
         },
     },
@@ -346,8 +346,8 @@ return {
         end,
         opts = {
             plugins = {
-                registers = true,
-                marks = true,
+                registers = false,
+                marks = false,
             },
             presets = {
                 operators = false,
@@ -403,7 +403,7 @@ return {
     },
     {
         'mfussenegger/nvim-lint',
-        event = { "BufReadPost", "BufWritePost" },
+        lazy = true,
         config = function()
             require('lint').linters_by_ft = {
                 cpp = { 'cppcheck', }

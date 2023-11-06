@@ -27,6 +27,7 @@ vim.opt.guifont = "FiraCode Nerd Font Mono:h12"
 -- vim.opt.cmdheight = 0
 
 vim.opt.termguicolors = true
+vim.opt.cursorline = true
 
 vim.opt.list = true
 vim.opt.listchars:append("eol:\u{ebea}")

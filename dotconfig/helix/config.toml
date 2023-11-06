@@ -6,7 +6,7 @@ k = "normal_mode" # Maps `jk` to exit insert mode
 line-number = "relative"
 cursorline = true
 bufferline = "always"
-whitespace.render.nbsp = "all"
+indent-guides.render = true
 
 [editor.cursor-shape]
 insert = "bar"
@@ -25,3 +25,9 @@ separator = "│"
 mode.normal = "NORMAL"
 mode.insert = "INSERT"
 mode.select = "SELECT"
+
+[editor.whitespace.render]
+newline = "all"
+
+[editor.whitespace.characters]
+newline = ""

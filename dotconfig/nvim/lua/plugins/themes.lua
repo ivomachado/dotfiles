@@ -24,7 +24,7 @@ return {
         },
         config = function(_, opts)
             require("monokai-nightasty").setup(opts)
-            vim.cmd[[colorscheme monokai-nightasty]]
+            vim.cmd.colorscheme("monokai-nightasty")
         end,
     },
     {
@@ -36,7 +36,7 @@ return {
             require('base16-colorscheme').with_config({
                 telescope = false,
             })
-            vim.cmd[[colorscheme base16-monokai]]
+            vim.cmd.colorscheme("base16-monokai")
         end,
     },
     {
@@ -58,7 +58,7 @@ return {
         priority = 1000,
         opts = {},
         config = function ()
-            vim.cmd([[colorscheme nordfox]])
+            vim.cmd.colorscheme("nordfox")
         end,
         enabled = true,
     },
@@ -85,7 +85,7 @@ return {
         },
         config = function(_, opts)
             require'catppuccin'.setup(opts)
-            vim.cmd([[colorscheme catppuccin]])
+            vim.cmd.colorscheme("catppuccin")
         end,
         priority = 1000,
         enabled = true,
@@ -97,7 +97,7 @@ return {
         opts = {},
         config = function(_, opts)
             require'tokyonight'.setup(opts)
-            vim.cmd([[colorscheme tokyonight]])
+            vim.cmd.colorscheme("tokyonight")
         end,
     },
     {
@@ -118,7 +118,7 @@ return {
         },
         config = function(_, opts)
             require'kanagawa'.setup(opts)
-            vim.cmd([[colorscheme kanagawa-dragon]])
+            vim.cmd.colorscheme("kanagawa-wave")
         end,
     },
 }

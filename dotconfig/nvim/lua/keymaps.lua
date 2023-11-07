@@ -28,17 +28,19 @@ end
 local wk = require("which-key")
 
 wk.register({
-    B = { "<cmd>Neotree float focus reveal<cr>", "Open Project Drawer on Current File" },
+    n = { "<cmd>Neotree float toggle=true<cr>", "Toggle Project Drawer" },
+    N = { "<cmd>Neotree float focus reveal<cr>", "Open Project Drawer on Current File" },
+
     g = { "<cmd>Telescope git_files<cr>", "Find Git Files"},
     f = { expanded_builtin_picker("find_files"), "Find Files With Externals Subdir"},
     b = { "<cmd>Telescope buffers<cr>", "Buffers"},
-    n = { "<cmd>Neotree left toggle=true<cr>", "Toggle Project Drawer" },
     s = { "<cmd>Telescope lsp_document_symbols<cr>", "Document Symbols"},
     S = { require("auto-session.session-lens").search_session, "Sessions" },
     l = { expanded_builtin_picker("live_grep"), "Live Grep with Externals" },
     p = { "<cmd>Telescope commands<cr>", "Commands" },
     c = { "<cmd>Telescope colorscheme<cr>", "Colorschemes" },
     w = { "<C-W>", "Windows", noremap = false,},
+
     q = { "<cmd>Bdelete<CR>", "Close Buffer"},
     Q = { "<cmd>bdelete<CR>", "Close Buffer and Window"},
     K = { "<cmd>lua require'dap.ui.widgets'.cursor_float()<CR>", "Show Debug Hover" },

@@ -18,6 +18,7 @@ cmp.setup({
     },
     -- keyword_length = 3,
     autocomplete = false,
+    preselect = cmp.PreselectMode.Item,
     matching = {
         disallow_fuzzy_matching = true,
         disallow_fullfuzzy_matching = true,
@@ -94,13 +95,12 @@ cmp.setup({
     sources = {
         {
             name = 'nvim_lsp',
-            -- priority_weight = 15,
-            group_index = 1,
+            priority_weight = 5,
         },
-        { name = 'buffer', max_item_count = 3, group_index = 2},
+        { name = 'buffer', max_item_count = 3, keyword_length = 4},
         { name = 'nvim_lsp_signature_help', dup = 0, },
         { name = 'async_path', dup = 0, },
-        { name = 'vsnip', max_item_count = 3, priority_weight = 1, dup = 0, },
+        { name = 'vsnip', max_item_count = 3, priority_weight = 1, dup = 0, keyword_length = 3},
     },
     formatting = {
         fields = { "kind", "abbr", "menu", },

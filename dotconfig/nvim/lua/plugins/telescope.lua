@@ -20,6 +20,7 @@ return {
                 file_ignore_patterns = {
                     "toolchains",
                     ".build*",
+                    "build",
                     ".git",
                     "node_modules",
                     "third_party",

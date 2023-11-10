@@ -37,7 +37,7 @@ vim.opt.listchars:append("trail:·")
 -- vim.opt.listchars:append("precedes:<")
 vim.opt.ffs="unix"
 
-vim.opt.cinoptions = "N-s0gE-s(0"
+vim.opt.cinoptions = "N-s0gE-s(0j1"
 
 vim.diagnostic.config({
     virtual_text = true,

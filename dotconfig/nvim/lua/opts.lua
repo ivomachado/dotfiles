@@ -27,7 +27,6 @@ vim.opt.guifont = "FiraCode Nerd Font Mono:h12"
 -- vim.opt.cmdheight = 0
 
 vim.opt.termguicolors = true
-vim.opt.cursorline = true
 
 vim.opt.list = true
 vim.opt.listchars:append("eol:\u{ebea}")
@@ -38,9 +37,50 @@ vim.opt.listchars:append("trail:·")
 -- vim.opt.listchars:append("precedes:<")
 vim.opt.ffs="unix"
 
+vim.opt.cinoptions = "N-s0gE-s(0"
+
 vim.diagnostic.config({
     virtual_text = true,
     signs = true,
 })
 
 vim.o.sessionoptions="buffers,curdir,folds,help,tabpages,winsize"
+
+vim.api.nvim_create_autocmd({ "BufHidden" }, {
+    pattern = {"*No Name*"},
+    callback = function(ev)
+        vim.api.nvimm_buf_delete(ev.buf)
+    end,
+})
+
+vim.api.nvim_create_autocmd({ "WinLeave" }, {
+    callback = function()
+        vim.opt.cursorline = false
+    end,
+})
+
+vim.api.nvim_create_autocmd({ "WinEnter" }, {
+    callback = function()
+        vim.opt.cursorline = true
+    end,
+})
+
+local links = {
+    ['@lsp.type.namespace'] = '@namespace',
+    ['@lsp.type.type'] = '@type',
+    ['@lsp.type.class'] = '@type',
+    ['@lsp.type.enum'] = '@type',
+    ['@lsp.type.interface'] = '@type',
+    ['@lsp.type.struct'] = '@structure',
+    ['@lsp.type.parameter'] = '@parameter',
+    ['@lsp.type.variable'] = '@variable',
+    ['@lsp.type.property'] = '@property',
+    ['@lsp.type.enumMember'] = '@constant',
+    ['@lsp.type.function'] = '@function',
+    ['@lsp.type.method'] = '@method',
+    ['@lsp.type.macro'] = '@macro',
+    ['@lsp.type.decorator'] = '@function',
+}
+for newgroup, oldgroup in pairs(links) do
+    vim.api.nvim_set_hl(0, newgroup, { link = oldgroup, default = true })
+end

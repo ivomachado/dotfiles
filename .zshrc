@@ -12,6 +12,8 @@ setopt HIST_FIND_NO_DUPS
 setopt HIST_SAVE_NO_DUPS
 setopt HIST_BEEP
 
+export GTEST_COLOR=yes
+
 merge_compile_commands() {
     find .build_"$1" -name compile_commands.json -type f -print0 | xargs -0 jq -s '[.[][]]' > compile_commands.json
 }
@@ -156,7 +158,6 @@ export AM_PROMPT_START_TAG_COLOR=81  # previously `PROMPT_START_TAG_COLOR`
 export AM_PROMPT_END_TAG_COLOR=81    # previously `PROMPT_END_TAG_COLOR`
 export AM_DIR_EXPANSION_LEVEL=3
 export AM_HIDE_EXIT_CODE=1
-
 
 SPACESHIP_PROMPT_ORDER=(
   user           # Username section

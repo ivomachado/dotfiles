@@ -1,14 +1,9 @@
 #!/bin/bash
 
-backupdir=~/Workspace/dotfiles
+ls dotconfig/ | xargs -I {} ln -T -sf $PWD/dotconfig/{} ~/.config/{}
 
-configdir=~/.config
-
-zshrcpath=~/.zshrc
-
-ls dotconfig/ | xargs -I {} ln -T -sf $backupdir/dotconfig/{} $configdir/{}
-
-ln -sf $backupdir/.zshrc $zshrcpath
+ln -sf $PWD/.zshrc ~
+ln -sf $PWD/.clang-format ~
 
 git config --global core.excludesFile $PWD/.gitignore_global
 git config --global core.name "Ivo Machado"

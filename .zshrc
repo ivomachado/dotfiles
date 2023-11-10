@@ -80,7 +80,7 @@ if ! zgenom saved; then
     #     zgenom prezto tmux
     # fi
 
-    # zgenom load zsh-users/zsh-syntax-highlighting
+    zgenom load zsh-users/zsh-syntax-highlighting
     # zgenom load /path/to/super-secret-private-plugin
 
     # use a plugin file

@@ -12,6 +12,9 @@ prebuilt
 .build*
 third_party
 .git
+*.srctrlbm
+*.srctrldb
+*.srctrlprj
 .ccache
 .cache
 .idea

@@ -187,7 +187,6 @@ keybinds clear-defaults=true{
 plugins {
     tab-bar { path "tab-bar"; }
     status-bar { path "status-bar"; }
-    zjstatus { path "file:/home/ivo/.config/zellij/h.wasm"; }
     strider { path "strider"; }
     compact-bar { path "compact-bar"; }
     session-manager { path "session-manager"; }

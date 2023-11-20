@@ -53,6 +53,7 @@ require("mason-lspconfig").setup_handlers{
         require("lspconfig")[server_name].setup{
             on_attach = generic_on_attach,
             capabilities = capabilities,
+            single_file_support = true,
             flags = {
                 debounce_text_changes = 150,
             }
@@ -68,8 +69,7 @@ require("mason-lspconfig").setup_handlers{
             root_dir = require('lspconfig').util.root_pattern(
                 "package.json",
                 "tsconfig.json",
-                "jsconfig.json", ".git")
-            or vim.fn.getcwd(),
+                "jsconfig.json", ".git"),
         }
     end,
     ["clangd"] = function ()

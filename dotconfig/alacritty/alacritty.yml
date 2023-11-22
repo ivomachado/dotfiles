@@ -134,7 +134,7 @@ font:
     #   - (Linux/BSD) monospace
     #   - (Windows) Consolas
     # family: FiraCode Nerd Font Mono
-    family: JetBrainsMono Nerd Font
+    family: JetBrainsMono NF
     # family: Monaspace Neon
 
     # The `style` can be specified to pick a specific face.

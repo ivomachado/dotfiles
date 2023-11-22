@@ -66,6 +66,10 @@ vim.api.nvim_create_autocmd({ "WinEnter" }, {
     end,
 })
 
+vim.cmd([[
+    command! -nargs=0 PlantUmlOnSave :autocmd BufWritePost <buffer> silent! let $PLANTUML_LIMIT_SIZE=40960 | silent! execute '!plantuml -tpng % > /dev/null' | execute '!cp ' . expand('%:r') . '.png' . ' ' . getcwd() | execute '!rm ' . expand('%:r') . '.png' | redraw!
+]])
+
 local links = {
     ['@lsp.type.namespace'] = '@namespace',
     ['@lsp.type.type'] = '@type',

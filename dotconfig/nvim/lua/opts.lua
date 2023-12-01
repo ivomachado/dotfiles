@@ -37,6 +37,7 @@ vim.opt.listchars:append("trail:·")
 -- vim.opt.listchars:append("extends:>")
 -- vim.opt.listchars:append("precedes:<")
 vim.opt.ffs="unix"
+vim.opt.pumheight=10
 
 vim.opt.cinoptions = "N-s,0g,E-s,(0,j1,l1,:0,Ws"
 

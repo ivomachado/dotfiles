@@ -425,7 +425,6 @@ return {
         opts = {
             formatters_by_ft = {
                 cpp = { "clang_format", },
-                lua = { "stylua", }
             }
         },
 
@@ -433,5 +432,13 @@ return {
             vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
         end,
     },
-    { "wincent/ferret" }
+    "wincent/ferret",
+    {
+        'renerocksai/telekasten.nvim',
+        dependencies = {'nvim-telescope/telescope.nvim', "renerocksai/calendar-vim"},
+        cmd = "Telekasten",
+        opts = {
+            home = vim.fn.expand("~/zettelkasten"),
+        }
+    },
 }

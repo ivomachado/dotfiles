@@ -9,8 +9,7 @@ local function expanded_builtin_picker(builtin_picker)
         })
 
         -- return builtin[builtin_picker]({
-        --     search_dirs = {
-        --         '',
+        --     search_dirs = { '',
         --         'externals/certi_common_libs',
         --         'externals/smart_platform',
         --         'externals/certi_formatter',
@@ -47,6 +46,7 @@ wk.register({
     D = { "<cmd>lua require'dapui'.toggle()<CR>", "Toggle Debug UI" },
     e = { "<cmd>lua vim.diagnostic.open_float()<CR>", "Show Diagnostic Hover" },
     t = { require('whitespace-nvim').trim, "Trim Whitespace" },
+    ["<leader>"] = {"<cmd>Telekasten<CR>", "Notes"},
 }, { prefix = "<leader>" })
 
 wk.register({

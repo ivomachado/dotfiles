@@ -8,8 +8,6 @@ return {
                 icons_enabled = false,
                 component_separators = { left = "", right = ""},
                 section_separators = { left = "", right = "" },
-                -- component_separators = { left = '\u{E0B9}', right = '\u{E0BB}'},
-                -- section_separators = { left = "\u{E0B8}", right = "\u{E0BA}" },
                 disabled_filetypes = {},
                 theme = 'auto',
                 always_divide_middle = true,
@@ -17,7 +15,6 @@ return {
             },
             sections = {
                 lualine_a = {},
-                -- lualine_b = {'branch', 'diff'},
                 lualine_b = {'mode'},
                 lualine_c = {
                     'filetype',
@@ -36,19 +33,12 @@ return {
                         end
                     end,
                 },
-                -- lualine_y = { 'tabs' },
                 lualine_z = { 'searchcount' },
             },
             inactive_winbar = {
-                lualine_a = {},
-                lualine_b = {},
-                lualine_c = {{'filename', path = 0}},
-                lualine_x = {},
-                lualine_y = {},
-                lualine_z = {}
+                lualine_c = {{'filename', path = 0, symbols = { modified = '●'}}},
             },
             winbar = {
-                lualine_a = { },
                 lualine_c = {
                     {
                         'buffers',
@@ -60,10 +50,14 @@ return {
                         max_length = vim.o.columns * 2 / 3,
                     },
                 },
-                -- lualine_c = {{'filename', path = 0}},
-                lualine_x = {},
-                lualine_y = {},
-                lualine_z = {}
+                lualine_z = {
+                    {
+                        function ()
+                            return [[]]
+                        end,
+                        draw_empty = true,
+                    }
+                },
             },
         },
     },

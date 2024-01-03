@@ -45,8 +45,7 @@ wk.register({
     K = { "<cmd>lua require'dap.ui.widgets'.cursor_float()<CR>", "Show Debug Hover" },
     D = { "<cmd>lua require'dapui'.toggle()<CR>", "Toggle Debug UI" },
     e = { "<cmd>lua vim.diagnostic.open_float()<CR>", "Show Diagnostic Hover" },
-    t = { require('whitespace-nvim').trim, "Trim Whitespace" },
-    ["<leader>"] = {"<cmd>Telekasten<CR>", "Notes"},
+    -- ["<leader>"] = {"<cmd>Telekasten<CR>", "Notes"},
 }, { prefix = "<leader>" })
 
 wk.register({

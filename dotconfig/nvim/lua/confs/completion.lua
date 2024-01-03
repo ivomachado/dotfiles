@@ -18,7 +18,7 @@ cmp.setup({
     },
     -- keyword_length = 3,
     autocomplete = false,
-    preselect = cmp.PreselectMode.Item,
+    preselect = cmp.PreselectMode.None,
     matching = {
         disallow_fuzzy_matching = true,
         disallow_fullfuzzy_matching = true,
@@ -50,19 +50,19 @@ cmp.setup({
         ['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item({behavior = cmp.SelectBehavior.Select}), { 'i', 'c' }),
         ['<C-l>'] = cmp.mapping.complete({config = {sources = {{name = 'vsnip'}}}}),
         ["<S-Tab>"] = cmp.mapping(function(fallback)
-            if vim.fn["vsnip#jumpable"](-1) == 1 then
+            if cmp.visible() and has_words_before() then
+                cmp.select_prev_item({behavior = cmp.SelectBehavior.Select})
+            elseif vim.fn["vsnip#jumpable"](-1) == 1 then
                 feedkey("<Plug>(vsnip-jump-prev)", "")
-            elseif cmp.visible() and has_words_before() then
-                cmp.select_prev_item({behavior = cmp.SelectBehavior.Insert})
             else
                 fallback()
             end
         end, {"i","s","c",}),
         ["<Tab>"] = cmp.mapping(function(fallback)
-            if vim.fn["vsnip#jumpable"](1) == 1 then
+            if cmp.visible() and has_words_before() then
+                cmp.select_next_item({behavior = cmp.SelectBehavior.Select})
+            elseif vim.fn["vsnip#jumpable"](1) == 1 then
                 feedkey("<Plug>(vsnip-jump-next)", "")
-            elseif cmp.visible() and has_words_before() then
-                cmp.select_next_item({behavior = cmp.SelectBehavior.Insert})
             elseif has_words_before() then
                 cmp.complete()
             else

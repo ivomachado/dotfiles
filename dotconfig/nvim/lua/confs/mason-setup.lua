@@ -20,18 +20,6 @@ local generic_on_attach = function(_, _)
 end
 
 local clangd_on_attach = function(first_parameter, bufnr)
-    local compile_commands = vim.fs.find("compile_commands.json", {
-        upward = true,
-        path = vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr)),
-    })
-
-    if (compile_commands[1]) then
-        local cppcheck_linter = require('lint').linters.cppcheck
-        cppcheck_linter.args = {
-            '--project='..compile_commands[1],
-        }
-    end
-
     generic_on_attach(first_parameter, bufnr)
     wk.register({
         ["gs"] = { "<cmd>ClangdSwitchSourceHeader<CR>", "Switch C++ Source and Header" },

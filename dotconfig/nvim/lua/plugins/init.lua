@@ -20,7 +20,7 @@ return {
            end
         end,
     },
-    { 'NMAC427/guess-indent.nvim', event = "BufEnter", config = true},
+    { 'NMAC427/guess-indent.nvim', config = true},
     { 'michaeljsmith/vim-indent-object', event = "BufEnter", },
     { 'PeterRincker/vim-argumentative', event = "BufEnter", },
     {
@@ -31,10 +31,10 @@ return {
             ignored_filetypes = { 'TelescopePrompt', 'Trouble', 'help', 'lspinfo', 'toggleterm', 'neo-tree', 'lazy', 'mason', 'checkhealth'},
             ignore_terminal = true,
         },
+        enabled = false,
     },
     {
         'lukas-reineke/indent-blankline.nvim',
-        event = "VeryLazy",
         config = function()
             -- local hooks = require "ibl.hooks"
             -- hooks.register(
@@ -415,6 +415,7 @@ return {
                 end,
             })
         end,
+        enabled = false,
     },
     {
         "j-hui/fidget.nvim",
@@ -440,6 +441,7 @@ return {
         cmd = "Telekasten",
         opts = {
             home = vim.fn.expand("~/zettelkasten"),
-        }
+        },
+        enabled = false,
     },
 }

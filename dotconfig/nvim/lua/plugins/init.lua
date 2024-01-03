@@ -121,12 +121,6 @@ return {
             dap.listeners.after.event_initialized["dapui_config"] = function()
                 dapui.open()
             end
-            -- dap.listeners.before.event_terminated["dapui_config"] = function()
-            --     dapui.close()
-            -- end
-            -- dap.listeners.before.event_exited["dapui_config"] = function()
-            --     dapui.close()
-            -- end
         end,
         lazy = true,
     },
@@ -135,18 +129,6 @@ return {
         keys = {"gc", "gb"},
         config = true,
     },
-    -- {
-    --     "anuvyklack/windows.nvim",
-    --     event = "VeryLazy",
-    --     dependencies = {
-    --         "anuvyklack/middleclass",
-    --     },
-    --     opts = {
-    --         ignore = {
-    --             buftype = { "quickfix", "terminal", "neo-tree"}
-    --         }
-    --     },
-    -- },
     {
         'neovim/nvim-lspconfig',
         event = "VeryLazy",
@@ -187,29 +169,13 @@ return {
     },
     {
         'nvim-treesitter/nvim-treesitter',
-        -- version = "main",
         enabled = true,
         build = ':TSUpdate',
         opts = {
-            -- A list of parser names, or "all"
-            -- ensure_installed = { "c", "svelte", "cpp", "lua", "rust" , "typescript", "css", "html", "javascript", "vim"},
             auto_install = true,
-
-            -- Install parsers synchronously (only applied to `ensure_installed`)
             sync_install = false,
-
-            -- List of parsers to ignore installing (for "all")
-            --
-            -- indent = {
-            --     enable = disable,
-            -- },
-
             highlight = {
                 enable = true,
-                -- disable = {
-                --     "bash",
-                --     "cmake",
-                -- },
                 additional_vim_regex_highlighting = false,
             },
         },

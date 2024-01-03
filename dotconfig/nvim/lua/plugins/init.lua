@@ -226,6 +226,7 @@ return {
                 load_on_setup = false,
             },
         },
+        enabled = false,
     },
     {
         "akinsho/toggleterm.nvim",

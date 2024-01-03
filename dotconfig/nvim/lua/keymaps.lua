@@ -34,7 +34,7 @@ wk.register({
     f = { expanded_builtin_picker("find_files"), "Find Files With Externals Subdir"},
     b = { "<cmd>Telescope buffers<cr>", "Buffers"},
     s = { "<cmd>Telescope lsp_document_symbols<cr>", "Document Symbols"},
-    S = { require("auto-session.session-lens").search_session, "Sessions" },
+    -- S = { require("auto-session.session-lens").search_session, "Sessions" },
     l = { expanded_builtin_picker("live_grep"), "Live Grep with Externals" },
     p = { "<cmd>Telescope commands<cr>", "Commands" },
     c = { "<cmd>Telescope colorscheme<cr>", "Colorschemes" },

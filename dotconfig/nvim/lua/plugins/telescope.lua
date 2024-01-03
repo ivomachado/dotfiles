@@ -65,13 +65,13 @@ return {
             pickers = {
                 find_files = {
                     preview = {
-                        hide_on_startup = true,
+                        hide_on_startup = false,
                     },
                     hidden = true,
-                    theme = "dropdown",
+                    -- theme = "horizontal",
                     layout_config = {
-                        width = 0.80,
-                        height = 0.40,
+                        width = 0.90,
+                        height = 0.80,
                         prompt_position = "top",
                     },
                 },
@@ -92,8 +92,8 @@ return {
         },
         config = function(_, opts)
             require("telescope").setup(opts)
-            require("auto-session").setup_session_lens()
-            require("telescope").load_extension "session-lens"
+            -- require("auto-session").setup_session_lens()
+            -- require("telescope").load_extension "session-lens"
             require("telescope").load_extension("fzf")
         end,
     }

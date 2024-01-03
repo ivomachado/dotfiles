@@ -3,9 +3,9 @@ return {
         'nvim-lualine/lualine.nvim',
         dependencies =  'nvim-tree/nvim-web-devicons',
         opts = {
-            extensions = {'quickfix'},
+            extensions = { 'quickfix', 'neo-tree', 'nvim-dap-ui', 'mason', 'lazy' },
             options = {
-                icons_enabled = true,
+                icons_enabled = false,
                 component_separators = { left = "", right = ""},
                 section_separators = { left = "", right = "" },
                 -- component_separators = { left = '\u{E0B9}', right = '\u{E0BB}'},
@@ -16,11 +16,14 @@ return {
                 globalstatus = true,
             },
             sections = {
-                lualine_a = {'mode'},
+                lualine_a = {},
                 -- lualine_b = {'branch', 'diff'},
-                lualine_b = {},
-                lualine_c = {'filetype', {'filename', path = 1}, 'diagnostics'},
-                lualine_y = {},
+                lualine_b = {'mode'},
+                lualine_c = {
+                    'filetype',
+                    { 'filename',    path = 1 },
+                    { 'diagnostics', icons_enabled = true },
+                },
                 lualine_x = {
                     'fileformat',
                     'progress',
@@ -33,7 +36,8 @@ return {
                         end
                     end,
                 },
-                lualine_z = {'tabs'}
+                -- lualine_y = { 'tabs' },
+                lualine_z = { 'searchcount' },
             },
             inactive_winbar = {
                 lualine_a = {},
@@ -44,9 +48,19 @@ return {
                 lualine_z = {}
             },
             winbar = {
-                lualine_a = {},
-                lualine_b = {},
-                lualine_c = {{'filename', path = 0}},
+                lualine_a = { },
+                lualine_c = {
+                    {
+                        'buffers',
+                        symbols = {
+                            modified = ' ●', -- Text to show when the buffer is modified
+                            alternate_file = '', -- Text to show to identify the alternate file
+                            directory = '', -- Text to show when the buffer is a directory
+                        },
+                        max_length = vim.o.columns * 2 / 3,
+                    },
+                },
+                -- lualine_c = {{'filename', path = 0}},
                 lualine_x = {},
                 lualine_y = {},
                 lualine_z = {}

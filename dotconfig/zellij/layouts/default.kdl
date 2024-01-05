@@ -1,7 +1,5 @@
 layout {
-    pane command="nvim" {
-        args "-O" "dotconfig/zellij/layouts/default.kdl" "dotconfig/zellij/config.kdl"
-    }
+    pane command="nvim"
 }
 
 keybinds {

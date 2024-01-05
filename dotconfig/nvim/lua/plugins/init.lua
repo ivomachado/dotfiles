@@ -3,9 +3,9 @@ return {
         "folke/todo-comments.nvim",
         event = "VeryLazy",
         dependencies = { "nvim-lua/plenary.nvim" },
-        opts = {}
+        opts = {},
+        enabled = false,
     },
-    { 'tpope/vim-repeat', event = "BufEnter", },
     { 'tpope/vim-abolish', cmd = {"Subvert", "S"}, keys = {"cr",}, },
     { 'jghauser/mkdir.nvim', event = "BufWritePre", },
     { 'mfussenegger/nvim-dap', lazy = true },
@@ -354,8 +354,8 @@ return {
             )
         end
     },
-    -- { "bfrg/vim-cpp-modern", ft = {"c", "cpp",}, },
     {
+        enabled = false,
         "nvimdev/hlsearch.nvim",
         event = "BufRead",
         opts = {},
@@ -401,13 +401,4 @@ return {
         end,
     },
     "wincent/ferret",
-    {
-        'renerocksai/telekasten.nvim',
-        dependencies = {'nvim-telescope/telescope.nvim', "renerocksai/calendar-vim"},
-        cmd = "Telekasten",
-        opts = {
-            home = vim.fn.expand("~/zettelkasten"),
-        },
-        enabled = false,
-    },
 }

@@ -7,20 +7,6 @@ local function expanded_builtin_picker(builtin_picker)
         return builtin[builtin_picker]({
             search_dirs = directories,
         })
-
-        -- return builtin[builtin_picker]({
-        --     search_dirs = { '',
-        --         'externals/certi_common_libs',
-        --         'externals/smart_platform',
-        --         'externals/certi_formatter',
-        --         'buildroot',
-        --         'externals/certi_libwpe',
-        --         'externals/certi_wpe',
-        --         'externals/wpebackend-certi',
-        --         'externals/surrogate',
-        --         'externals/photoframe_cc',
-        --     },
-        -- })
     end
 end
 
@@ -49,17 +35,16 @@ wk.register({
 }, { prefix = "<leader>" })
 
 wk.register({
-    "Navigation",
     ["]"] = {
-        "Navigate Next",
         b = { "<cmd>bn<CR>", "Buffer" },
         e = { "<cmd>lua vim.diagnostic.goto_next()<CR>", "Diagnostic" },
     },
     ["["] = {
-        "Navigate Previous",
         b = { "<cmd>bp<CR>", "Buffer" },
         e = { "<cmd>lua vim.diagnostic.goto_prev()<CR>", "Diagnostic" },
     },
+})
+wk.register({
     ["<F5>"] = { "<cmd>lua require'dap'.continue()<CR>", "Continue Debugging" },
     ["<F9>"] = { "<cmd>lua require'dap'.toggle_breakpoint()<CR>", "Toggle Breakpoint" },
     ["<F10>"] = { "<cmd>lua require'dap'.step_over()<CR>", "Step Over" },

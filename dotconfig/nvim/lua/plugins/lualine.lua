@@ -14,7 +14,8 @@ return {
                 globalstatus = true,
             },
             sections = {
-                lualine_a = {},
+                lualine_a = {
+                },
                 lualine_b = {'mode'},
                 lualine_c = {
                     'filetype',
@@ -33,7 +34,11 @@ return {
                         end
                     end,
                 },
-                lualine_z = { 'searchcount' },
+                lualine_z = {
+                    function()
+                        return os.getenv("ZELLIJ_SESSION_NAME") or ''
+                    end
+                },
             },
             inactive_winbar = {
                 lualine_c = {{'filename', path = 0, symbols = { modified = '●'}}},

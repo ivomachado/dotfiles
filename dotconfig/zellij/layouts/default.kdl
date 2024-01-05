@@ -1,0 +1,16 @@
+layout {
+    pane command="nvim" {
+        args "-O" "dotconfig/zellij/layouts/default.kdl" "dotconfig/zellij/config.kdl"
+    }
+}
+
+keybinds {
+    shared_except "locked" {
+        bind "Alt g" {
+            Run "lazygit" {
+                in_place true
+                close_on_exit true
+            };
+        }
+    }
+}

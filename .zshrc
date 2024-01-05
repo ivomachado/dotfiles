@@ -181,3 +181,5 @@ SPACESHIP_RPROMPT_ORDER=(
   git            # Git section (git_branch + git_status)
   time           # Time stamps section
 )
+
+alias pde="zellij --layout default"

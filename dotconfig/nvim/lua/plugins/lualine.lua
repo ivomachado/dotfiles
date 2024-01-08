@@ -42,19 +42,17 @@ return {
             },
             inactive_winbar = {
                 lualine_c = {{'filename', path = 0, symbols = { modified = '●'}}},
+                lualine_z = {
+                    {
+                        function ()
+                            return [[]]
+                        end,
+                        draw_empty = true,
+                    }
+                },
             },
             winbar = {
-                lualine_c = {
-                    {
-                        'buffers',
-                        symbols = {
-                            modified = ' ●', -- Text to show when the buffer is modified
-                            alternate_file = '', -- Text to show to identify the alternate file
-                            directory = '', -- Text to show when the buffer is a directory
-                        },
-                        max_length = vim.o.columns * 2 / 3,
-                    },
-                },
+                lualine_b = {{'filename', path = 0, symbols = { modified = '●'}}},
                 lualine_z = {
                     {
                         function ()

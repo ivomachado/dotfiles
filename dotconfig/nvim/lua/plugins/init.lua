@@ -161,7 +161,9 @@ return {
                 })
 
                 wk.register({
-                    ["hb"] = { "<cmd>Gitsigns blame_line<CR>", "Toggle Git Blame" },
+                    ["gb"] = { "<cmd>Gitsigns blame_line<CR>", "Toggle Git Blame" },
+                    ["grh"] = { "<cmd>Gitsigns reset_hunk<CR>", "Reset Hunk" },
+                    ["grb"] = { "<cmd>Gitsigns reset_buffer<CR>", "Reset File" },
                 }, { prefix = "<leader>" })
             end,
             current_line_blame = false,

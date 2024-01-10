@@ -16,7 +16,7 @@ wk.register({
     n = { "<cmd>Neotree float toggle=true<cr>", "Toggle Project Drawer" },
     N = { "<cmd>Neotree float focus reveal<cr>", "Open Project Drawer on Current File" },
 
-    g = { "<cmd>Telescope git_files<cr>", "Find Git Files"},
+    -- g = { "<cmd>Telescope git_files<cr>", "Find Git Files"},
     f = { expanded_builtin_picker("find_files"), "Find Files With Externals Subdir"},
     b = { "<cmd>Telescope buffers<cr>", "Buffers"},
     s = { "<cmd>Telescope lsp_document_symbols<cr>", "Document Symbols"},
@@ -32,6 +32,9 @@ wk.register({
     D = { "<cmd>lua require'dapui'.toggle()<CR>", "Toggle Debug UI" },
     e = { "<cmd>lua vim.diagnostic.open_float()<CR>", "Show Diagnostic Hover" },
     -- ["<leader>"] = {"<cmd>Telekasten<CR>", "Notes"},
+    --
+    h = { "<cmd>noh<CR>", "Disable Search Highlight"}
+
 }, { prefix = "<leader>" })
 
 wk.register({

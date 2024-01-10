@@ -52,7 +52,7 @@ return {
                 },
             },
             winbar = {
-                lualine_b = {{'filename', path = 0, symbols = { modified = '●'}}},
+                lualine_c = {{'filename', path = 0, symbols = { modified = '●'}}},
                 lualine_z = {
                     {
                         function ()

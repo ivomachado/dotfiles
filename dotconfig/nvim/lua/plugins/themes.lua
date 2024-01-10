@@ -102,7 +102,7 @@ return {
     },
     {
         "rebelot/kanagawa.nvim",
-        lazy = false,
+        lazy = true,
         priority = 1000,
         opts = {
             compile = true,
@@ -119,6 +119,25 @@ return {
         config = function(_, opts)
             require'kanagawa'.setup(opts)
             vim.cmd.colorscheme("kanagawa-dragon")
+        end,
+    },
+    {
+        'savq/melange-nvim',
+        lazy = false,
+        priority = 1000,
+        config = function()
+            vim.cmd.colorscheme("melange")
+        end,
+    },
+    {
+        'ribru17/bamboo.nvim',
+        lazy = true,
+        priority = 1000,
+        config = function()
+            require('bamboo').setup {
+                -- optional configuration here
+            }
+            require('bamboo').load()
         end,
     },
 }

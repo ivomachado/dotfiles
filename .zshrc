@@ -182,4 +182,4 @@ SPACESHIP_RPROMPT_ORDER=(
   time           # Time stamps section
 )
 
-alias pde="zellij --layout default"
+alias pde='zellij --layout default -s $(basename $PWD)'

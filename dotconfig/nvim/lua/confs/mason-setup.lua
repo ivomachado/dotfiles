@@ -2,7 +2,7 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 local wk = require("which-key")
 
-local generic_on_attach = function(_, _)
+local generic_on_attach = function(_, bufnr)
     wk.register({
         ["gd"] = { "<cmd>Telescope lsp_definitions<CR>", "Go To Definition" },
         ["gs"] = { "<cmd>ClangdSwitchSourceHeader<CR>", "Switch C++ Source and Header" },
@@ -11,7 +11,7 @@ local generic_on_attach = function(_, _)
         ["K"] = { "<cmd>lua vim.lsp.buf.hover()<CR>", "Hover" },
         ["<F2>"] = { "<cmd>lua vim.lsp.buf.rename()<CR>", "Rename Symbol" },
         ["<leader>."] = { "<cmd>lua vim.lsp.buf.code_action()<CR>", "Code Action" },
-    })
+    }, {buffer = bufnr})
 
     -- vim.cmd[[ sign define DiagnosticSignError text=E texthl=DiagnosticSignError linehl= numhl= ]]
     -- vim.cmd[[ sign define DiagnosticSignWarn text=W texthl=DiagnosticSignWarn linehl= numhl= ]]
@@ -23,7 +23,7 @@ local clangd_on_attach = function(first_parameter, bufnr)
     generic_on_attach(first_parameter, bufnr)
     wk.register({
         ["gs"] = { "<cmd>ClangdSwitchSourceHeader<CR>", "Switch C++ Source and Header" },
-    })
+    }, {buffer = bufnr})
 end
 
 require("mason").setup()
@@ -77,5 +77,18 @@ require("mason-lspconfig").setup_handlers{
                 debounce_text_changes = 150,
             }
         }
-    end
+    end,
+    ["rust_analyzer"] = function()
+        require("lspconfig").rust_analyzer.setup{
+            on_attach = generic_on_attach,
+            capabilities = capabilities,
+            settings = {
+                ['rust-analyzer'] = {
+                    check = {
+                        command = "clippy"
+                    }
+                }
+            }
+        }
+    end,
 }

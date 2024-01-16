@@ -23,7 +23,7 @@ set titlestring=%{fnamemodify(getcwd(),':h:t')}/%{fnamemodify(getcwd(),':t')}
 
 vim.api.nvim_create_user_command('ClearNotifications', "lua require'notify'.dismiss()", {})
 vim.api.nvim_create_user_command('RemoveIostream', 'g/iostream\\|cout/d', {})
-vim.cmd([[set guifont=FiraCode\ Nerd\ Font\ Font\ Mono:h11]])
+vim.cmd([[set guifont=JetBrainsMono\ NF:h11]])
 
 vim.api.nvim_set_keymap('s', 'jk', '<Esc>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('i', 'jk', '<Esc>', { noremap = true, silent = true })

@@ -102,7 +102,7 @@ return {
     },
     {
         "rebelot/kanagawa.nvim",
-        lazy = true,
+        lazy = false,
         priority = 1000,
         opts = {
             compile = true,
@@ -118,12 +118,12 @@ return {
         },
         config = function(_, opts)
             require'kanagawa'.setup(opts)
-            vim.cmd.colorscheme("kanagawa-dragon")
+            vim.cmd.colorscheme("kanagawa")
         end,
     },
     {
         'savq/melange-nvim',
-        lazy = false,
+        lazy = true,
         priority = 1000,
         config = function()
             vim.cmd.colorscheme("melange")

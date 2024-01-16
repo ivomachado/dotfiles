@@ -40,7 +40,7 @@ cmp.setup({
     },
     view = {
         docs = {
-            auto_open = true,
+            auto_open = false,
         },
     },
     mapping = {
@@ -49,6 +49,7 @@ cmp.setup({
         ['<C-n>'] = cmp.mapping(cmp.mapping.select_next_item({behavior = cmp.SelectBehavior.Select}), { 'i', 'c' }),
         ['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item({behavior = cmp.SelectBehavior.Select}), { 'i', 'c' }),
         ['<C-l>'] = cmp.mapping.complete({config = {sources = {{name = 'vsnip'}}}}),
+        ['<C-k>'] = vim.lsp.buf.signature_help,
         ["<S-Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() and has_words_before() then
                 cmp.select_prev_item({behavior = cmp.SelectBehavior.Insert})

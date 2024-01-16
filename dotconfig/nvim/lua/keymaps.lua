@@ -33,8 +33,8 @@ wk.register({
     e = { "<cmd>lua vim.diagnostic.open_float()<CR>", "Show Diagnostic Hover" },
     -- ["<leader>"] = {"<cmd>Telekasten<CR>", "Notes"},
     --
-    h = { "<cmd>noh<CR>", "Disable Search Highlight"}
-
+    h = { "<cmd>noh<CR>", "Disable Search Highlight"},
+    k = { vim.lsp.buf.signature_help, "Toggle Signature Help" },
 }, { prefix = "<leader>" })
 
 wk.register({

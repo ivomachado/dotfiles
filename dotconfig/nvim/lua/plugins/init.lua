@@ -375,7 +375,7 @@ return {
         lazy = true,
         config = function()
             require('lint').linters_by_ft = {
-                cpp = { 'cppcheck', }
+                cpp = { 'cppcheck', },
             }
             vim.api.nvim_create_autocmd({ "BufReadPost", "BufWritePost" }, {
                 callback = function()
@@ -395,6 +395,7 @@ return {
         opts = {
             formatters_by_ft = {
                 cpp = { "clang_format", },
+                rust = { "rustfmt", },
             }
         },
 
@@ -403,4 +404,9 @@ return {
         end,
     },
     "wincent/ferret",
+    {
+        "ray-x/lsp_signature.nvim",
+        event = "VeryLazy",
+        opts = {},
+    }
 }

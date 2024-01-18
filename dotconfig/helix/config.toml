@@ -41,6 +41,7 @@ newline = ""
 # C-r = ":config-reload"
 [keys.normal.space]
 "," = ":config-open"
+"q" = ":buffer-close"
 
 [keys.normal]
 

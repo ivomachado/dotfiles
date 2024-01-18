@@ -1,27 +1,12 @@
-local function expanded_builtin_picker(builtin_picker)
-    return function()
-        local builtin = require("telescope.builtin")
-        local cwDir = vim.fn.getcwd()
-        local directories = vim.split(vim.fn.glob(cwDir.."/externals/*/"), '\n', {trimempty=true})
-        table.insert(directories, 1, cwDir);
-        return builtin[builtin_picker]({
-            search_dirs = directories,
-        })
-    end
-end
-
 local wk = require("which-key")
 
 wk.register({
     n = { "<cmd>Neotree float toggle=true<cr>", "Toggle Project Drawer" },
     N = { "<cmd>Neotree float focus reveal<cr>", "Open Project Drawer on Current File" },
 
-    -- g = { "<cmd>Telescope git_files<cr>", "Find Git Files"},
-    f = { expanded_builtin_picker("find_files"), "Find Files With Externals Subdir"},
+    f = { "<cmd>Telescope find_files no_ignore=true hidden=true<cr>", "Find Files"},
     b = { "<cmd>Telescope buffers<cr>", "Buffers"},
     s = { "<cmd>Telescope lsp_document_symbols<cr>", "Document Symbols"},
-    -- S = { require("auto-session.session-lens").search_session, "Sessions" },
-    l = { expanded_builtin_picker("live_grep"), "Live Grep with Externals" },
     p = { "<cmd>Telescope commands<cr>", "Commands" },
     c = { "<cmd>Telescope colorscheme<cr>", "Colorschemes" },
     w = { "<C-W>", "Windows", noremap = false,},
@@ -31,8 +16,6 @@ wk.register({
     K = { "<cmd>lua require'dap.ui.widgets'.cursor_float()<CR>", "Show Debug Hover" },
     D = { "<cmd>lua require'dapui'.toggle()<CR>", "Toggle Debug UI" },
     e = { "<cmd>lua vim.diagnostic.open_float()<CR>", "Show Diagnostic Hover" },
-    -- ["<leader>"] = {"<cmd>Telekasten<CR>", "Notes"},
-    --
     h = { "<cmd>noh<CR>", "Disable Search Highlight"},
     k = { vim.lsp.buf.signature_help, "Toggle Signature Help" },
 }, { prefix = "<leader>" })

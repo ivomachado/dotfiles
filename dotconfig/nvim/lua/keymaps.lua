@@ -4,11 +4,12 @@ wk.register({
     n = { "<cmd>Neotree float toggle=true<cr>", "Toggle Project Drawer" },
     N = { "<cmd>Neotree float focus reveal<cr>", "Open Project Drawer on Current File" },
 
-    f = { "<cmd>Telescope find_files no_ignore=true hidden=true<cr>", "Find Files"},
-    b = { "<cmd>Telescope buffers<cr>", "Buffers"},
-    s = { "<cmd>Telescope lsp_document_symbols<cr>", "Document Symbols"},
-    p = { "<cmd>Telescope commands<cr>", "Commands" },
-    c = { "<cmd>Telescope colorscheme<cr>", "Colorschemes" },
+    f = { "<cmd>FzfLua files<cr>", "Find Files"},
+    b = { "<cmd>FzfLua buffers<cr>", "Buffers"},
+    s = { "<cmd>FzfLua lsp_document_symbols<cr>", "Document Symbols"},
+    l = { "<cmd>FzfLua live_grep<cr>", "Live Grep"},
+    p = { "<cmd>FzfLua commands<cr>", "Commands" },
+    c = { "<cmd>FzfLua colorschemes<cr>", "Colorschemes" },
     w = { "<C-W>", "Windows", noremap = false,},
 
     q = { "<cmd>Bdelete<CR>", "Close Buffer"},

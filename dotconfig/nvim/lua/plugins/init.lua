@@ -54,28 +54,6 @@ return {
         end,
     },
     { 'folke/trouble.nvim', cmd = {"Trouble", "TroubleToggle"}, },
-    {
-        'stevearc/dressing.nvim',
-        lazy = true,
-        init = function()
-            local setup_dressing = function()
-                require("dressing").setup({
-                    select = {
-                        telescope = require('telescope.themes').get_cursor({}),
-                    }
-                })
-            end
-            vim.ui.select = function(items, opts, on_choice)
-                setup_dressing()
-                vim.ui.select(items, opts, on_choice)
-            end
-
-            vim.ui.input = function(opts, on_confirm)
-                setup_dressing()
-                vim.ui.input(opts, on_confirm)
-            end
-        end,
-    },
     { 'kevinhwang91/nvim-bqf', event = "QuickFixCmdPre", },
     { 'CoatiSoftware/vim-sourcetrail', cmd = "SourcetrailStartServer"},
     { 'famiu/bufdelete.nvim', cmd = { "Bdelete", "Bwipeout" }, },
@@ -186,126 +164,6 @@ return {
         end,
     },
     {
-        'rmagatti/auto-session',
-        opts = {
-            log_level = 'error',
-            auto_session_suppress_dirs = {'~/', '~/projects'},
-            session_lens = {
-                load_on_setup = false,
-            },
-        },
-        enabled = false,
-    },
-    {
-        "akinsho/toggleterm.nvim",
-        enabled = false,
-        cmd = "ToggleTerm",
-        init = function ()
-            require("which-key").register({
-                name = "Terminal",
-                ["<M-;>"] = {"<cmd>ToggleTerm direction=horizontal<cr>", "Toggle Terminal"},
-                ["<M-j><M-k>"] = {"<C-\\><C-n>", "Exit Terminal Mode"},
-                ["<M-f>"] = {"<cmd>ToggleTerm direction=float<cr>", "Toggle Float Terminal"},
-                ["<M-1>"] = {"<cmd>1ToggleTerm<cr>", "Toggle Terminal 1"},
-                ["<M-2>"] = {"<cmd>2ToggleTerm<cr>", "Toggle Terminal 2"},
-                ["<M-3>"] = {"<cmd>3ToggleTerm<cr>", "Toggle Terminal 3"},
-                ["<M-4>"] = {"<cmd>4ToggleTerm<cr>", "Toggle Terminal 4"},
-                ["<M-5>"] = {"<cmd>5ToggleTerm<cr>", "Toggle Terminal 5"},
-            }, { mode = {"t", "n"} })
-        end,
-        opts = {
-            start_in_insert = true,
-            shading_factor = '-55',
-            auto_scroll = false,
-            size = 23,
-        }
-    },
-    {
-        'dstein64/nvim-scrollview',
-        enabled = false,
-        event = "VeryLazy",
-        opts = {
-            excluded_filetypes = {'nerdtree'},
-            current_only = true,
-            winblend = 50,
-            scrollview_base = 'right',
-            scrollview_column = 1
-        },
-    },
-    {
-        'willothy/flatten.nvim',
-        enabled = false,
-        opts = {
-            window = {
-                open = "alternate",
-            },
-            callbacks = {
-                should_block = function(argv)
-                    -- Note that argv contains all the parts of the CLI command, including
-                    -- Neovim's path, commands, options and files.
-                    -- See: :help v:argv
-
-                    -- In this case, we would block if we find the `-b` flag
-                    -- This allows you to use `nvim -b file1` instead of `nvim --cmd 'let g:flatten_wait=1' file1`
-                    return vim.tbl_contains(argv, "-b")
-
-                    -- Alternatively, we can block if we find the diff-mode option
-                    -- return vim.tbl_contains(argv, "-d")
-                end,
-                pre_open = function()
-                    local term = require("toggleterm.terminal")
-                    local termid = term.get_focused_id()
-                    SavedTerminal = term.get(termid)
-                end,
-                post_open = function(bufnr, winnr, ft, is_blocking)
-                    if is_blocking and SavedTerminal then
-                        SavedTerminal:close()
-                    else
-                        -- If it's a normal file, just switch to its window
-                        vim.api.nvim_set_current_win(winnr)
-                    end
-
-                    -- If the file is a git commit, create one-shot autocmd to delete its buffer on write
-                    -- If you just want the toggleable terminal integration, ignore this bit
-                    if ft == "gitcommit" or ft == "gitrebase" then
-                        vim.api.nvim_create_autocmd(
-                            "BufWritePost",
-                            {
-                                buffer = bufnr,
-                                once = true,
-                                callback = vim.schedule_wrap(function()
-                                    -- This is a bit of a hack, but if you run bufdelete immediately
-                                    -- the shell can occasionally freeze
-                                    require('bufdelete').bufdelete(bufnr)
-                                end
-                                )
-                            }
-                        )
-                    end
-                end,
-                block_end = function()
-                    -- After blocking ends (for a git commit, etc), reopen the terminal
-                    vim.schedule(function()
-                        if SavedTerminal then
-                            SavedTerminal:open()
-                            SavedTerminal = nil
-                        end
-                    end)
-                end,
-            },
-        },
-        lazy = false, priority = 1001,
-    },
-    {
-        "echasnovski/mini.animate",
-        version = false,
-        opts = {
-            cursor = { enable = false, },
-            scroll = { enable = true, },
-        },
-        enabled = false,
-    },
-    {
         "folke/which-key.nvim",
         -- keys = {"<leader>", "[", "]" , "<M-;>",},
         --
@@ -408,5 +266,34 @@ return {
         "ray-x/lsp_signature.nvim",
         event = "VeryLazy",
         opts = {},
-    }
+    },
+    {
+        "ibhagwan/fzf-lua",
+        -- optional for icon support
+        dependencies = { "nvim-tree/nvim-web-devicons" },
+        config = function()
+            vim.cmd("FzfLua register_ui_select")
+            -- calling `setup` is optional for customization
+            require("fzf-lua").setup({
+                "telescope",
+                fzf_opts = {
+                    ["--layout"] = "reverse",
+                },
+                -- winopts = {
+                --     height     = 0.85,       -- window height
+                --     width      = 0.80,       -- window width
+                --     row        = 0.35,       -- window row position (0=top, 1=bottom)
+                --     col        = 0.50,       -- window col position (0=left, 1=right)
+                --     border     = "single",
+                -- },
+                files = {
+                    fd_opts =
+                    "--color=never --type f --hidden --no-ignore-vcs --follow --exclude .git --exclude .ccache --exclude .cache --exclude *.o",
+                    actions = {
+                        ["ctrl-g"] = false,
+                    }
+                },
+            })
+        end
+    },
 }

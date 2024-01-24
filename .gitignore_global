@@ -15,11 +15,12 @@ third_party
 *.srctrlbm
 *.srctrldb
 *.srctrlprj
-.ccache
-.cache
 .idea
 build
 output
 .vscode
 node_modules
-certi_wpe
+*.o
+
+jniLibs
+.cxx

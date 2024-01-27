@@ -1,6 +1,6 @@
 layout {
     tab {
-        pane edit="."
+        pane command="$EDITOR"
     }
 
     swap_floating_layout name="staggered" {

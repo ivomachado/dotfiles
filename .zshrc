@@ -130,8 +130,8 @@ fi
 
 bindkey '^ ' autosuggest-accept
 
-export EDITOR='helix'
-export VISUAL='helix'
+export EDITOR='nvim'
+export VISUAL='nvim'
 export FZF_DEFAULT_OPTS="--bind=tab:down,btab:up,ctrl-k:toggle"
 export FZF_DEFAULT_COMMAND='fd --color=never --type f --hidden --no-ignore-vcs --follow --exclude .git --exclude .ccache --exclude .cache --exclude *.o'
 

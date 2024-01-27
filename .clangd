@@ -1,6 +1,6 @@
 ---
 MissingIncludes: Strict
 SemanticTokens:
-  DisabledKinds: ['Variable', 'LocalVariable', 'StaticField', 'Parameter', 'StaticMethod', 'Function', 'Method', 'Field', 'Class', 'Interface', 'Enum', 'EnumConstant', 'Type', 'Typedef', 'Primitive', 'TemplateParameter', 'Namespace', 'Macro', 'Modifier', 'Operator', 'Bracket', 'Label']
+  # DisabledKinds: ['Variable', 'LocalVariable', 'StaticField', 'Parameter', 'StaticMethod', 'Function', 'Method', 'Field', 'Class', 'Interface', 'Enum', 'EnumConstant', 'Type', 'Typedef', 'Primitive', 'TemplateParameter', 'Namespace', 'Macro', 'Modifier', 'Operator', 'Bracket', 'Label']
   # DisabledModifiers: ['Declaration', 'Definition', 'Deprecated', 'Readonly', 'Static', 'Abstract', 'DefaultLibrary']
 ---

@@ -65,7 +65,7 @@ return {
     {
         "catppuccin/nvim",
         name = "catppuccin",
-        lazy = true,
+        lazy = false,
         opts = {
             flavour = "frappe",
             background = {
@@ -102,7 +102,7 @@ return {
     },
     {
         "rebelot/kanagawa.nvim",
-        lazy = false,
+        lazy = true,
         priority = 1000,
         opts = {
             compile = true,

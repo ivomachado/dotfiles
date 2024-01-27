@@ -269,8 +269,6 @@ return {
     },
     {
         "ibhagwan/fzf-lua",
-        -- optional for icon support
-        dependencies = { "nvim-tree/nvim-web-devicons" },
         config = function()
             vim.cmd("FzfLua register_ui_select")
             -- calling `setup` is optional for customization

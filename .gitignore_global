@@ -24,3 +24,5 @@ node_modules
 
 jniLibs
 .cxx
+/target
+.data/*.log

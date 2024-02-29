@@ -16,8 +16,8 @@ cmp.setup({
             vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
         end,
     },
-    -- keyword_length = 3,
-    autocomplete = false,
+    keyword_length = 2,
+    autocomplete = true,
     preselect = cmp.PreselectMode.None,
     matching = {
         disallow_fuzzy_matching = true,
@@ -25,15 +25,6 @@ cmp.setup({
         disallow_partial_fuzzy_matching = true,
         disallow_partial_matching = false,
         disallow_prefix_unmatching = false,
-    },
-    window = {
-        completion = {
-            -- winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
-            col_offset = -3,
-            side_padding = 0,
-            completion = cmp.config.window.bordered(),
-            documentation = cmp.config.window.bordered(),
-        },
     },
     performance = {
         max_view_entries = 150,
@@ -104,26 +95,7 @@ cmp.setup({
         { name = 'vsnip', max_item_count = 3, priority_weight = 1, dup = 0, keyword_length = 3},
     },
     formatting = {
-        fields = { "kind", "abbr", "menu", },
-        format = function(entry, vim_item)
-            local kind = require('lspkind').cmp_format({
-                mode = 'symbol_text',
-                maxwidth = 80, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-                menu = ({
-                    buffer = "[Buffer]",
-                    nvim_lsp = "[LSP]",
-                    vsnip = "[VSnip]",
-                    nvim_lua = "[Lua]",
-                    latex_symbols = "[Latex]",
-                })
-            })(entry, vim_item)
-
-            local strings = vim.split(kind.kind, "%s", { trimempty = true})
-            kind.kind = " " .. (strings[1] or "") .. " "
-            kind.menu = "    (" .. (strings[2] or "") .. ")"
-
-            return kind
-        end,
+        fields = { "abbr", "menu", "kind", },
     },
     experimental = {
         ghost_text = true,

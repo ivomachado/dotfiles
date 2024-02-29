@@ -7,6 +7,7 @@ wk.register({
     f = { "<cmd>FzfLua files<cr>", "Find Files"},
     b = { "<cmd>FzfLua buffers<cr>", "Buffers"},
     s = { "<cmd>FzfLua lsp_document_symbols<cr>", "Document Symbols"},
+    S = { "<cmd>FzfLua lsp_workspace_symbols<cr>", "Workspace Symbols"},
     l = { "<cmd>FzfLua live_grep<cr>", "Live Grep"},
     p = { "<cmd>FzfLua commands<cr>", "Commands" },
     c = { "<cmd>FzfLua colorschemes<cr>", "Colorschemes" },

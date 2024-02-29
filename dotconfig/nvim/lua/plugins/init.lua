@@ -53,7 +53,7 @@ return {
             vim.cmd [[highlight IndentBlanklineSpaceChar guifg=nocombine]]
         end,
     },
-    { 'folke/trouble.nvim', cmd = {"Trouble", "TroubleToggle"}, },
+    { 'folke/trouble.nvim', cmd = {"Trouble", "TroubleToggle"}, opts = { icons = false}},
     { 'kevinhwang91/nvim-bqf', event = "QuickFixCmdPre", },
     { 'CoatiSoftware/vim-sourcetrail', cmd = "SourcetrailStartServer"},
     { 'famiu/bufdelete.nvim', cmd = { "Bdelete", "Bwipeout" }, },
@@ -287,6 +287,8 @@ return {
                 files = {
                     fd_opts =
                     "--color=never --type f --hidden --no-ignore-vcs --follow --exclude .git --exclude .ccache --exclude .cache --exclude *.o",
+                    prompt = '',
+                    cwd_prompt = false,
                     actions = {
                         ["ctrl-g"] = false,
                     }

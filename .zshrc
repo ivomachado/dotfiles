@@ -134,6 +134,8 @@ export EDITOR='nvim'
 export VISUAL='nvim'
 export FZF_DEFAULT_OPTS="--bind=tab:down,btab:up,ctrl-o:toggle"
 export FZF_DEFAULT_COMMAND='fd --color=never --type f --hidden --no-ignore-vcs --follow --exclude .git --exclude .ccache --exclude .cache --exclude *.o'
+export RIPGREP_CONFIG_PATH=$HOME/.config/ripgrep/config
+alias fd='fd --color=never --type f --hidden --no-ignore-vcs --follow --exclude .git --exclude .ccache --exclude .cache --exclude \*.o'
 
 export ALIEN_THEME="bnw"
 

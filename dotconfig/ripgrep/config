@@ -1,0 +1,27 @@
+# --max-columns=150
+# --max-columns-preview
+
+# Add my 'cpp' type.
+# --type-add
+# cpp:*.{h,cpp,hpp}*
+
+# Search hidden files / directories (e.g. dotfiles) by default
+--hidden
+--no-ignore-vcs
+
+# Using glob patterns to include/exclude files or folders
+--glob=!.git/*
+
+--glob=!.cache
+--glob=!.ccache
+--glob=!*.o
+--glob=!.cxx
+--glob=!*.dir
+--glob=!output
+
+# Set the colors.
+# --colors=line:none
+# --colors=line:style:bold
+
+# Because who cares about case!?
+--smart-case

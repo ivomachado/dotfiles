@@ -26,3 +26,5 @@ jniLibs
 .cxx
 /target
 .data/*.log
+lazy-lock.json
+.rgignore

@@ -1,4 +1,4 @@
-theme = "kanagawa"
+theme = "catppuccin_frappe"
 [keys.insert.j]
 k = ["normal_mode"]
 

@@ -7,7 +7,6 @@ return {
         enabled = false,
     },
     { 'tpope/vim-abolish', cmd = {"Subvert", "S"}, keys = {"cr",}, },
-    { 'jghauser/mkdir.nvim', event = "BufWritePre", },
     { 'mfussenegger/nvim-dap', lazy = true },
     { "folke/neodev.nvim", lazy = true, ft = "lua", opts = {}, } ,
     {
@@ -23,16 +22,6 @@ return {
     { 'NMAC427/guess-indent.nvim', config = true},
     { 'michaeljsmith/vim-indent-object', event = "BufEnter", },
     { 'PeterRincker/vim-argumentative', event = "BufEnter", },
-    {
-        'johnfrankmorgan/whitespace.nvim',
-        event = "VeryLazy",
-        opts = {
-            highlight = 'DiffDelete',
-            ignored_filetypes = { 'TelescopePrompt', 'Trouble', 'help', 'lspinfo', 'toggleterm', 'neo-tree', 'lazy', 'mason', 'checkhealth'},
-            ignore_terminal = true,
-        },
-        enabled = false,
-    },
     {
         'lukas-reineke/indent-blankline.nvim',
         config = function()
@@ -202,16 +191,16 @@ return {
     },
     {
         "windwp/nvim-autopairs",
-        event = "InsertEnter",
+        enabled = false,
         config = function ()
-            require("nvim-autopairs").setup{}
-
-            local cmp_autopairs = require('nvim-autopairs.completion.cmp')
-            local cmp = require('cmp')
-            cmp.event:on(
-                'confirm_done',
-                cmp_autopairs.on_confirm_done()
-            )
+            -- require("nvim-autopairs").setup{}
+            --
+            -- local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+            -- local cmp = require('cmp')
+            -- cmp.event:on(
+            --     'confirm_done',
+            --     cmp_autopairs.on_confirm_done()
+            -- )
         end
     },
     {
@@ -265,6 +254,7 @@ return {
     {
         "ray-x/lsp_signature.nvim",
         event = "VeryLazy",
+        enabled = false,
         opts = {},
     },
     {
@@ -277,13 +267,16 @@ return {
                 fzf_opts = {
                     ["--layout"] = "reverse",
                 },
-                -- winopts = {
-                --     height     = 0.85,       -- window height
-                --     width      = 0.80,       -- window width
-                --     row        = 0.35,       -- window row position (0=top, 1=bottom)
-                --     col        = 0.50,       -- window col position (0=left, 1=right)
-                --     border     = "single",
-                -- },
+                winopts = {
+                    height     = 0.85,       -- window height
+                    width      = 0.80,       -- window width
+                    row        = 0.35,       -- window row position (0=top, 1=bottom)
+                    col        = 0.50,       -- window col position (0=left, 1=right)
+                    border     = "single",
+                    preview={
+                        default='builtin'
+                    }
+                },
                 files = {
                     fd_opts =
                     "--color=never --type f --hidden --no-ignore-vcs --follow --exclude .git --exclude .ccache --exclude .cache --exclude *.o",
@@ -294,6 +287,42 @@ return {
                     }
                 },
             })
+        end
+    },
+    {
+        'echasnovski/mini.pairs',
+        version = '*',
+        config = function()
+            require("mini.pairs").setup()
+        end,
+    },
+    {
+        'echasnovski/mini.completion',
+        version = '*',
+        config = function()
+            require("mini.completion").setup()
+            vim.keymap.set('i', '<Tab>',   [[pumvisible() ? "\<C-n>" : "\<Tab>"]],   { expr = true })
+            vim.keymap.set('i', '<S-Tab>', [[pumvisible() ? "\<C-p>" : "\<S-Tab>"]], { expr = true })
+            local keys = {
+                ['cr']        = vim.api.nvim_replace_termcodes('<CR>', true, true, true),
+                ['ctrl-y']    = vim.api.nvim_replace_termcodes('<C-y>', true, true, true),
+                ['ctrl-y_cr'] = vim.api.nvim_replace_termcodes('<C-y><CR>', true, true, true),
+            }
+
+            _G.cr_action = function()
+                if vim.fn.pumvisible() ~= 0 then
+                    -- If popup is visible, confirm selected item or add new line otherwise
+                    local item_selected = vim.fn.complete_info()['selected'] ~= -1
+                    return item_selected and keys['ctrl-y'] or keys['ctrl-y_cr']
+                else
+                    -- If popup is not visible, use plain `<CR>`. You might want to customize
+                    -- according to other plugins. For example, to use 'mini.pairs', replace
+                    -- next line with `return require('mini.pairs').cr()`
+                    return require('mini.pairs').cr()
+                end
+            end
+
+            vim.keymap.set('i', '<CR>', 'v:lua._G.cr_action()', { expr = true })
         end
     },
 }

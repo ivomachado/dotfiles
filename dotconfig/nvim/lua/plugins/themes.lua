@@ -1,7 +1,7 @@
 return {
     {
         "polirritmico/monokai-nightasty.nvim",
-        lazy = true,
+        enabled = false,
         priority = 1000,
         terminal_colors = false,
         opts = {
@@ -17,19 +17,17 @@ return {
                 colors.comment = "#2d7e79"
                 colors.fg_gutter = "#5e5e5e"
             end,
-            on_highlights = function(highlights, colors)
+            on_highlights = function(highlights, _)
                 -- highlights.TelescopeNormal = { fg = colors.magenta, bg = colors.charcoal }
                 highlights.WinSeparator = { fg = "#444444" }
             end,
         },
         config = function(_, opts)
             require("monokai-nightasty").setup(opts)
-            vim.cmd.colorscheme("monokai-nightasty")
         end,
     },
     {
         "RRethy/nvim-base16",
-        lazy = true,
         enabled = false,
         priority = 1000,
         config = function()
@@ -41,7 +39,7 @@ return {
     },
     {
         "sainnhe/sonokai",
-        lazy = true,
+        enabled = false,
         priority = 1000,
         config = function ()
             vim.cmd([[]])
@@ -50,17 +48,15 @@ return {
                 colorscheme sonokai
                 ]])
         end,
-        enabled = true,
     },
     {
         "EdenEast/nightfox.nvim",
-        lazy = true,
+        enabled = false,
         priority = 1000,
         opts = {},
         config = function ()
             vim.cmd.colorscheme("nordfox")
         end,
-        enabled = true,
     },
     {
         "catppuccin/nvim",
@@ -92,7 +88,7 @@ return {
     },
     {
         "folke/tokyonight.nvim",
-        lazy = true,
+        enabled = false,
         priority = 1000,
         opts = {},
         config = function(_, opts)
@@ -102,7 +98,7 @@ return {
     },
     {
         "rebelot/kanagawa.nvim",
-        lazy = true,
+        enabled = false,
         priority = 1000,
         opts = {
             compile = true,
@@ -123,7 +119,7 @@ return {
     },
     {
         'savq/melange-nvim',
-        lazy = true,
+        enabled = false,
         priority = 1000,
         config = function()
             vim.cmd.colorscheme("melange")
@@ -131,7 +127,7 @@ return {
     },
     {
         'ribru17/bamboo.nvim',
-        lazy = true,
+        enabled = false,
         priority = 1000,
         config = function()
             require('bamboo').setup {

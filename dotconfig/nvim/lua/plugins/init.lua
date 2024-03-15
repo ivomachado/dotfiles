@@ -1,16 +1,7 @@
 return {
-    {
-        "folke/todo-comments.nvim",
-        event = "VeryLazy",
-        dependencies = { "nvim-lua/plenary.nvim" },
-        opts = {},
-        enabled = false,
-    },
     { 'tpope/vim-abolish', cmd = {"Subvert", "S"}, keys = {"cr",}, },
-    { 'mfussenegger/nvim-dap', lazy = true },
     { "folke/neodev.nvim", lazy = true, ft = "lua", opts = {}, } ,
-    {
-        'rcarriga/nvim-notify',
+    { 'rcarriga/nvim-notify',
         lazy = true,
         init = function()
             vim.notify = function(msg, level, opts)
@@ -42,54 +33,12 @@ return {
             vim.cmd [[highlight IndentBlanklineSpaceChar guifg=nocombine]]
         end,
     },
-    { 'folke/trouble.nvim', cmd = {"Trouble", "TroubleToggle"}, opts = { icons = false}},
-    { 'kevinhwang91/nvim-bqf', event = "QuickFixCmdPre", },
-    { 'CoatiSoftware/vim-sourcetrail', cmd = "SourcetrailStartServer"},
     { 'famiu/bufdelete.nvim', cmd = { "Bdelete", "Bwipeout" }, },
     {
         "kylechui/nvim-surround",
         version = "*", -- Use for stability; omit to use `main` branch for the latest features
         keys = {"ys", "ds", "cs"},
         config = true,
-    },
-    {
-        {
-            'williamboman/mason.nvim',
-            -- event = "VeryLazy",
-            config = function()
-                require("confs/mason-setup")
-            end,
-        },
-        {
-            'williamboman/mason-lspconfig.nvim',
-            lazy = true,
-        },
-        {
-            'jay-babu/mason-nvim-dap.nvim',
-            keys = {"<F5>", "<F9>", "<F10>", "<F11>"},
-            opts = {
-                automatic_setup = true,
-                ensure_installed = {'cppdbg'},
-                handlers = {},
-                automatic_installation = false,
-            },
-            config = function(_, opts)
-                require("mason-nvim-dap").setup(opts)
-                require("confs/dap")
-            end,
-        },
-    },
-    {
-        'rcarriga/nvim-dap-ui',
-        config = function ()
-            require("dapui").setup()
-            local dap, dapui = require("dap"), require("dapui")
-
-            dap.listeners.after.event_initialized["dapui_config"] = function()
-                dapui.open()
-            end
-        end,
-        lazy = true,
     },
     {
         'numToStr/Comment.nvim',
@@ -99,12 +48,9 @@ return {
     {
         'neovim/nvim-lspconfig',
         event = "VeryLazy",
-        dependencies = "williamboman/mason.nvim",
-    },
-    {
-        'p00f/clangd_extensions.nvim',
-        lazy = true,
-        dependencies = "neovim/nvim-lspconfig"
+        config = function()
+            require("confs/lsp-setup")
+        end
     },
     {
         'lewis6991/gitsigns.nvim',
@@ -139,9 +85,11 @@ return {
     {
         'nvim-treesitter/nvim-treesitter',
         enabled = true,
+        branch = 'main',
         build = ':TSUpdate',
         opts = {
             auto_install = true,
+            ensure_install = { 'rust', 'cpp' },
             sync_install = false,
             highlight = {
                 enable = true,
@@ -149,13 +97,15 @@ return {
             },
         },
         config = function(_, opts)
-            require('nvim-treesitter.configs').setup(opts)
+            require('nvim-treesitter').setup(opts)
+            vim.api.nvim_create_autocmd('FileType', {
+                pattern = { 'cpp', 'rust' },
+                callback = function() vim.treesitter.start() end,
+            })
         end,
     },
     {
         "folke/which-key.nvim",
-        -- keys = {"<leader>", "[", "]" , "<M-;>",},
-        --
         init = function()
             vim.o.timeout = true
             vim.o.timeoutlen = 300
@@ -190,52 +140,9 @@ return {
         end,
     },
     {
-        "windwp/nvim-autopairs",
-        enabled = false,
-        config = function ()
-            -- require("nvim-autopairs").setup{}
-            --
-            -- local cmp_autopairs = require('nvim-autopairs.completion.cmp')
-            -- local cmp = require('cmp')
-            -- cmp.event:on(
-            --     'confirm_done',
-            --     cmp_autopairs.on_confirm_done()
-            -- )
-        end
-    },
-    {
-        enabled = false,
-        "nvimdev/hlsearch.nvim",
-        event = "BufRead",
-        opts = {},
-    },
-    {
-        "kdheepak/lazygit.nvim",
-        enabled = false,
-        -- optional for floating window border decoration
-        dependencies = {
-            "nvim-lua/plenary.nvim",
-        },
-    },
-    {
-        'mfussenegger/nvim-lint',
-        lazy = true,
-        config = function()
-            require('lint').linters_by_ft = {
-                cpp = { 'cppcheck', },
-            }
-            vim.api.nvim_create_autocmd({ "BufReadPost", "BufWritePost" }, {
-                callback = function()
-                    require("lint").try_lint()
-                end,
-            })
-        end,
-        enabled = false,
-    },
-    {
         "j-hui/fidget.nvim",
         event = "LspAttach",
-        opts = {},
+        opts = true,
     },
     {
         'stevearc/conform.nvim',
@@ -251,12 +158,6 @@ return {
         end,
     },
     "wincent/ferret",
-    {
-        "ray-x/lsp_signature.nvim",
-        event = "VeryLazy",
-        enabled = false,
-        opts = {},
-    },
     {
         "ibhagwan/fzf-lua",
         config = function()
@@ -290,39 +191,29 @@ return {
         end
     },
     {
-        'echasnovski/mini.pairs',
-        version = '*',
-        config = function()
-            require("mini.pairs").setup()
-        end,
-    },
-    {
         'echasnovski/mini.completion',
+        dependencies = { 'echasnovski/mini.pairs' },
         version = '*',
         config = function()
-            require("mini.completion").setup()
-            vim.keymap.set('i', '<Tab>',   [[pumvisible() ? "\<C-n>" : "\<Tab>"]],   { expr = true })
+            require("completion")
+            require("mini.pairs").setup()
+            require("mini.completion").setup({
+                set_vim_settings = false,
+                lsp_completion = {
+                    process_items = function(items, base)
+                        return require('completion').process_items(items, base)
+                    end
+                },
+
+            })
+            vim.opt.shortmess:append('c')
+            vim.opt.shortmess:append('C')
+            vim.opt.completeopt = 'menuone,noinsert,popup'
+
+            vim.keymap.set('i', '<Tab>', [[pumvisible() ? "\<C-n>" : "\<Tab>"]], { expr = true })
             vim.keymap.set('i', '<S-Tab>', [[pumvisible() ? "\<C-p>" : "\<S-Tab>"]], { expr = true })
-            local keys = {
-                ['cr']        = vim.api.nvim_replace_termcodes('<CR>', true, true, true),
-                ['ctrl-y']    = vim.api.nvim_replace_termcodes('<C-y>', true, true, true),
-                ['ctrl-y_cr'] = vim.api.nvim_replace_termcodes('<C-y><CR>', true, true, true),
-            }
-
-            _G.cr_action = function()
-                if vim.fn.pumvisible() ~= 0 then
-                    -- If popup is visible, confirm selected item or add new line otherwise
-                    local item_selected = vim.fn.complete_info()['selected'] ~= -1
-                    return item_selected and keys['ctrl-y'] or keys['ctrl-y_cr']
-                else
-                    -- If popup is not visible, use plain `<CR>`. You might want to customize
-                    -- according to other plugins. For example, to use 'mini.pairs', replace
-                    -- next line with `return require('mini.pairs').cr()`
-                    return require('mini.pairs').cr()
-                end
-            end
-
-            vim.keymap.set('i', '<CR>', 'v:lua._G.cr_action()', { expr = true })
+            vim.keymap.set('i', '<CR>', 'v:lua._Completion.cr_action()', { expr = true, replace_keycodes = false, })
+            vim.keymap.set('i', '<C-y>', 'v:lua._Completion.confirm_completion()', { expr = true, replace_keycodes = false, noremap = true })
         end
     },
 }

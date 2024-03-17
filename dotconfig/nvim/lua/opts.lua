@@ -50,6 +50,15 @@ vim.diagnostic.config({
     signs = true,
 })
 
+vim.opt.shortmess:append('c')
+vim.opt.shortmess:append('C')
+vim.opt.completeopt = 'menuone,noinsert,popup'
+
+vim.cmd[[ sign define DiagnosticSignError text=E texthl=DiagnosticSignError linehl= numhl= ]]
+vim.cmd[[ sign define DiagnosticSignWarn text=W texthl=DiagnosticSignWarn linehl= numhl= ]]
+vim.cmd[[ sign define DiagnosticSignInfo text=I texthl=DiagnosticSignInfo linehl= numhl= ]]
+vim.cmd [[ sign define DiagnosticSignHint text=󰌵 texthl=DiagnosticSignHint linehl= numhl= ]]
+
 vim.o.sessionoptions="buffers,curdir,folds,help,tabpages,winsize"
 
 vim.api.nvim_create_autocmd({ "BufHidden" }, {

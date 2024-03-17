@@ -1,38 +1,60 @@
-local wk = require("which-key")
+--------------------------------------------------------------------------------
+--------------------------------- Fuzzy Finder ---------------------------------
+--------------------------------------------------------------------------------
+vim.keymap.set('n', '<leader>n', "<cmd>Neotree float toggle=true<cr>")
+vim.keymap.set('n', '<leader>N', "<cmd>Neotree float focus reveal<cr>")
+vim.keymap.set('n', '<leader>f', "<cmd>FzfLua files<cr>")
+vim.keymap.set('n', '<leader>b', "<cmd>FzfLua buffers<cr>")
+vim.keymap.set('n', '<leader>s', "<cmd>FzfLua lsp_document_symbols<cr>")
+vim.keymap.set('n', '<leader>S', "<cmd>FzfLua lsp_workspace_symbols<cr>")
+vim.keymap.set('n', '<leader>l', "<cmd>FzfLua live_grep<cr>")
+vim.keymap.set('n', '<leader>p', "<cmd>FzfLua commands<cr>")
+vim.keymap.set('n', '<leader>c', "<cmd>FzfLua colorschemes<cr>")
 
-wk.register({
-    n = { "<cmd>Neotree float toggle=true<cr>", "Toggle Project Drawer" },
-    N = { "<cmd>Neotree float focus reveal<cr>", "Open Project Drawer on Current File" },
+--------------------------------------------------------------------------------
+------------------------------------ Utils -------------------------------------
+--------------------------------------------------------------------------------
+vim.keymap.set('n', '<leader>w', "<C-W>", { noremap = false })
+vim.keymap.set('n', '<leader>q', "<cmd>Bdelete<CR>")
+vim.keymap.set('n', '<leader>Q', "<cmd>bdelete<CR>")
+vim.keymap.set('n', '<leader>e', "<cmd>lua vim.diagnostic.open_float()<CR>")
 
-    f = { "<cmd>FzfLua files<cr>", "Find Files"},
-    b = { "<cmd>FzfLua buffers<cr>", "Buffers"},
-    s = { "<cmd>FzfLua lsp_document_symbols<cr>", "Document Symbols"},
-    S = { "<cmd>FzfLua lsp_workspace_symbols<cr>", "Workspace Symbols"},
-    l = { "<cmd>FzfLua live_grep<cr>", "Live Grep"},
-    p = { "<cmd>FzfLua commands<cr>", "Commands" },
-    c = { "<cmd>FzfLua colorschemes<cr>", "Colorschemes" },
-    w = { "<C-W>", "Windows", noremap = false,},
+--------------------------------------------------------------------------------
+---------------------------------- Navigation ----------------------------------
+--------------------------------------------------------------------------------
+vim.keymap.set('n', ']c', "<cmd>Gitsigns next_hunk<CR>")
+vim.keymap.set('n', '[c', "<cmd>Gitsigns prev_hunk<CR>")
+vim.keymap.set('n', ']b', "<cmd>bn<CR>")
+vim.keymap.set('n', ']e', "<cmd>lua vim.diagnostic.goto_next()<CR>")
+vim.keymap.set('n', '[b', "<cmd>bp<CR>")
+vim.keymap.set('n', '[e', "<cmd>lua vim.diagnostic.goto_prev()<CR>")
 
-    q = { "<cmd>Bdelete<CR>", "Close Buffer"},
-    Q = { "<cmd>bdelete<CR>", "Close Buffer and Window"},
-    K = { "<cmd>lua require'dap.ui.widgets'.cursor_float()<CR>", "Show Debug Hover" },
-    D = { "<cmd>lua require'dapui'.toggle()<CR>", "Toggle Debug UI" },
-    e = { "<cmd>lua vim.diagnostic.open_float()<CR>", "Show Diagnostic Hover" },
-    h = { "<cmd>noh<CR>", "Disable Search Highlight"},
-    k = { vim.lsp.buf.signature_help, "Toggle Signature Help" },
-}, { prefix = "<leader>" })
+--------------------------------------------------------------------------------
+------------------------------------- Git --------------------------------------
+--------------------------------------------------------------------------------
+vim.keymap.set('n', 'gb', "<cmd>Gitsigns blame_line<CR>")
+vim.keymap.set('n', 'grh', "<cmd>Gitsigns reset_hunk<CR>")
+vim.keymap.set('n', 'grb', "<cmd>Gitsigns reset_buffer<CR>")
 
-wk.register({
-    ["]"] = {
-        b = { "<cmd>bn<CR>", "Buffer" },
-        e = { "<cmd>lua vim.diagnostic.goto_next()<CR>", "Diagnostic" },
-    },
-    ["["] = {
-        b = { "<cmd>bp<CR>", "Buffer" },
-        e = { "<cmd>lua vim.diagnostic.goto_prev()<CR>", "Diagnostic" },
-    },
-})
+--------------------------------------------------------------------------------
+---------------------------------- Completion -----------------------------------
+--------------------------------------------------------------------------------
 vim.keymap.set('i', '<Tab>', [[pumvisible() ? "\<C-n>" : "\<Tab>"]], { expr = true })
 vim.keymap.set('i', '<S-Tab>', [[pumvisible() ? "\<C-p>" : "\<S-Tab>"]], { expr = true })
 vim.keymap.set('i', '<CR>', 'v:lua._Completion.cr_action()', { expr = true, replace_keycodes = false, })
-vim.keymap.set('i', '<C-y>', 'v:lua._Completion.confirm_completion()', { expr = true, replace_keycodes = false, noremap = true })
+vim.keymap.set('i', '<C-y>', 'v:lua._Completion.confirm_completion()',
+    { expr = true, replace_keycodes = false, noremap = true })
+vim.keymap.set('i', '<C-Space>', '<C-x><C-o>', {})
+vim.keymap.set('i', '.', '.<C-x><C-o>', { noremap = true })
+vim.keymap.set('i', '::', '::<C-x><C-o>', { noremap = true })
+vim.keymap.set('i', '->', '::<C-x><C-o>', { noremap = true })
+--------------------------------------------------------------------------------
+--------------------------- Language Server Protocol ---------------------------
+--------------------------------------------------------------------------------
+vim.keymap.set('n', 'gd', vim.lsp.buf.definition)
+vim.keymap.set('n', 'gi', "<cmd>FzfLua lsp_implementations<CR>")
+vim.keymap.set('n', 'gi', "<cmd>FzfLua lsp_references<CR>")
+vim.keymap.set('n', 'K', vim.lsp.buf.hover)
+vim.keymap.set('n', '<F2>', vim.lsp.buf.rename)
+vim.keymap.set('n', '<leader>.', vim.lsp.buf.code_action)
+vim.keymap.set({ 'n', 'i' }, '<C-k>', vim.lsp.buf.signature_help)

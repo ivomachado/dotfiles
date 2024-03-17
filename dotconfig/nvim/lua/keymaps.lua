@@ -32,9 +32,7 @@ wk.register({
         e = { "<cmd>lua vim.diagnostic.goto_prev()<CR>", "Diagnostic" },
     },
 })
-wk.register({
-    ["<F5>"] = { "<cmd>lua require'dap'.continue()<CR>", "Continue Debugging" },
-    ["<F9>"] = { "<cmd>lua require'dap'.toggle_breakpoint()<CR>", "Toggle Breakpoint" },
-    ["<F10>"] = { "<cmd>lua require'dap'.step_over()<CR>", "Step Over" },
-    ["<F11>"] = { "<cmd>lua require'dap'.step_into()<CR>", "Step Into" },
-})
+vim.keymap.set('i', '<Tab>', [[pumvisible() ? "\<C-n>" : "\<Tab>"]], { expr = true })
+vim.keymap.set('i', '<S-Tab>', [[pumvisible() ? "\<C-p>" : "\<S-Tab>"]], { expr = true })
+vim.keymap.set('i', '<CR>', 'v:lua._Completion.cr_action()', { expr = true, replace_keycodes = false, })
+vim.keymap.set('i', '<C-y>', 'v:lua._Completion.confirm_completion()', { expr = true, replace_keycodes = false, noremap = true })

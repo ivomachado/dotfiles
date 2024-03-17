@@ -21,7 +21,7 @@ vim.cmd([[
 set titlestring=%{fnamemodify(getcwd(),':h:t')}/%{fnamemodify(getcwd(),':t')}
 ]])
 
-vim.api.nvim_create_user_command('ClearNotifications', "lua require'notify'.dismiss()", {})
+vim.api.nvim_create_user_command('ClearNotifications', "lua require'mini.notify'.clear()", {})
 vim.api.nvim_create_user_command('RemoveIostream', 'g/iostream\\|cout/d', {})
 vim.cmd([[set guifont=JetBrainsMono\ NF:h11]])
 
@@ -30,3 +30,4 @@ vim.api.nvim_set_keymap('i', 'jk', '<Esc>', { noremap = true, silent = true })
 
 require("opts")
 require("lazy").setup("plugins")
+require("confs/lsp-setup")

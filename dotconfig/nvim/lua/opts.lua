@@ -24,7 +24,9 @@ vim.opt.showtabline = 0
 vim.opt.scrolloff = 5
 vim.opt.signcolumn = "yes"
 vim.opt.guifont = "FiraCode Nerd Font Mono:h12"
+vim.opt.showcmd = false
 -- vim.opt.cmdheight = 0
+vim.cmd [[   hi NonText cterm=NONE ctermfg=NONE ]]
 
 vim.opt.termguicolors = true
 vim.opt.cursorline = true
@@ -38,6 +40,8 @@ vim.opt.listchars:append("trail:·")
 -- vim.opt.listchars:append("precedes:<")
 vim.opt.ffs="unix"
 vim.opt.pumheight=10
+vim.o.timeout = true
+vim.o.timeoutlen = 300
 
 vim.opt.cinoptions = "N-s,0g,E-s,(0,j1,l1,:0,Ws"
 
@@ -66,10 +70,6 @@ vim.api.nvim_create_autocmd({ "WinEnter" }, {
         vim.opt.cursorline = true
     end,
 })
-
-vim.cmd([[
-    command! -nargs=0 PlantUmlOnSave :autocmd BufWritePost <buffer> silent! let $PLANTUML_LIMIT_SIZE=40960 | silent! execute '!plantuml -tpng % > /dev/null' | execute '!cp ' . expand('%:r') . '.png' . ' ' . getcwd() | execute '!rm ' . expand('%:r') . '.png' | redraw!
-]])
 
 vim.cmd([[
     let $ESCDELAY=0

@@ -1,63 +1,28 @@
 return {
     { 'tpope/vim-abolish', cmd = {"Subvert", "S"}, keys = {"cr",}, },
-    { "folke/neodev.nvim", lazy = true, ft = "lua", opts = {}, } ,
-    { 'rcarriga/nvim-notify',
-        lazy = true,
-        init = function()
-            vim.notify = function(msg, level, opts)
-                vim.notify = require("notify")
-                vim.notify(msg, level, opts)
-           end
-        end,
-    },
+    { 'folke/neodev.nvim', lazy = true, ft = "lua", opts = {}, } ,
     { 'NMAC427/guess-indent.nvim', config = true},
     { 'michaeljsmith/vim-indent-object', event = "BufEnter", },
     { 'PeterRincker/vim-argumentative', event = "BufEnter", },
     {
         'lukas-reineke/indent-blankline.nvim',
-        config = function()
-            -- local hooks = require "ibl.hooks"
-            -- hooks.register(
-            --     hooks.type.WHITESPACE,
-            --     hooks.builtin.hide_first_space_indent_level
-            -- )
-            require("ibl").setup {
-                indent = { char = "│" },
-                scope = {
-                    enabled = false,
-                    show_start = false,
-                    show_end = false,
-                },
-            }
-
-            vim.cmd [[highlight IndentBlanklineSpaceChar guifg=nocombine]]
-        end,
+        name = 'ibl',
+        opts = {
+            indent = { char = "│" },
+            scope = {
+                enabled = false,
+                show_start = false,
+                show_end = false,
+            },
+        }
     },
     { 'famiu/bufdelete.nvim', cmd = { "Bdelete", "Bwipeout" }, },
-    {
-        "kylechui/nvim-surround",
-        version = "*", -- Use for stability; omit to use `main` branch for the latest features
-        keys = {"ys", "ds", "cs"},
-        config = true,
-    },
-    {
-        'numToStr/Comment.nvim',
-        keys = {"gc", "gb"},
-        config = true,
-    },
-    {
-        'neovim/nvim-lspconfig',
-        event = "VeryLazy",
-        config = function()
-            require("confs/lsp-setup")
-        end
-    },
+    { 'kylechui/nvim-surround', version = "*",                   keys = { "ys", "ds", "cs" }, config = true, },
+    { 'numToStr/Comment.nvim',  keys = { "gc", "gb" },           config = true, },
+    { 'neovim/nvim-lspconfig', event = "VeryLazy", },
     {
         'lewis6991/gitsigns.nvim',
         event = "VeryLazy",
-        dependencies = {
-            'nvim-lua/plenary.nvim'
-        },
         opts = {
             on_attach = function(_)
                 local wk = require("which-key")
@@ -89,7 +54,7 @@ return {
         build = ':TSUpdate',
         opts = {
             auto_install = true,
-            ensure_install = { 'rust', 'cpp' },
+            ensure_install = { 'rust', 'cpp', 'lua' },
             sync_install = false,
             highlight = {
                 enable = true,
@@ -99,17 +64,13 @@ return {
         config = function(_, opts)
             require('nvim-treesitter').setup(opts)
             vim.api.nvim_create_autocmd('FileType', {
-                pattern = { 'cpp', 'rust' },
+                pattern = { 'cpp', 'rust', 'lua' },
                 callback = function() vim.treesitter.start() end,
             })
         end,
     },
     {
-        "folke/which-key.nvim",
-        init = function()
-            vim.o.timeout = true
-            vim.o.timeoutlen = 300
-        end,
+        'folke/which-key.nvim',
         opts = {
             plugins = {
                 registers = false,
@@ -140,11 +101,6 @@ return {
         end,
     },
     {
-        "j-hui/fidget.nvim",
-        event = "LspAttach",
-        opts = true,
-    },
-    {
         'stevearc/conform.nvim',
         opts = {
             formatters_by_ft = {
@@ -157,12 +113,10 @@ return {
             vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
         end,
     },
-    "wincent/ferret",
     {
         "ibhagwan/fzf-lua",
         config = function()
             vim.cmd("FzfLua register_ui_select")
-            -- calling `setup` is optional for customization
             require("fzf-lua").setup({
                 "telescope",
                 fzf_opts = {
@@ -191,29 +145,24 @@ return {
         end
     },
     {
+        'echasnovski/mini.notify',
+        version = false,
+        config = function()
+            require('mini.notify').setup({})
+            vim.notify = require('mini.notify').make_notify()
+        end
+    },
+    {
         'echasnovski/mini.completion',
         dependencies = { 'echasnovski/mini.pairs' },
         version = '*',
         config = function()
             require("completion")
             require("mini.pairs").setup()
-            require("mini.completion").setup({
-                set_vim_settings = false,
-                lsp_completion = {
-                    process_items = function(items, base)
-                        return require('completion').process_items(items, base)
-                    end
-                },
-
-            })
+            require("mini.completion").setup({ set_vim_settings = false, })
             vim.opt.shortmess:append('c')
             vim.opt.shortmess:append('C')
             vim.opt.completeopt = 'menuone,noinsert,popup'
-
-            vim.keymap.set('i', '<Tab>', [[pumvisible() ? "\<C-n>" : "\<Tab>"]], { expr = true })
-            vim.keymap.set('i', '<S-Tab>', [[pumvisible() ? "\<C-p>" : "\<S-Tab>"]], { expr = true })
-            vim.keymap.set('i', '<CR>', 'v:lua._Completion.cr_action()', { expr = true, replace_keycodes = false, })
-            vim.keymap.set('i', '<C-y>', 'v:lua._Completion.confirm_completion()', { expr = true, replace_keycodes = false, noremap = true })
         end
     },
 }

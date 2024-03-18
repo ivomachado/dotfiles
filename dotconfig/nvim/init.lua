@@ -1,14 +1,9 @@
-vim.opt.compatible = false
-vim.opt.mouse = "a"
 vim.opt.showmode = false
 vim.opt.backup = false
 vim.opt.title = true
-vim.opt.hidden = true
 vim.opt.relativenumber = true
 vim.opt.number = true
 vim.opt.swapfile = false
-vim.opt.encoding = "utf-8"
-vim.opt.fileencoding = "utf-8"
 vim.opt.wrap = false
 vim.opt.splitbelow = true
 vim.opt.splitright = true
@@ -17,10 +12,8 @@ vim.opt.smartcase = true
 vim.opt.hlsearch = true
 vim.opt.incsearch = true
 vim.opt.expandtab = true
-vim.opt.fixendofline = true
 vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
-vim.opt.showtabline = 0
 vim.opt.scrolloff = 5
 vim.opt.signcolumn = "yes"
 vim.opt.guifont = "JetBrainsMono NF:h11"
@@ -32,10 +25,7 @@ vim.opt.list = true
 vim.opt.listchars:append("eol:\u{ebea}")
 vim.opt.listchars:append("tab:\u{f0312}  ")
 vim.opt.listchars:append("trail:·")
-vim.opt.ffs = "unix"
 vim.opt.pumheight = 10
-vim.o.timeout = true
-vim.o.timeoutlen = 300
 vim.opt.cinoptions = "N-s,0g,E-s,(0,j1,l1,:0,Ws"
 vim.opt.shortmess:append('c')
 vim.opt.shortmess:append('C')

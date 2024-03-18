@@ -12,7 +12,6 @@ vim.opt.smartcase = true
 vim.opt.hlsearch = true
 vim.opt.incsearch = true
 vim.opt.expandtab = true
-vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
 vim.opt.scrolloff = 5
 vim.opt.signcolumn = "yes"
@@ -40,9 +39,7 @@ vim.cmd([[let $ESCDELAY=0]])
 
 vim.cmd("filetype plugin on")
 
-vim.cmd([[
-set titlestring=%{fnamemodify(getcwd(),':h:t')}/%{fnamemodify(getcwd(),':t')}
-]])
+vim.cmd([[ set titlestring=%{fnamemodify(getcwd(),':h:t')}/%{fnamemodify(getcwd(),':t')} ]])
 
 --------------------------------------------------------------------------------
 --------------------------------- Key Actions -----------------------------------
@@ -56,7 +53,7 @@ KeyAction.cr_action = function()
       return vim.api.nvim_replace_termcodes('<C-y>', true, true, true)
     end
   end
-  return require('mini.pairs').cr()
+  return require('nvim-autopairs').autopairs_cr()
 end
 
 KeyAction.tab_action = function()
@@ -135,9 +132,6 @@ vim.keymap.set({ 'i', 's' }, '<Tab>', KeyAction.tab_action, { expr = true })
 vim.keymap.set({ 'i', 's' }, '<S-Tab>', KeyAction.shift_tab_action, { expr = true })
 vim.keymap.set('i', '<CR>', KeyAction.cr_action, { expr = true, replace_keycodes = false, })
 vim.keymap.set('i', '<C-Space>', '<C-x><C-o>', {})
-vim.keymap.set('i', '.', '.<C-x><C-o>', { noremap = true })
-vim.keymap.set('i', '::', '::<C-x><C-o>', { noremap = true })
-vim.keymap.set('i', '->', '-><C-x><C-o>', { noremap = true })
 --------------------------------------------------------------------------------
 --------------------------- Language Server Protocol ---------------------------
 --------------------------------------------------------------------------------
@@ -170,7 +164,7 @@ if not LazySet then
     { 'NMAC427/guess-indent.nvim',       config = true },
     { 'michaeljsmith/vim-indent-object', event = "BufEnter", },
     { 'PeterRincker/vim-argumentative',  event = "BufEnter", },
-    { 'echasnovski/mini.pairs',          version = '*',                   config = true },
+    { 'windwp/nvim-autopairs',           opts = { map_cr = false } },
     { 'famiu/bufdelete.nvim',            cmd = { "Bdelete", "Bwipeout" }, },
     { 'kylechui/nvim-surround',          version = "*",                   keys = { "ys", "ds", "cs" }, config = true, },
     { 'numToStr/Comment.nvim',           keys = { "gc", "gb" },           config = true, },
@@ -376,6 +370,20 @@ vim.api.nvim_create_autocmd('VimResized', {
   callback = function() vim.cmd("wincmd =") end,
 })
 
+-- local CompletionTimer = vim.uv.new_timer()
+vim.api.nvim_create_autocmd('InsertCharPre', {
+  group = autocmd_group,
+  desc = "Start AutoComplete",
+  callback = function ()
+    -- CompletionTimer:stop()
+    -- CompletionTimer:start(100, 0, vim.schedule_wrap(function()
+      if vim.fn.pumvisible() == 0 then
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-x><C-o>', true, false, true), 'n', false)
+      end
+    -- end))
+  end
+})
+
 vim.api.nvim_create_autocmd('CompleteDone', {
   group = autocmd_group,
   desc = 'Expand LSP snippet',
@@ -387,7 +395,7 @@ vim.api.nvim_create_autocmd('CompleteDone', {
       return
     end
 
-    local snip_text = vim.tbl_get(item, 'textEdit', 'newText') or item.insertText
+    local snip_text = vim.tbl_get(item, 'textEdit', 'newText') or item.insertText or ''
 
     local startPos, _ = string.find(snip_text, "%$")
     if not startPos then

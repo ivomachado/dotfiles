@@ -1,6 +1,5 @@
 {
   "Comment.nvim": { "branch": "master", "commit": "0236521ea582747b58869cb72f70ccfa967d2e89" },
-  "catppuccin": { "branch": "main", "commit": "045e3499d9ec8d84635fb08877ae44fd33f6a38d" },
   "conform.nvim": { "branch": "master", "commit": "a605ce4b2db397c84ae6fa8bcfc85f00b985bc73" },
   "fzf-lua": { "branch": "main", "commit": "ff21680ddfd2ba434ea7061b9042f7e18966597d" },
   "gitsigns.nvim": { "branch": "main", "commit": "4e348641b8206c3b8d23080999e3ddbe4ca90efc" },

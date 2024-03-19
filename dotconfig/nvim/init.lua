@@ -42,6 +42,8 @@ vim.cmd("filetype plugin on")
 
 vim.cmd([[ set titlestring=%{fnamemodify(getcwd(),':h:t')}/%{fnamemodify(getcwd(),':t')} ]])
 
+vim.cmd('colorscheme catppuccin-ivo')
+
 --------------------------------------------------------------------------------
 --------------------------------- Key Actions -----------------------------------
 --------------------------------------------------------------------------------
@@ -142,7 +144,7 @@ vim.keymap.set('n', '[e', "<cmd>lua vim.diagnostic.goto_prev()<CR>")
 --------------------------------------------------------------------------------
 ------------------------------------- Git --------------------------------------
 --------------------------------------------------------------------------------
-vim.keymap.set('n', 'gb', "<cmd>Gitsigns blame_line<CR>")
+vim.keymap.set('n', '<leader>gb', "<cmd>Gitsigns blame_line<CR>")
 vim.keymap.set('n', 'grh', "<cmd>Gitsigns reset_hunk<CR>")
 vim.keymap.set('n', 'grb', "<cmd>Gitsigns reset_buffer<CR>")
 --------------------------------------------------------------------------------
@@ -224,7 +226,8 @@ if not LazySet then
           width = 0.80,
           row = 0.35,
           col = 0.50,
-          preview = { default = 'builtin' }
+          preview = { default = 'builtin' },
+          border = 'single',
         },
         files = {
           fd_opts =
@@ -235,7 +238,8 @@ if not LazySet then
         },
       },
     },
-    { "catppuccin/nvim", name = "catppuccin", config = true, priority = 1000, },
+    -- { 'echasnovski/mini.colors', version = false },
+    -- { "catppuccin/nvim", name = "catppuccin", config = true, priority = 1000, },
   })
 end
 
@@ -276,7 +280,7 @@ local mode_map = {
   ['t'] = 'TERMINAL'
 }
 
----@diagnostic disable-next-line: unused-function, unused-local
+---@diagnostic disable-next-line: unused-function, unused-local, lowercase-global
 function get_mode_name()
   local mode_info = vim.api.nvim_get_mode()
   local mode = mode_info.mode
@@ -438,4 +442,3 @@ lspconfig['lua_ls'].setup({})
 
 vim.cmd("FzfLua register_ui_select")
 vim.notify = require('mini.notify').make_notify()
-vim.cmd('colorscheme catppuccin-frappe')

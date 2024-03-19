@@ -13,22 +13,23 @@ vim.opt.hlsearch = true
 vim.opt.incsearch = true
 vim.opt.expandtab = true
 vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
 vim.opt.scrolloff = 5
 vim.opt.signcolumn = "yes"
 vim.opt.guifont = "JetBrainsMono NF:h11"
 vim.opt.showcmd = false
-vim.cmd [[   hi NonText cterm=NONE ctermfg=NONE ]]
 vim.opt.termguicolors = true
 vim.opt.cursorline = true
 vim.opt.list = true
-vim.opt.listchars:append("eol:\u{ebea}")
-vim.opt.listchars:append("tab:\u{f0312}  ")
-vim.opt.listchars:append("trail:·")
+local default_listchars = "eol:\u{ebea},tab:\u{f0312}  ,trail:·"
+vim.opt.listchars = default_listchars
 vim.opt.pumheight = 10
 vim.opt.cinoptions = "N-s,0g,E-s,(0,j1,l1,:0,Ws"
 vim.opt.shortmess:append('c')
 vim.opt.shortmess:append('C')
 vim.opt.completeopt = 'menuone,noinsert,popup'
+vim.opt.laststatus = 3
+vim.opt.background = "dark"
 vim.fn.sign_define("DiagnosticSignError", { text = " ", texthl = "DiagnosticSignError" })
 vim.fn.sign_define("DiagnosticSignWarn", { text = " ", texthl = "DiagnosticSignWarn" })
 vim.fn.sign_define("DiagnosticSignInfo", { text = " ", texthl = "DiagnosticSignInfo" })
@@ -94,8 +95,6 @@ vim.keymap.set('i', 'jk', '<Esc>', { noremap = true, silent = true })
 --------------------------------------------------------------------------------
 --------------------------------- Fuzzy Finder ---------------------------------
 --------------------------------------------------------------------------------
-vim.keymap.set('n', '<leader>n', "<cmd>Neotree float toggle=true<cr>")
-vim.keymap.set('n', '<leader>N', "<cmd>Neotree float focus reveal<cr>")
 vim.keymap.set('n', '<leader>f', "<cmd>FzfLua files<cr>")
 vim.keymap.set('n', '<leader>b', "<cmd>FzfLua buffers<cr>")
 vim.keymap.set('n', '<leader>s', "<cmd>FzfLua lsp_document_symbols<cr>")
@@ -106,10 +105,31 @@ vim.keymap.set('n', '<leader>c', "<cmd>FzfLua colorschemes<cr>")
 --------------------------------------------------------------------------------
 ------------------------------------ Utils -------------------------------------
 --------------------------------------------------------------------------------
+vim.keymap.set('n', '<leader>e', "<cmd>Oil .<cr>", { desc = "Open File Explorer" })
+vim.keymap.set('n', '<leader>E', "<cmd>Oil<cr>", { desc = "Open File Explorer on current file" })
 vim.keymap.set('n', '<leader>w', "<C-W>", { noremap = false })
-vim.keymap.set('n', '<leader>q', "<cmd>Bdelete<CR>")
-vim.keymap.set('n', '<leader>Q', "<cmd>bdelete<CR>")
-vim.keymap.set('n', '<leader>e', "<cmd>lua vim.diagnostic.open_float()<CR>")
+vim.keymap.set('n', '<leader>q', function()
+  local current_buf = vim.api.nvim_get_current_buf()
+  local windows = vim.api.nvim_list_wins()
+  local recent_buf = nil
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    if buf ~= current_buf and vim.api.nvim_buf_is_loaded(buf)
+        and vim.api.nvim_get_option_value('buflisted', { buf = buf }) then
+      recent_buf = buf
+      break
+    end
+  end
+  if not recent_buf then
+    recent_buf = vim.api.nvim_create_buf(true, false)
+  end
+  for _, win in ipairs(windows) do
+    if vim.api.nvim_win_get_buf(win) == current_buf then
+      vim.api.nvim_win_set_buf(win, recent_buf)
+    end
+  end
+  vim.api.nvim_buf_delete(current_buf, { force = true })
+end, { desc = "Close Buffer and Maintain Layout"})
+vim.keymap.set('n', '<leader>d', "<cmd>lua vim.diagnostic.open_float()<CR>")
 --------------------------------------------------------------------------------
 ---------------------------------- Navigation ----------------------------------
 --------------------------------------------------------------------------------
@@ -140,7 +160,7 @@ vim.keymap.set('n', 'gi', "<cmd>FzfLua lsp_implementations<CR>")
 vim.keymap.set('n', 'gi', "<cmd>FzfLua lsp_references<CR>")
 vim.keymap.set('n', 'K', vim.lsp.buf.hover)
 vim.keymap.set('n', '<F2>', vim.lsp.buf.rename)
-vim.keymap.set('n', '<leader>.', vim.lsp.buf.code_action)
+vim.keymap.set('n', 'ga', vim.lsp.buf.code_action)
 vim.keymap.set({ 'n', 'i' }, '<C-k>', vim.lsp.buf.signature_help)
 
 -- ==============================================================================
@@ -158,26 +178,16 @@ if not LazySet then
   end
   vim.opt.rtp:prepend(lazypath)
   require("lazy").setup({
-    { 'tpope/vim-abolish',               cmd = { "Subvert", "S" },        keys = { "cr", }, },
+    { 'stevearc/oil.nvim',               cmd = "Oil",                     opts = {} },
     { 'folke/neodev.nvim',               config = true },
     { 'neovim/nvim-lspconfig',           event = "VeryLazy", },
     { 'NMAC427/guess-indent.nvim',       config = true },
-    { 'michaeljsmith/vim-indent-object', event = "BufEnter", },
     { 'PeterRincker/vim-argumentative',  event = "BufEnter", },
     { 'windwp/nvim-autopairs',           opts = { map_cr = false } },
-    { 'famiu/bufdelete.nvim',            cmd = { "Bdelete", "Bwipeout" }, },
-    { 'kylechui/nvim-surround',          version = "*",                   keys = { "ys", "ds", "cs" }, config = true, },
+    { 'kylechui/nvim-surround',          version = "*",                   keys = { "ys", "ds", "cs" },           config = true, },
     { 'numToStr/Comment.nvim',           keys = { "gc", "gb" },           config = true, },
     { 'echasnovski/mini.notify',         version = false,                 config = true },
-    {
-      'lukas-reineke/indent-blankline.nvim',
-      name = 'ibl',
-      opts = {
-        indent = { char = "│" },
-        scope = { enabled = false, show_start = false, show_end = false, },
-      }
-    },
-    { 'lewis6991/gitsigns.nvim', event = "VeryLazy", opts = { current_line_blame = false, } },
+    { 'lewis6991/gitsigns.nvim',         event = "VeryLazy",              opts = { current_line_blame = false, } },
     {
       'nvim-treesitter/nvim-treesitter',
       branch = 'main',
@@ -225,113 +235,77 @@ if not LazySet then
         },
       },
     },
-    {
-      "catppuccin/nvim",
-      name = "catppuccin",
-      lazy = false,
-      opts = {
-        flavour = "frappe",
-        background = { light = "latte", dark = "frappe", },
-        integrations = {
-          neotree = true,
-          cmp = true,
-          gitsigns = true,
-        },
-        color_overrides = {
-          frappe = {
-            comment = "#ffffff",
-          },
-        },
-      },
-      config = function(_, opts)
-        require 'catppuccin'.setup(opts)
-      end,
-      priority = 1000,
-    },
-    {
-      "nvim-neo-tree/neo-tree.nvim",
-      branch = "v3.x",
-      cmd = "Neotree",
-      dependencies = { "nvim-lua/plenary.nvim", "MunifTanjim/nui.nvim", },
-      opts = {
-        enable_diagnostics = false,
-        sources = { "filesystem", "buffers", },
-        window = {
-          mappings = { ["<space>"] = "none", ["<F2>"] = "rename", }
-        },
-        filesystem = {
-          use_libuv_file_watcher = true,
-          filtered_items = {
-            visible = true, -- when true, they will just be displayed differently than normal items
-            hide_dotfiles = true,
-            hide_gitignored = true,
-            hide_hidden = true, -- only works on Windows for hidden files/directories
-          },
-        },
-      },
-    },
-    {
-      'nvim-lualine/lualine.nvim',
-      opts = {
-        extensions = { 'quickfix', 'neo-tree', 'nvim-dap-ui', 'mason', 'lazy' },
-        options = {
-          icons_enabled = false,
-          component_separators = { left = "", right = "" },
-          section_separators = { left = "", right = "" },
-          disabled_filetypes = {},
-          theme = 'auto',
-          always_divide_middle = true,
-          globalstatus = true,
-        },
-        sections = {
-          lualine_a = {
-          },
-          lualine_b = { 'mode' },
-          lualine_c = {
-            'filetype',
-            { 'filename',    path = 1 },
-            { 'diagnostics', icons_enabled = true },
-          },
-          lualine_x = {
-            'fileformat',
-            'progress',
-            'location',
-            function()
-              if vim.bo.expandtab then
-                return "\u{f1050} " .. vim.bo.shiftwidth
-              else
-                return "\u{f0312} " .. vim.bo.tabstop
-              end
-            end,
-          },
-          lualine_z = {
-            function() return os.getenv("ZELLIJ_SESSION_NAME") or '' end
-          },
-        },
-        inactive_winbar = {
-          lualine_c = { { 'filename', path = 0, symbols = { modified = '●' } } },
-          lualine_z = {
-            { function() return "" end, draw_empty = true, }
-          },
-        },
-        winbar = {
-          lualine_c = { { 'filename', path = 0, symbols = { modified = '●' } } },
-          lualine_z = {
-            { function() return "" end, draw_empty = true, }
-          },
-        },
-      },
-    },
+    { "catppuccin/nvim", name = "catppuccin", config = true, priority = 1000, },
   })
-
 end
 
+
+--------------------------------------------------------------------------------
+--------------------------------- Status Line ----------------------------------
+--------------------------------------------------------------------------------
+
+local mode_map = {
+  ['n'] = 'NORMAL',
+  ['no'] = 'OP-PENDING',
+  ['nov'] = 'OP-PENDING CHAR',
+  ['noV'] = 'OP-PENDING LINE',
+  ['no\22'] = 'OP-PENDING BLOCK',
+  ['niI'] = 'NORMAL INSERT',
+  ['niR'] = 'NORMAL REPLACE',
+  ['niV'] = 'NORMAL V-REPLACE',
+  ['v'] = 'VISUAL',
+  ['V'] = 'V-LINE',
+  ['\22'] = 'V-BLOCK',
+  ['s'] = 'SELECT',
+  ['S'] = 'S-LINE',
+  ['\19'] = 'S-BLOCK',
+  ['i'] = 'INSERT',
+  ['ic'] = 'INSERT COMPLETION',
+  ['ix'] = 'INSERT CTRL-X',
+  ['R'] = 'REPLACE',
+  ['Rc'] = 'REPLACE COMPLETION',
+  ['Rv'] = 'V-REPLACE',
+  ['Rx'] = 'REPLACE CTRL-X',
+  ['c'] = 'COMMAND',
+  ['cv'] = 'EX',
+  ['ce'] = 'NORMAL EX',
+  ['r'] = 'HIT-ENTER',
+  ['rm'] = 'MORE',
+  ['r?'] = 'CONFIRM',
+  ['!'] = 'SHELL',
+  ['t'] = 'TERMINAL'
+}
+
+---@diagnostic disable-next-line: unused-function, unused-local
+function get_mode_name()
+  local mode_info = vim.api.nvim_get_mode()
+  local mode = mode_info.mode
+  return mode_map[mode] or 'UNKNOWN'
+end
+
+local statusline = {
+  ' %{luaeval(\'get_mode_name()\')}',
+  '%=',
+  '%f',
+  '%r',
+  '%m',
+  '%=',
+  ' %{&expandtab?"\u{f1050}":"\u{f0312} "} %{&shiftwidth}',
+  ' %2p%%',
+  ' %3l:%-2c',
+  ' %{&filetype} ',
+}
+
+vim.opt.statusline = table.concat(statusline, '')
+local default_winbar = " %=%t%= "
+local unfocused_winbar = "%#Whitespace#" .. default_winbar
+vim.opt.winbar = default_winbar
 
 --------------------------------------------------------------------------------
 -------------------------------- Auto Commands ---------------------------------
 --------------------------------------------------------------------------------
 
-local autocmd_group = vim.api.nvim_create_augroup("user-autocommands", {})
+local autocmd_group = vim.api.nvim_create_augroup("user-autocommands", { clear = true })
 vim.api.nvim_create_autocmd({ "BufHidden" }, {
   group = autocmd_group,
   desc = "Delete scratch buffers",
@@ -341,11 +315,21 @@ vim.api.nvim_create_autocmd({ "BufHidden" }, {
   end,
 })
 
+vim.api.nvim_create_autocmd({ "VimEnter", "OptionSet", "BufAdd" }, {
+  group = autocmd_group,
+  desc = "Enable Indent Lines",
+  callback = function()
+    local n_spaces = vim.api.nvim_get_option_value('shiftwidth', {}) - 1
+    vim.api.nvim_set_option_value('listchars', default_listchars..',leadmultispace:│'..string.rep(' ', n_spaces), {scope = 'local'})
+  end,
+})
+
 vim.api.nvim_create_autocmd({ "WinLeave" }, {
   group = autocmd_group,
   desc = "Disable cursorline",
   callback = function()
     vim.opt.cursorline = false
+    vim.wo.winbar = unfocused_winbar
   end,
 })
 
@@ -354,6 +338,7 @@ vim.api.nvim_create_autocmd({ "WinEnter" }, {
   desc = "Enable cursorline on current window",
   callback = function()
     vim.opt.cursorline = true
+    vim.wo.winbar = default_winbar
   end,
 })
 
@@ -371,16 +356,23 @@ vim.api.nvim_create_autocmd('VimResized', {
 })
 
 -- local CompletionTimer = vim.uv.new_timer()
-vim.api.nvim_create_autocmd('InsertCharPre', {
+vim.api.nvim_create_autocmd('LspAttach', {
   group = autocmd_group,
-  desc = "Start AutoComplete",
-  callback = function ()
-    -- CompletionTimer:stop()
-    -- CompletionTimer:start(100, 0, vim.schedule_wrap(function()
-      if vim.fn.pumvisible() == 0 then
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-x><C-o>', true, false, true), 'n', false)
+  desc = "Enable autocomplete on lsp enabled buffers",
+  callback = function(args)
+    vim.api.nvim_create_autocmd('InsertCharPre', {
+      group = autocmd_group,
+      desc = "Start AutoComplete",
+      buffer = args.buf,
+      callback = function()
+        -- CompletionTimer:stop()
+        -- CompletionTimer:start(100, 0, vim.schedule_wrap(function()
+        if vim.fn.pumvisible() == 0 then
+          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-x><C-o>', true, false, true), 'n', false)
+        end
+        -- end))
       end
-    -- end))
+    })
   end
 })
 
@@ -444,6 +436,6 @@ lspconfig.rust_analyzer.setup {
 
 lspconfig['lua_ls'].setup({})
 
-vim.cmd.colorscheme("catppuccin")
 vim.cmd("FzfLua register_ui_select")
 vim.notify = require('mini.notify').make_notify()
+vim.cmd('colorscheme catppuccin-frappe')

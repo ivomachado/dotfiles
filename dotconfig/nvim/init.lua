@@ -30,10 +30,17 @@ vim.opt.shortmess:append('C')
 vim.opt.completeopt = 'menuone,noinsert,popup'
 vim.opt.laststatus = 3
 vim.opt.background = "dark"
-vim.fn.sign_define("DiagnosticSignError", { text = " ", texthl = "DiagnosticSignError" })
-vim.fn.sign_define("DiagnosticSignWarn", { text = " ", texthl = "DiagnosticSignWarn" })
-vim.fn.sign_define("DiagnosticSignInfo", { text = " ", texthl = "DiagnosticSignInfo" })
-vim.fn.sign_define("DiagnosticSignHint", { text = "󰌵", texthl = "DiagnosticSignHint" })
+vim.diagnostic.config({
+  virtual_text = false,
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = '⚠',
+      [vim.diagnostic.severity.WARN] = '⚠',
+      [vim.diagnostic.severity.INFO] = 'i',
+      [vim.diagnostic.severity.HINT] = '󰌵',
+    }
+  }
+})
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.cmd([[let $ESCDELAY=0]])
@@ -102,6 +109,7 @@ vim.keymap.set('n', '<leader>b', "<cmd>FzfLua buffers<cr>")
 vim.keymap.set('n', '<leader>s', "<cmd>FzfLua lsp_document_symbols<cr>")
 vim.keymap.set('n', '<leader>S', "<cmd>FzfLua lsp_workspace_symbols<cr>")
 vim.keymap.set('n', '<leader>l', "<cmd>FzfLua live_grep<cr>")
+vim.keymap.set('n', '<leader>L', "<cmd>FzfLua grep_last<cr>")
 vim.keymap.set('n', '<leader>p', "<cmd>FzfLua commands<cr>")
 vim.keymap.set('n', '<leader>c', "<cmd>FzfLua colorschemes<cr>")
 --------------------------------------------------------------------------------
@@ -159,8 +167,8 @@ vim.keymap.set('i', '<C-Space>', '<C-x><C-o>', {})
 --------------------------------------------------------------------------------
 vim.keymap.set('n', 'gd', vim.lsp.buf.definition)
 vim.keymap.set('n', 'gi', "<cmd>FzfLua lsp_implementations<CR>")
-vim.keymap.set('n', 'gi', "<cmd>FzfLua lsp_references<CR>")
-vim.keymap.set('n', 'K', vim.lsp.buf.hover)
+vim.keymap.set('n', 'gR', "<cmd>FzfLua lsp_references<CR>")
+-- vim.keymap.set('n', 'K', vim.lsp.buf.hover)
 vim.keymap.set('n', '<F2>', vim.lsp.buf.rename)
 vim.keymap.set('n', 'ga', vim.lsp.buf.code_action)
 vim.keymap.set({ 'n', 'i' }, '<C-k>', vim.lsp.buf.signature_help)
@@ -238,7 +246,7 @@ if not LazySet then
         },
       },
     },
-    -- { 'echasnovski/mini.colors', version = false },
+    { 'echasnovski/mini.colors', version = false },
     -- { "catppuccin/nvim", name = "catppuccin", config = true, priority = 1000, },
   })
 end
@@ -319,7 +327,7 @@ vim.api.nvim_create_autocmd({ "BufHidden" }, {
   end,
 })
 
-vim.api.nvim_create_autocmd({ "VimEnter", "OptionSet", "BufAdd" }, {
+vim.api.nvim_create_autocmd({ "VimEnter", "OptionSet", "BufEnter" }, {
   group = autocmd_group,
   desc = "Enable Indent Lines",
   callback = function()

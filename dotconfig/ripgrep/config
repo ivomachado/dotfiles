@@ -18,6 +18,7 @@
 --glob=!.cxx
 --glob=!*.dir
 --glob=!output
+--glob=!toolchains
 
 # Set the colors.
 # --colors=line:none

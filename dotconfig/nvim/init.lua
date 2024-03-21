@@ -27,7 +27,7 @@ vim.opt.pumheight = 10
 vim.opt.cinoptions = "N-s,0g,E-s,(0,j1,l1,:0,Ws"
 vim.opt.shortmess:append('c')
 vim.opt.shortmess:append('C')
-vim.opt.completeopt = 'menuone,noinsert,popup'
+vim.opt.completeopt = 'menuone,noselect,noinsert,popup'
 vim.opt.laststatus = 3
 vim.opt.background = "dark"
 vim.diagnostic.config({
@@ -139,16 +139,16 @@ vim.keymap.set('n', '<leader>q', function()
   end
   vim.api.nvim_buf_delete(current_buf, { force = true })
 end, { desc = "Close Buffer and Maintain Layout"})
-vim.keymap.set('n', '<leader>d', "<cmd>lua vim.diagnostic.open_float()<CR>")
+vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float)
 --------------------------------------------------------------------------------
 ---------------------------------- Navigation ----------------------------------
 --------------------------------------------------------------------------------
 vim.keymap.set('n', ']c', "<cmd>Gitsigns next_hunk<CR>")
 vim.keymap.set('n', '[c', "<cmd>Gitsigns prev_hunk<CR>")
 vim.keymap.set('n', ']b', "<cmd>bn<CR>")
-vim.keymap.set('n', ']e', "<cmd>lua vim.diagnostic.goto_next()<CR>")
+vim.keymap.set('n', ']e', vim.diagnostic.goto_next)
 vim.keymap.set('n', '[b', "<cmd>bp<CR>")
-vim.keymap.set('n', '[e', "<cmd>lua vim.diagnostic.goto_prev()<CR>")
+vim.keymap.set('n', '[e', vim.diagnostic.goto_prev)
 --------------------------------------------------------------------------------
 ------------------------------------- Git --------------------------------------
 --------------------------------------------------------------------------------
@@ -175,6 +175,9 @@ vim.keymap.set({ 'n', 'i' }, '<C-k>', vim.lsp.buf.signature_help)
 
 -- ==============================================================================
 
+vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+  close_events = { "InsertLeave", "CompleteDone", }
+})
 
 --------------------------------------------------------------------------------
 ----------------------------------- Plugins ------------------------------------
@@ -246,7 +249,7 @@ if not LazySet then
         },
       },
     },
-    { 'echasnovski/mini.colors', version = false },
+    -- { 'echasnovski/mini.colors', version = false },
     -- { "catppuccin/nvim", name = "catppuccin", config = true, priority = 1000, },
   })
 end
@@ -367,7 +370,6 @@ vim.api.nvim_create_autocmd('VimResized', {
   callback = function() vim.cmd("wincmd =") end,
 })
 
--- local CompletionTimer = vim.uv.new_timer()
 vim.api.nvim_create_autocmd('LspAttach', {
   group = autocmd_group,
   desc = "Enable autocomplete on lsp enabled buffers",
@@ -377,12 +379,11 @@ vim.api.nvim_create_autocmd('LspAttach', {
       desc = "Start AutoComplete",
       buffer = args.buf,
       callback = function()
-        -- CompletionTimer:stop()
-        -- CompletionTimer:start(100, 0, vim.schedule_wrap(function()
-        if vim.fn.pumvisible() == 0 then
-          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-x><C-o>', true, false, true), 'n', false)
-        end
-        -- end))
+        vim.defer_fn(function()
+          if vim.fn.pumvisible() == 0 and vim.bo.omnifunc ~= '' and vim.fn.mode() == 'i' then
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-x><C-o>', true, false, true), 'm', false)
+          end
+        end, 100)
       end
     })
   end

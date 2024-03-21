@@ -28,3 +28,4 @@ jniLibs
 .data/*.log
 lazy-lock.json
 .rgignore
+.ignore

@@ -23,6 +23,7 @@ vim.opt.cursorline = true
 vim.opt.list = true
 local default_listchars = "eol:\u{ebea},tab:\u{f0312}  ,trail:·"
 vim.opt.listchars = default_listchars
+vim.opt.fillchars:append({ eob=" " })
 vim.opt.pumheight = 10
 vim.opt.cinoptions = "N-s,0g,E-s,(0,j1,l1,:0,Ws"
 vim.opt.shortmess:append('c')
@@ -52,11 +53,11 @@ vim.cmd([[ set titlestring=%{fnamemodify(getcwd(),':h:t')}/%{fnamemodify(getcwd(
 vim.cmd('colorscheme catppuccin-ivo')
 
 --------------------------------------------------------------------------------
---------------------------------- Key Actions -----------------------------------
+--------------------------------- Actions -----------------------------------
 --------------------------------------------------------------------------------
 
-local KeyAction = {}
-KeyAction.cr_action = function()
+local Action = {}
+Action.cr_action = function()
   if vim.fn.pumvisible() ~= 0 then
     local has_item_selected = vim.fn.complete_info()['selected'] ~= -1
     if has_item_selected then
@@ -66,7 +67,7 @@ KeyAction.cr_action = function()
   return require('nvim-autopairs').autopairs_cr()
 end
 
-KeyAction.tab_action = function()
+Action.tab_action = function()
   if vim.fn.pumvisible() ~= 0 then
     return "<C-n>"
   end
@@ -79,7 +80,7 @@ KeyAction.tab_action = function()
   return "<Tab>"
 end
 
-KeyAction.shift_tab_action = function()
+Action.shift_tab_action = function()
   if vim.fn.pumvisible() ~= 0 then
     return "<C-p>"
   end
@@ -90,6 +91,14 @@ KeyAction.shift_tab_action = function()
     end
   end
   return "<Tab>"
+end
+
+Action.start_completion = function()
+  if vim.bo.omnifunc == nil or vim.bo.omnifunc == '' then
+    return "<C-x><C-n>"
+  else
+    return "<C-x><C-o>"
+  end
 end
 
 -- ==============================================================================
@@ -146,9 +155,9 @@ vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float)
 vim.keymap.set('n', ']c', "<cmd>Gitsigns next_hunk<CR>")
 vim.keymap.set('n', '[c', "<cmd>Gitsigns prev_hunk<CR>")
 vim.keymap.set('n', ']b', "<cmd>bn<CR>")
-vim.keymap.set('n', ']e', vim.diagnostic.goto_next)
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
 vim.keymap.set('n', '[b', "<cmd>bp<CR>")
-vim.keymap.set('n', '[e', vim.diagnostic.goto_prev)
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
 --------------------------------------------------------------------------------
 ------------------------------------- Git --------------------------------------
 --------------------------------------------------------------------------------
@@ -158,10 +167,10 @@ vim.keymap.set('n', 'grb', "<cmd>Gitsigns reset_buffer<CR>")
 --------------------------------------------------------------------------------
 ---------------------------------- Completion -----------------------------------
 --------------------------------------------------------------------------------
-vim.keymap.set({ 'i', 's' }, '<Tab>', KeyAction.tab_action, { expr = true })
-vim.keymap.set({ 'i', 's' }, '<S-Tab>', KeyAction.shift_tab_action, { expr = true })
-vim.keymap.set('i', '<CR>', KeyAction.cr_action, { expr = true, replace_keycodes = false, })
-vim.keymap.set('i', '<C-Space>', '<C-x><C-o>', {})
+vim.keymap.set({ 'i', 's' }, '<Tab>', Action.tab_action, { expr = true })
+vim.keymap.set({ 'i', 's' }, '<S-Tab>', Action.shift_tab_action, { expr = true })
+vim.keymap.set('i', '<CR>', Action.cr_action, { expr = true, replace_keycodes = false, })
+vim.keymap.set('i', '<C-Space>', Action.start_completion, { expr = true })
 --------------------------------------------------------------------------------
 --------------------------- Language Server Protocol ---------------------------
 --------------------------------------------------------------------------------
@@ -380,8 +389,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
       buffer = args.buf,
       callback = function()
         vim.defer_fn(function()
-          if vim.fn.pumvisible() == 0 and vim.bo.omnifunc ~= '' and vim.fn.mode() == 'i' then
-            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-x><C-o>', true, false, true), 'm', false)
+          if vim.fn.pumvisible() == 0 and vim.fn.mode() == 'i' then
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(Action.start_completion(), true, false, true), 'm', false)
           end
         end, 100)
       end
@@ -395,6 +404,13 @@ vim.api.nvim_create_autocmd('CompleteDone', {
   callback = function(opts)
     local comp = vim.v.completed_item
     local item = vim.tbl_get(comp, 'user_data', 'nvim', 'lsp', 'completion_item')
+
+    if item and item.additionalTextEdits then
+      local clients = vim.lsp.get_clients({bufnr = opts.buf})
+      if #clients > 0 then
+        vim.lsp.util.apply_text_edits(item.additionalTextEdits, opts.buf, clients[1].offset_encoding)
+      end
+    end
 
     if (not item or not item.insertTextFormat or item.insertTextFormat == 1 or vim.snippet.active()) then
       return
@@ -411,9 +427,6 @@ vim.api.nvim_create_autocmd('CompleteDone', {
     local lnum = cursor[1] - 1
     local start_char = cursor[2] - #comp.word
     vim.api.nvim_buf_set_text(opts.buf, lnum, start_char, lnum, #comp.word + start_char, { '' })
-
-    CmpItem = vim.v.completed_item
-    CmpSecondItem = item
 
     assert(snip_text, "Language server indicated it had a snippet, but no snippet text could be found!")
     vim.snippet.expand(snip_text)

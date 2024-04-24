@@ -200,16 +200,17 @@ if not LazySet then
   end
   vim.opt.rtp:prepend(lazypath)
   require("lazy").setup({
-    { 'stevearc/oil.nvim',               cmd = "Oil",                     opts = {} },
-    { 'folke/neodev.nvim',               config = true },
-    { 'neovim/nvim-lspconfig',           event = "VeryLazy", },
-    { 'NMAC427/guess-indent.nvim',       config = true },
-    { 'PeterRincker/vim-argumentative',  event = "BufEnter", },
-    { 'windwp/nvim-autopairs',           opts = { map_cr = false } },
-    { 'kylechui/nvim-surround',          version = "*",                   keys = { "ys", "ds", "cs" },           config = true, },
-    { 'numToStr/Comment.nvim',           keys = { "gc", "gb" },           config = true, },
-    { 'echasnovski/mini.notify',         version = false,                 config = true },
-    { 'lewis6991/gitsigns.nvim',         event = "VeryLazy",              opts = { current_line_blame = false, } },
+    { 'stevearc/oil.nvim',              cmd = "Oil",              opts = {} },
+    { 'folke/neodev.nvim',              config = true },
+    { 'neovim/nvim-lspconfig',          event = "VeryLazy", },
+    -- { 'NMAC427/guess-indent.nvim',       config = true },
+    { 'PeterRincker/vim-argumentative', event = "BufEnter", },
+    { 'windwp/nvim-autopairs',          opts = { map_cr = false } },
+    { 'kylechui/nvim-surround',         version = "*",            keys = { "ys", "ds", "cs" },           config = true, },
+    { 'numToStr/Comment.nvim',          keys = { "gc", "gb" },    config = true, },
+    { 'echasnovski/mini.notify',        version = false,          config = true },
+    { 'lewis6991/gitsigns.nvim',        event = "VeryLazy",       opts = { current_line_blame = false, } },
+    { 'Darazaki/indent-o-matic',        config = true },
     {
       'nvim-treesitter/nvim-treesitter',
       branch = 'main',

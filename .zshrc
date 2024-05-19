@@ -187,3 +187,7 @@ SPACESHIP_RPROMPT_ORDER=(
 )
 
 alias pde='zellij --layout default -s $(basename $PWD)'
+
+export TPV_PF_FRIENDLY_NAME="Ivo's Notebook"
+export TPV_PF_DEVICE_NAME="Computer"
+export TPV_PF_MANUFACTURER="PC"

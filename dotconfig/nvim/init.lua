@@ -71,11 +71,9 @@ Action.tab_action = function()
   if vim.fn.pumvisible() ~= 0 then
     return "<C-n>"
   end
-  if vim.snippet.active() then
-    if vim.snippet.jumpable(1) then
-      vim.snippet.jump(1)
-      return ''
-    end
+  if vim.snippet.active({ direction = 1 }) then
+    vim.snippet.jump(1)
+    return ''
   end
   return "<Tab>"
 end
@@ -84,11 +82,9 @@ Action.shift_tab_action = function()
   if vim.fn.pumvisible() ~= 0 then
     return "<C-p>"
   end
-  if vim.snippet.active() then
-    if vim.snippet.jumpable(-1) then
-      vim.snippet.jump(-1)
-      return ''
-    end
+  if vim.snippet.active({ direction = -1 }) then
+    vim.snippet.jump(-1)
+    return ''
   end
   return "<Tab>"
 end
@@ -155,9 +151,7 @@ vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float)
 vim.keymap.set('n', ']c', "<cmd>Gitsigns next_hunk<CR>")
 vim.keymap.set('n', '[c', "<cmd>Gitsigns prev_hunk<CR>")
 vim.keymap.set('n', ']b', "<cmd>bn<CR>")
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
 vim.keymap.set('n', '[b', "<cmd>bp<CR>")
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
 --------------------------------------------------------------------------------
 ------------------------------------- Git --------------------------------------
 --------------------------------------------------------------------------------
@@ -209,8 +203,22 @@ if not LazySet then
     { 'kylechui/nvim-surround',         version = "*",            keys = { "ys", "ds", "cs" },           config = true, },
     { 'numToStr/Comment.nvim',          keys = { "gc", "gb" },    config = true, },
     { 'echasnovski/mini.notify',        version = false,          config = true },
-    { 'lewis6991/gitsigns.nvim',        event = "VeryLazy",       opts = { current_line_blame = false, } },
+    { 'lewis6991/gitsigns.nvim',        event = "VeryLazy",        opts = { current_line_blame = false, } },
     { 'Darazaki/indent-o-matic',        config = true },
+    {
+      'nvimdev/epo.nvim',
+      opts = {
+        signature = false,
+        signature_border = 'single',
+        kind_format = function(k)
+          return k
+        end
+      },
+      config = function(opts)
+        require('epo').setup(opts)
+        vim.opt.completeopt = 'menuone,noselect,noinsert,popup'
+      end
+    },
     {
       'nvim-treesitter/nvim-treesitter',
       branch = 'main',
@@ -380,66 +388,67 @@ vim.api.nvim_create_autocmd('VimResized', {
   callback = function() vim.cmd("wincmd =") end,
 })
 
-vim.api.nvim_create_autocmd('LspAttach', {
-  group = autocmd_group,
-  desc = "Enable autocomplete on lsp enabled buffers",
-  callback = function(args)
-    vim.api.nvim_create_autocmd('InsertCharPre', {
-      group = autocmd_group,
-      desc = "Start AutoComplete",
-      buffer = args.buf,
-      callback = function()
-        vim.defer_fn(function()
-          if vim.fn.pumvisible() == 0 and vim.fn.mode() == 'i' then
-            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(Action.start_completion(), true, false, true), 'm', false)
-          end
-        end, 100)
-      end
-    })
-  end
-})
+-- vim.api.nvim_create_autocmd('LspAttach', {
+--   group = autocmd_group,
+--   desc = "Enable autocomplete on lsp enabled buffers",
+--   callback = function(args)
+--     vim.api.nvim_create_autocmd('InsertCharPre', {
+--       group = autocmd_group,
+--       desc = "Start AutoComplete",
+--       buffer = args.buf,
+--       callback = function()
+--         vim.defer_fn(function()
+--           if vim.fn.pumvisible() == 0 and vim.fn.mode() == 'i' then
+--             vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(Action.start_completion(), true, false, true), 'm', false)
+--           end
+--         end, 200)
+--       end
+--     })
+--   end
+-- })
 
-vim.api.nvim_create_autocmd('CompleteDone', {
-  group = autocmd_group,
-  desc = 'Expand LSP snippet',
-  callback = function(opts)
-    local comp = vim.v.completed_item
-    local item = vim.tbl_get(comp, 'user_data', 'nvim', 'lsp', 'completion_item')
-
-    if item and item.additionalTextEdits then
-      local clients = vim.lsp.get_clients({bufnr = opts.buf})
-      if #clients > 0 then
-        vim.lsp.util.apply_text_edits(item.additionalTextEdits, opts.buf, clients[1].offset_encoding)
-      end
-    end
-
-    if (not item or not item.insertTextFormat or item.insertTextFormat == 1 or vim.snippet.active()) then
-      return
-    end
-
-    local snip_text = vim.tbl_get(item, 'textEdit', 'newText') or item.insertText or ''
-
-    local startPos, _ = string.find(snip_text, "%$")
-    if not startPos then
-      return
-    end
-
-    local cursor = vim.api.nvim_win_get_cursor(0)
-    local lnum = cursor[1] - 1
-    local start_char = cursor[2] - #comp.word
-    vim.api.nvim_buf_set_text(opts.buf, lnum, start_char, lnum, #comp.word + start_char, { '' })
-
-    assert(snip_text, "Language server indicated it had a snippet, but no snippet text could be found!")
-    vim.snippet.expand(snip_text)
-  end
-})
+-- vim.api.nvim_create_autocmd('CompleteDone', {
+--   group = autocmd_group,
+--   desc = 'Expand LSP snippet',
+--   callback = function(opts)
+--     local comp = vim.v.completed_item
+--     local item = vim.tbl_get(comp, 'user_data', 'nvim', 'lsp', 'completion_item')
+--
+--     if item and item.additionalTextEdits then
+--       local clients = vim.lsp.get_clients({bufnr = opts.buf})
+--       if #clients > 0 then
+--         vim.lsp.util.apply_text_edits(item.additionalTextEdits, opts.buf, clients[1].offset_encoding)
+--       end
+--     end
+--
+--     if (not item or not item.insertTextFormat or item.insertTextFormat == 1 or vim.snippet.active()) then
+--       return
+--     end
+--
+--     local snip_text = vim.tbl_get(item, 'textEdit', 'newText') or item.insertText or ''
+--
+--     local startPos, _ = string.find(snip_text, "%$")
+--     if not startPos then
+--       return
+--     end
+--
+--     local cursor = vim.api.nvim_win_get_cursor(0)
+--     local lnum = cursor[1] - 1
+--     local start_char = cursor[2] - #comp.word
+--     vim.api.nvim_buf_set_text(opts.buf, lnum, start_char, lnum, #comp.word + start_char, { '' })
+--
+--     assert(snip_text, "Language server indicated it had a snippet, but no snippet text could be found!")
+--     vim.snippet.expand(snip_text)
+--   end
+-- })
 
 --------------------------------------------------------------------------------
 ----------------------- Language Server Protocol Setup -------------------------
 --------------------------------------------------------------------------------
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
+local capabilities = vim.tbl_deep_extend('force', vim.lsp.protocol.make_client_capabilities(),
+  require('epo').register_cap())
+-- capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 local lspconfig = require("lspconfig")
 

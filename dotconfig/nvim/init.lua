@@ -31,6 +31,8 @@ vim.opt.shortmess:append('C')
 vim.opt.completeopt = 'menuone,noselect,noinsert,popup'
 vim.opt.laststatus = 3
 vim.opt.background = "dark"
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
 vim.diagnostic.config({
   virtual_text = false,
   signs = {
@@ -72,8 +74,7 @@ Action.tab_action = function()
     return "<C-n>"
   end
   if vim.snippet.active({ direction = 1 }) then
-    vim.snippet.jump(1)
-    return ''
+    return "<cmd> lua vim.snippet.jump(1)<cr>"
   end
   return "<Tab>"
 end
@@ -83,8 +84,7 @@ Action.shift_tab_action = function()
     return "<C-p>"
   end
   if vim.snippet.active({ direction = -1 }) then
-    vim.snippet.jump(-1)
-    return ''
+    return "<cmd> lua vim.snippet.jump(-1)<cr>"
   end
   return "<Tab>"
 end
@@ -120,8 +120,8 @@ vim.keymap.set('n', '<leader>c', "<cmd>FzfLua colorschemes<cr>")
 --------------------------------------------------------------------------------
 ------------------------------------ Utils -------------------------------------
 --------------------------------------------------------------------------------
-vim.keymap.set('n', '<leader>e', "<cmd>Oil .<cr>", { desc = "Open File Explorer" })
-vim.keymap.set('n', '<leader>E', "<cmd>Oil<cr>", { desc = "Open File Explorer on current file" })
+vim.keymap.set('n', '<leader>e', "<cmd>NvimTreeToggle<cr>", { desc = "Open File Explorer" })
+vim.keymap.set('n', '<leader>E', "<cmd>NvimTreeFindFile<cr>", { desc = "Open File Explorer on current file" })
 vim.keymap.set('n', '<leader>w', "<C-W>", { noremap = false })
 vim.keymap.set('n', '<leader>q', function()
   local current_buf = vim.api.nvim_get_current_buf()
@@ -194,7 +194,7 @@ if not LazySet then
   end
   vim.opt.rtp:prepend(lazypath)
   require("lazy").setup({
-    { 'stevearc/oil.nvim',              cmd = "Oil",              opts = {} },
+    { 'nvim-tree/nvim-tree.lua',        dependencies = { 'antosha417/nvim-lsp-file-operations' }, opts = {} },
     { 'folke/neodev.nvim',              config = true },
     { 'neovim/nvim-lspconfig',          event = "VeryLazy", },
     -- { 'NMAC427/guess-indent.nvim',       config = true },
@@ -311,22 +311,14 @@ local mode_map = {
 
 ---@diagnostic disable-next-line: unused-function, unused-local, lowercase-global
 function get_mode_name()
-  local mode_info = vim.api.nvim_get_mode()
-  local mode = mode_info.mode
-  return mode_map[mode] or 'UNKNOWN'
+  return mode_map[vim.api.nvim_get_mode().mode] or 'UNKNOWN'
 end
 
 local statusline = {
   ' %{luaeval(\'get_mode_name()\')}',
-  '%=',
-  '%f',
-  '%r',
-  '%m',
-  '%=',
+  '%=', '%f', '%r', '%m', '%=',
   ' %{&expandtab?"\u{f1050}":"\u{f0312} "} %{&shiftwidth}',
-  ' %2p%%',
-  ' %3l:%-2c',
-  ' %{&filetype} ',
+  ' %2p%%', ' %3l:%-2c', ' %{&filetype} ',
 }
 
 vim.opt.statusline = table.concat(statusline, '')
@@ -387,60 +379,6 @@ vim.api.nvim_create_autocmd('VimResized', {
   desc = "Even Windows",
   callback = function() vim.cmd("wincmd =") end,
 })
-
--- vim.api.nvim_create_autocmd('LspAttach', {
---   group = autocmd_group,
---   desc = "Enable autocomplete on lsp enabled buffers",
---   callback = function(args)
---     vim.api.nvim_create_autocmd('InsertCharPre', {
---       group = autocmd_group,
---       desc = "Start AutoComplete",
---       buffer = args.buf,
---       callback = function()
---         vim.defer_fn(function()
---           if vim.fn.pumvisible() == 0 and vim.fn.mode() == 'i' then
---             vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(Action.start_completion(), true, false, true), 'm', false)
---           end
---         end, 200)
---       end
---     })
---   end
--- })
-
--- vim.api.nvim_create_autocmd('CompleteDone', {
---   group = autocmd_group,
---   desc = 'Expand LSP snippet',
---   callback = function(opts)
---     local comp = vim.v.completed_item
---     local item = vim.tbl_get(comp, 'user_data', 'nvim', 'lsp', 'completion_item')
---
---     if item and item.additionalTextEdits then
---       local clients = vim.lsp.get_clients({bufnr = opts.buf})
---       if #clients > 0 then
---         vim.lsp.util.apply_text_edits(item.additionalTextEdits, opts.buf, clients[1].offset_encoding)
---       end
---     end
---
---     if (not item or not item.insertTextFormat or item.insertTextFormat == 1 or vim.snippet.active()) then
---       return
---     end
---
---     local snip_text = vim.tbl_get(item, 'textEdit', 'newText') or item.insertText or ''
---
---     local startPos, _ = string.find(snip_text, "%$")
---     if not startPos then
---       return
---     end
---
---     local cursor = vim.api.nvim_win_get_cursor(0)
---     local lnum = cursor[1] - 1
---     local start_char = cursor[2] - #comp.word
---     vim.api.nvim_buf_set_text(opts.buf, lnum, start_char, lnum, #comp.word + start_char, { '' })
---
---     assert(snip_text, "Language server indicated it had a snippet, but no snippet text could be found!")
---     vim.snippet.expand(snip_text)
---   end
--- })
 
 --------------------------------------------------------------------------------
 ----------------------- Language Server Protocol Setup -------------------------

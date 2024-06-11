@@ -221,7 +221,7 @@ if not LazySet then
     },
     {
       'nvim-treesitter/nvim-treesitter',
-      branch = 'main',
+      branch = 'master',
       build = ':TSUpdate',
       opts = {
         auto_install = true,

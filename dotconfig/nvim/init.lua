@@ -221,7 +221,7 @@ if not LazySet then
     },
     {
       'nvim-treesitter/nvim-treesitter',
-      branch = 'master',
+      branch = 'main',
       build = ':TSUpdate',
       opts = {
         auto_install = true,
@@ -386,7 +386,6 @@ vim.api.nvim_create_autocmd('VimResized', {
 
 local capabilities = vim.tbl_deep_extend('force', vim.lsp.protocol.make_client_capabilities(),
   require('epo').register_cap())
--- capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 local lspconfig = require("lspconfig")
 

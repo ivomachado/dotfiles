@@ -1,4 +1,4 @@
-theme = "catppuccin_frappe"
+theme = "kanagawa"
 [keys.insert.j]
 k = ["normal_mode"]
 
@@ -61,11 +61,6 @@ G = "goto_file_end"
 # Make j and k behave as they do Vim when soft-wrap is enabled
 j = "move_line_down"
 k = "move_line_up"
-
-[keys.normal.g.c]
-c = ["extend_to_line_bounds", "toggle_comments", "collapse_selection"]
-j = ["select_mode", "extend_to_line_bounds", "extend_line_below", "toggle_comments", "collapse_selection"]
-k = ["select_mode", "extend_to_line_bounds", "extend_line_above", "toggle_comments", "collapse_selection"]
 
 [keys.select]
 # Muscle memory

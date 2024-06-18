@@ -89,14 +89,6 @@ Action.shift_tab_action = function()
   return "<Tab>"
 end
 
-Action.start_completion = function()
-  if vim.bo.omnifunc == nil or vim.bo.omnifunc == '' then
-    return "<C-x><C-n>"
-  else
-    return "<C-x><C-o>"
-  end
-end
-
 -- ==============================================================================
 
 vim.api.nvim_create_user_command('ClearNotifications', "lua require'mini.notify'.clear()", {})
@@ -117,6 +109,7 @@ vim.keymap.set('n', '<leader>l', "<cmd>FzfLua live_grep<cr>")
 vim.keymap.set('n', '<leader>L', "<cmd>FzfLua grep_last<cr>")
 vim.keymap.set('n', '<leader>p', "<cmd>FzfLua commands<cr>")
 vim.keymap.set('n', '<leader>c', "<cmd>FzfLua colorschemes<cr>")
+vim.keymap.set('n', '<leader>\'', "<cmd>FzfLua resume<cr>")
 --------------------------------------------------------------------------------
 ------------------------------------ Utils -------------------------------------
 --------------------------------------------------------------------------------
@@ -164,7 +157,7 @@ vim.keymap.set('n', 'grb', "<cmd>Gitsigns reset_buffer<CR>")
 vim.keymap.set({ 'i', 's' }, '<Tab>', Action.tab_action, { expr = true })
 vim.keymap.set({ 'i', 's' }, '<S-Tab>', Action.shift_tab_action, { expr = true })
 vim.keymap.set('i', '<CR>', Action.cr_action, { expr = true, replace_keycodes = false, })
-vim.keymap.set('i', '<C-Space>', Action.start_completion, { expr = true })
+
 --------------------------------------------------------------------------------
 --------------------------- Language Server Protocol ---------------------------
 --------------------------------------------------------------------------------

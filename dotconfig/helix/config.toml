@@ -1,12 +1,18 @@
 theme = "kanagawa"
 [keys.insert.j]
 k = ["normal_mode"]
+S-tab = "move_parent_node_start"
 
 [editor]
 line-number = "relative"
 cursorline = true
-bufferline = "always"
+bufferline = "never"
 indent-guides.render = true
+completion-timeout = 5
+color-modes = false
+
+[editor.lsp]
+display-inlay-hints = false
 
 [editor.cursor-shape]
 insert = "bar"
@@ -28,6 +34,7 @@ mode.select = "SELECT"
 
 [editor.whitespace.render]
 newline = "all"
+tab = "all"
 
 [editor.whitespace.characters]
 newline = ""
@@ -35,24 +42,14 @@ newline = ""
 [keys.normal.space]
 "," = ":config-open"
 "q" = ":buffer-close"
-
-[keys.normal]
-C-r = "redo"
-
-# Some nice Helix stuff
-C-h = "select_prev_sibling"
-C-j = "shrink_selection"
-C-k = "expand_selection"
-C-l = "select_next_sibling"
-
 # Muscle memory
-"{" = ["goto_prev_paragraph", "collapse_selection"]
-"}" = ["goto_next_paragraph", "collapse_selection"]
+[keys.normal]
+"{" = ["extend_to_line_bounds", "goto_prev_paragraph"]
+"}" = ["extend_to_line_bounds", "goto_next_paragraph"]
 0 = "goto_line_start"
 "$" = "goto_line_end"
 "^" = "goto_first_nonwhitespace"
 G = "goto_file_end"
-"%" = "match_brackets"
 
 # Search for word under cursor
 "*" = ["move_char_right", "move_prev_word_start", "move_next_word_end", "search_selection", "search_next"]
@@ -62,6 +59,10 @@ G = "goto_file_end"
 j = "move_line_down"
 k = "move_line_up"
 
+# Embrace super-tab
+tab = "move_parent_node_end"
+S-tab = "move_parent_node_start"
+
 [keys.select]
 # Muscle memory
 "{" = ["extend_to_line_bounds", "goto_prev_paragraph"]
@@ -70,18 +71,17 @@ k = "move_line_up"
 "$" = "goto_line_end"
 "^" = "goto_first_nonwhitespace"
 G = "goto_file_end"
-"%" = "match_brackets"
-u = ["switch_to_lowercase", "collapse_selection", "normal_mode"]
-U = ["switch_to_uppercase", "collapse_selection", "normal_mode"]
+u = "switch_to_lowercase"
+U = "switch_to_uppercase"
 
 # Visual-mode specific muscle memory
 i = "select_textobject_inner"
 a = "select_textobject_around"
 
-# Some extra binds to allow us to insert/append in select mode because it's nice with multiple cursors
-tab = ["insert_mode", "collapse_selection"] # tab is read by most terminal editors as "C-i"
-C-a = ["append_mode", "collapse_selection"]
-
 # Make selecting lines in visual mode behave sensibly
 k = ["extend_line_up", "extend_to_line_bounds"]
 j = ["extend_line_down", "extend_to_line_bounds"]
+
+# Embrace super-tab
+tab = "extend_parent_node_end"
+S-tab = "extend_parent_node_start"

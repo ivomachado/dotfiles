@@ -1,0 +1,9 @@
+# yazi.toml
+
+[manager]
+ratio = [1, 4, 3]
+
+[opener]
+edit = [{ run = 'zellij ac toggle-floating-panes && zellij ac write 27 && zellij ac write-chars ":open $1" && zellij ac write 13', desc = "Open File in Helix" }]
+# edit = [{ run = 'zellij run -- nu -e "hx $1"', desc = "Open File in a new pane" }]
+# edit = [{ run = 'zellij run -- "hx $1"', desc = "Open File in a new pane" }]

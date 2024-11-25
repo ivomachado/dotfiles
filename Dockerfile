@@ -83,6 +83,8 @@ RUN apt-get install -y apt-utils \
  libuuid1:i386 \
  cmake \
  nodejs
+RUN apt-get install -y python-is-python3
+RUN apt-get install -y gtk-doc-tools
 
 # Get latest cmake version
 #RUN wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | sudo apt-key add -

@@ -1,6 +1,9 @@
 layout {
     tab {
-        pane command="$EDITOR"
+        pane command="$EDITOR" size="70%" focus=true name="editor" close_on_exit=true
+        pane split_direction="horizontal" {
+            pane
+        }
     }
 
     swap_floating_layout name="staggered" {

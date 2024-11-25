@@ -9,14 +9,12 @@ toolchains
 toolchain
 prebuilt
 
-.build*
 third_party
 .git
 *.srctrlbm
 *.srctrldb
 *.srctrlprj
 .idea
-build
 output
 .vscode
 node_modules
@@ -29,3 +27,4 @@ jniLibs
 lazy-lock.json
 .rgignore
 .ignore
+ccache/

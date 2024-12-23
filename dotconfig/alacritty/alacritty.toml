@@ -10,3 +10,6 @@ style = "Regular"
 [window.dimensions]
 columns = 80
 lines = 25
+
+[window]
+option_as_alt = "Both"

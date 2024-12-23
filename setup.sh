@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ls dotconfig/ | xargs -I {} ln -T -sf $PWD/dotconfig/{} ~/.config/{}
+ls dotconfig/ | xargs -I {} ln -sf $PWD/dotconfig/{} ~/.config/{}
 
 ln -sf $PWD/.zshrc ~
 ln -sf $PWD/.clangd ~

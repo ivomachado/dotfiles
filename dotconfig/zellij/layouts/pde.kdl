@@ -46,30 +46,4 @@ layout {
         }
     }
 
-    // swap_tiled_layout name="zen" {
-    //     tab {
-    //         pane
-    //     }
-    // }
-    //
-    // swap_tiled_layout name="ui" exact="2"{
-    //     tab split_direction="vertical" {
-    //         pane
-    //
-    //         pane size=2 borderless=true {
-    //             plugin location="zellij:compact-bar"
-    //         }
-    //     }
-    // }
-}
-
-keybinds {
-    shared_except "locked" {
-        bind "Alt g" {
-            Run "lazygit" {
-                in_place true
-                close_on_exit true
-            };
-        }
-    }
 }

@@ -41,6 +41,15 @@ function start-dev-container {
 source "${HOME}/.zgenom/zgenom.zsh"
 zgenom autoupdate
 
+if ! command -v helix &> /dev/null ; then
+    alias helix=hx
+    export EDITOR='hx'
+    export VISUAL='hx'
+else
+    export EDITOR='helix'
+    export VISUAl='helix'
+fi
+
 if ! zgenom saved; then
     echo "Creating a zgenom save"
 
@@ -132,8 +141,6 @@ bindkey '^ ' autosuggest-accept
 
 # export EDITOR='nvim'
 # export VISUAL='nvim'
-export EDITOR='helix'
-export VISUAL='helix'
 export FZF_DEFAULT_OPTS="--bind=tab:down,btab:up,ctrl-o:toggle"
 export FZF_DEFAULT_COMMAND='fd --color=never --type f --hidden --no-ignore-vcs --follow --exclude .git --exclude .ccache --exclude .cache --exclude *.o'
 export RIPGREP_CONFIG_PATH=$HOME/.config/ripgrep/config

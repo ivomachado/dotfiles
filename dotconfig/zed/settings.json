@@ -1,0 +1,44 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+  "terminal": {
+    "dock": "bottom"
+  },
+  "assistant": {
+    "default_model": {
+      "provider": "ollama",
+      "model": "llama3.2:latest"
+    },
+    "version": "2"
+  },
+  "ssh_connections": [
+    {
+      "host": "10.28.58.140",
+      "username": "root",
+      "port": 10033,
+      "projects": [
+        {
+          "paths": ["/common/src"]
+        }
+      ],
+      "nickname": "Remote Development Instance"
+    }
+  ],
+  "vim_mode": true,
+  "ui_font_size": 14,
+  "buffer_font_size": 14,
+  "theme": {
+    "mode": "system",
+    "light": "Atelier Lakeside Light",
+    "dark": "Atelier Lakeside Dark"
+  },
+  "confirm_quit": true,
+  "cursor_blink": false,
+  "relative_line_numbers": true
+}

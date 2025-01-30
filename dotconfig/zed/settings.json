@@ -12,8 +12,8 @@
   },
   "assistant": {
     "default_model": {
-      "provider": "ollama",
-      "model": "llama3.2:latest"
+      "provider": "copilot_chat",
+      "model": "gpt-4o"
     },
     "version": "2"
   },
@@ -24,10 +24,13 @@
       "port": 10033,
       "projects": [
         {
+          "paths": ["/common"]
+        },
+        {
           "paths": ["/common/src"]
         }
       ],
-      "nickname": "Remote Development Instance"
+      "nickname": "fw.dev.env"
     }
   ],
   "vim_mode": true,
@@ -35,10 +38,20 @@
   "buffer_font_size": 14,
   "theme": {
     "mode": "system",
-    "light": "Atelier Lakeside Light",
-    "dark": "Atelier Lakeside Dark"
+    "light": "One Light",
+    "dark": "Ayu Dark"
   },
   "confirm_quit": true,
   "cursor_blink": false,
-  "relative_line_numbers": true
+  "relative_line_numbers": true,
+  "vim": {
+    "use_system_clipboard": "never"
+  },
+  "lsp": {
+    "clangd": {
+      "binary": {
+        "ignore_system_version": true
+      }
+    }
+  }
 }

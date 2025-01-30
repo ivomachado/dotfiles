@@ -19,7 +19,7 @@
     }
   },
   {
-    "context": "vim_mode != insert && VimControl",
+    "context": "(VimControl && vim_mode != insert && vim_mode != replace)",
     "bindings": {
       "space w": ["workspace::SendKeystrokes", "ctrl-w"],
       "space f": "file_finder::Toggle"

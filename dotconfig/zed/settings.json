@@ -8,7 +8,9 @@
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
   "terminal": {
-    "dock": "bottom"
+    "dock": "bottom",
+    "blinking": "on",
+    "line_height": "standard"
   },
   "assistant": {
     "default_model": {
@@ -23,9 +25,6 @@
       "username": "root",
       "port": 10033,
       "projects": [
-        {
-          "paths": ["/common"]
-        },
         {
           "paths": ["/common/src"]
         }
@@ -47,11 +46,25 @@
   "vim": {
     "use_system_clipboard": "never"
   },
-  "lsp": {
-    "clangd": {
-      "binary": {
-        "ignore_system_version": true
-      }
-    }
-  }
+  "inlay_hints": { "enabled": true },
+  "max_modal_width": "full",
+  "ui_font_family": "JetBrainsMono Nerd Font",
+  "buffer_font_family": "JetBrainsMono Nerd Font",
+  "buffer_font_weight": 300,
+  "buffer_line_height": { "custom": 1.4 },
+  "show_whitespaces": "boundary",
+  "preview_tabs": {
+    "enabled": true,
+    "enable_preview_from_file_finder": false,
+    "enable_preview_from_code_navigation": true
+  },
+  "tab_bar": {
+    "show": true,
+    "show_nav_history_buttons": false,
+    "show_tab_bar_buttons": true
+  },
+  "file_finder": {
+    "modal_max_width": "medium"
+  },
+  "remove_trailing_whitespace_on_save": false
 }

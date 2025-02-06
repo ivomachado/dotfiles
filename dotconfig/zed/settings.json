@@ -66,5 +66,9 @@
   "file_finder": {
     "modal_max_width": "medium"
   },
-  "remove_trailing_whitespace_on_save": false
+  "remove_trailing_whitespace_on_save": false,
+  "tabs": {
+    "close_position": "left",
+    "file_icons": true
+  }
 }

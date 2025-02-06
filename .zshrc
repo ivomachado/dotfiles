@@ -201,3 +201,4 @@ alias pde='zellij --layout pde'
 export TPV_PF_FRIENDLY_NAME="Ivo's Notebook"
 export TPV_PF_DEVICE_NAME="Computer"
 export TPV_PF_MANUFACTURER="PC"
+export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"

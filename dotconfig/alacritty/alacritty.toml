@@ -1,7 +1,7 @@
 general.import = ["~/.config/alacritty/themes/themes/monokai_charcoal.yaml"]
 
 [font]
-size = 13.0
+size = 14.0
 
 [font.normal]
 family = "JetBrainsMono NF"
@@ -14,7 +14,7 @@ lines = 25
 
 [window]
 option_as_alt = "Both"
-padding.x=5
-padding.y=5
-dynamic_padding=true
-resize_increments=true
+padding.x = 5
+padding.y = 5
+dynamic_padding = true
+resize_increments = true

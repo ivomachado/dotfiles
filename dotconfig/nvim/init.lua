@@ -34,7 +34,7 @@ vim.opt.background = "dark"
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.diagnostic.config({
-  virtual_text = false,
+  virtual_text = { current_line = true },
   signs = {
     text = {
       [vim.diagnostic.severity.ERROR] = '⚠',
@@ -51,8 +51,6 @@ vim.cmd([[let $ESCDELAY=0]])
 vim.cmd("filetype plugin on")
 
 vim.cmd([[ set titlestring=%{fnamemodify(getcwd(),':h:t')}/%{fnamemodify(getcwd(),':t')} ]])
-
-vim.cmd('colorscheme catppuccin-ivo')
 
 --------------------------------------------------------------------------------
 --------------------------------- Actions -----------------------------------
@@ -105,7 +103,7 @@ vim.keymap.set('n', '<leader>f', "<cmd>FzfLua files<cr>")
 vim.keymap.set('n', '<leader>b', "<cmd>FzfLua buffers<cr>")
 vim.keymap.set('n', '<leader>s', "<cmd>FzfLua lsp_document_symbols<cr>")
 vim.keymap.set('n', '<leader>S', "<cmd>FzfLua lsp_workspace_symbols<cr>")
-vim.keymap.set('n', '<leader>l', "<cmd>FzfLua live_grep<cr>")
+vim.keymap.set('n', '<leader>l', "<cmd>FzfLua live_grep_native<cr>")
 vim.keymap.set('n', '<leader>L', "<cmd>FzfLua grep_last<cr>")
 vim.keymap.set('n', '<leader>p', "<cmd>FzfLua commands<cr>")
 vim.keymap.set('n', '<leader>c', "<cmd>FzfLua colorschemes<cr>")
@@ -157,16 +155,12 @@ vim.keymap.set('n', 'grb', "<cmd>Gitsigns reset_buffer<CR>")
 vim.keymap.set({ 'i', 's' }, '<Tab>', Action.tab_action, { expr = true })
 vim.keymap.set({ 'i', 's' }, '<S-Tab>', Action.shift_tab_action, { expr = true })
 vim.keymap.set('i', '<CR>', Action.cr_action, { expr = true, replace_keycodes = false, })
+vim.keymap.set('i', '<C-Space>', "<C-x><C-o>")
 
 --------------------------------------------------------------------------------
 --------------------------- Language Server Protocol ---------------------------
 --------------------------------------------------------------------------------
 vim.keymap.set('n', 'gd', vim.lsp.buf.definition)
-vim.keymap.set('n', 'gi', "<cmd>FzfLua lsp_implementations<CR>")
-vim.keymap.set('n', 'gR', "<cmd>FzfLua lsp_references<CR>")
--- vim.keymap.set('n', 'K', vim.lsp.buf.hover)
-vim.keymap.set('n', '<F2>', vim.lsp.buf.rename)
-vim.keymap.set('n', 'ga', vim.lsp.buf.code_action)
 vim.keymap.set({ 'n', 'i' }, '<C-k>', vim.lsp.buf.signature_help)
 
 -- ==============================================================================
@@ -182,34 +176,33 @@ if not LazySet then
   LazySet = true
   local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
   if not vim.loop.fs_stat(lazypath) then
-    vim.fn.system({ "git", "clone", "--filter=blob:none", "https://github.com/folke/lazy.nvim.git", "--branch=stable",
+    vim.fn.system({ "git", "clone", "https://github.com/folke/lazy.nvim.git", "--branch=stable",
       lazypath, })
   end
   vim.opt.rtp:prepend(lazypath)
   require("lazy").setup({
+    git = { filter = false },
+    { 'Bekaboo/dropbar.nvim',           config = true },
     { 'nvim-tree/nvim-tree.lua',        dependencies = { 'antosha417/nvim-lsp-file-operations' }, opts = {} },
+    { 'mason-org/mason.nvim',           opts = {} },
     { 'folke/neodev.nvim',              config = true },
     { 'neovim/nvim-lspconfig',          event = "VeryLazy", },
-    -- { 'NMAC427/guess-indent.nvim',       config = true },
-    { 'PeterRincker/vim-argumentative', event = "BufEnter", },
     { 'windwp/nvim-autopairs',          opts = { map_cr = false } },
     { 'kylechui/nvim-surround',         version = "*",            keys = { "ys", "ds", "cs" },           config = true, },
-    { 'numToStr/Comment.nvim',          keys = { "gc", "gb" },    config = true, },
+    -- { 'numToStr/Comment.nvim',          keys = { "gc", "gb" },    config = true, },
     { 'echasnovski/mini.notify',        version = false,          config = true },
+    { 'echasnovski/mini.ai',            version = false,          config = true },
     { 'lewis6991/gitsigns.nvim',        event = "VeryLazy",        opts = { current_line_blame = false, } },
     { 'Darazaki/indent-o-matic',        config = true },
     {
-      'nvimdev/epo.nvim',
-      opts = {
-        signature = false,
-        signature_border = 'single',
-        kind_format = function(k)
-          return k
-        end
-      },
+      enabled = false,
+      'neanias/everforest-nvim',
+      lazy = false,
+      priority = 1000,
+      opts = {},
       config = function(opts)
-        require('epo').setup(opts)
-        vim.opt.completeopt = 'menuone,noselect,noinsert,popup'
+        require('everforest').setup(opts)
+        vim.cmd[[colorscheme everforest]]
       end
     },
     {
@@ -243,14 +236,7 @@ if not LazySet then
       opts = {
         "telescope",
         fzf_opts = { ["--layout"] = "reverse", },
-        winopts = {
-          height = 0.85,
-          width = 0.80,
-          row = 0.35,
-          col = 0.50,
-          preview = { default = 'builtin' },
-          border = 'single',
-        },
+        winopts = { height = 0.85, width = 0.80, row = 0.35, col = 0.50, preview = { default = 'builtin' }, border = 'single', },
         files = {
           fd_opts =
           "--color=never --type f --hidden --no-ignore-vcs --follow --exclude .git --exclude .ccache --exclude .cache --exclude *.o",
@@ -307,17 +293,29 @@ function get_mode_name()
   return mode_map[vim.api.nvim_get_mode().mode] or 'UNKNOWN'
 end
 
+---@diagnostic disable-next-line: unused-function, unused-local, lowercase-global
+function get_remote_status()
+  if vim.env.PDE_REMOTE_PATH ~= nil then
+    if PDE_REMOTE_PENDING > 0 then
+      return "[PENDING]"
+    else
+      return "[SYNCED]"
+    end
+  end
+  return ""
+end
+
 local statusline = {
   ' %{luaeval(\'get_mode_name()\')}',
   '%=', '%f', '%r', '%m', '%=',
   ' %{&expandtab?"\u{f1050}":"\u{f0312} "} %{&shiftwidth}',
-  ' %2p%%', ' %3l:%-2c', ' %{&filetype} ',
+  ' %2p%%', ' %3l:%-2c', ' %{&filetype} %{luaeval(\'get_remote_status()\')}',
 }
 
 vim.opt.statusline = table.concat(statusline, '')
-local default_winbar = " %=%t%= "
-local unfocused_winbar = "%#Whitespace#" .. default_winbar
-vim.opt.winbar = default_winbar
+-- local default_winbar = " %=%t%= "
+-- local unfocused_winbar = "%#Whitespace#" .. default_winbar
+-- vim.opt.winbar = default_winbar
 
 --------------------------------------------------------------------------------
 -------------------------------- Auto Commands ---------------------------------
@@ -329,7 +327,7 @@ vim.api.nvim_create_autocmd({ "BufHidden" }, {
   desc = "Delete scratch buffers",
   pattern = { "*No Name*" },
   callback = function(ev)
-    vim.api.nvimm_buf_delete(ev.buf)
+    vim.api.nvim_buf_delete(ev.buf, {force = false})
   end,
 })
 
@@ -347,7 +345,7 @@ vim.api.nvim_create_autocmd({ "WinLeave" }, {
   desc = "Disable cursorline",
   callback = function()
     vim.opt.cursorline = false
-    vim.wo.winbar = unfocused_winbar
+    -- vim.wo.winbar = unfocused_winbar
   end,
 })
 
@@ -356,7 +354,7 @@ vim.api.nvim_create_autocmd({ "WinEnter" }, {
   desc = "Enable cursorline on current window",
   callback = function()
     vim.opt.cursorline = true
-    vim.wo.winbar = default_winbar
+    -- vim.wo.winbar = default_winbar
   end,
 })
 
@@ -373,12 +371,96 @@ vim.api.nvim_create_autocmd('VimResized', {
   callback = function() vim.cmd("wincmd =") end,
 })
 
+vim.api.nvim_create_autocmd('LspAttach', {
+  callback = function(ev)
+    local client = vim.lsp.get_client_by_id(ev.data.client_id)
+    if client:supports_method('textDocument/completion') then
+      vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
+    end
+  end,
+})
+
+--------------------------------------------------------------------------------
+-------------------------------- Remote Editing --------------------------------
+--------------------------------------------------------------------------------
+
+local pde_remote_autocmd_group = vim.api.nvim_create_augroup("pde-remote", { clear = true })
+PDE_REMOTE_PENDING = 0
+if vim.env.PDE_REMOTE_PATH ~= nil then
+  local function get_paths_for_remote(buffer)
+    local absolute_path = vim.api.nvim_buf_get_name(buffer)
+    local cwd = vim.uv.cwd()
+    if cwd == nil then
+      return nil
+    end
+    local relative_path = string.sub(absolute_path, string.len(cwd) + 2)
+    return {
+      absolute_path = absolute_path,
+      relative_path = relative_path,
+      remote_path = vim.fn.expand(vim.env.PDE_REMOTE_PATH.."/"..relative_path)
+    }
+  end
+  local function bypass_remote_sync(paths)
+    local match =  string.match(paths.absolute_path, "/compile_commands%.json$", 0)
+    if match == "/compile_commands.json" then
+      return true
+    end
+    match =  string.match(paths.absolute_path, "/CMakeLists%.txt$", 0)
+    if match == "/CMakeLists.txt" then
+      return true
+    end
+    return false
+  end
+  local function rsync_file(name, source, dest, callback)
+    local args = {source, dest}
+    PDE_REMOTE_PENDING = PDE_REMOTE_PENDING + 1
+    local handler
+    handler = vim.uv.spawn("rsync", {args = args}, function(code, signal)
+      PDE_REMOTE_PENDING = PDE_REMOTE_PENDING - 1
+      vim.defer_fn(function()
+        if code ~= 0 then
+          vim.notify("Failed to sync "..name)
+          vim.notify("command: rsync "..args[1].." "..args[2])
+        end
+        vim.cmd([[redraws]])
+      end, 0)
+      if handler ~= nil then
+        vim.uv.close(handler)
+      end
+      if callback ~= nil then vim.defer_fn(callback, 0) end
+    end)
+  end
+  local function bufwrite_autocmd_handler(ev)
+    local paths = get_paths_for_remote(ev.buf)
+    if paths == nil then
+      return
+    end
+    if bypass_remote_sync(paths) then
+      vim.notify("remote-sync: bypassing this file")
+    end
+
+    rsync_file(paths.relative_path, paths.absolute_path, paths.remote_path)
+  end
+  local function read_file_from_remote()
+    local paths = get_paths_for_remote(0)
+    if paths == nil then
+      return
+    end
+    rsync_file(paths.relative_path, paths.remote_path, paths.absolute_path, function() vim.cmd([[e! ]]..paths.relative_path) end)
+  end
+  vim.api.nvim_create_autocmd({ "BufWrite" }, {
+    group = pde_remote_autocmd_group,
+    desc = "Rsync file to server",
+    callback = bufwrite_autocmd_handler,
+  })
+  vim.api.nvim_create_user_command('RemoteReloadFile', read_file_from_remote, {})
+end
+
 --------------------------------------------------------------------------------
 ----------------------- Language Server Protocol Setup -------------------------
 --------------------------------------------------------------------------------
 
-local capabilities = vim.tbl_deep_extend('force', vim.lsp.protocol.make_client_capabilities(),
-  require('epo').register_cap())
+local capabilities = vim.lsp.protocol.make_client_capabilities()
 
 local lspconfig = require("lspconfig")
 
@@ -402,5 +484,6 @@ lspconfig.rust_analyzer.setup {
 
 lspconfig['lua_ls'].setup({})
 
+vim.cmd[[colorscheme catppuccin-ivo]]
 vim.cmd("FzfLua register_ui_select")
 vim.notify = require('mini.notify').make_notify()

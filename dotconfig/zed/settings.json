@@ -7,13 +7,25 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "features": {
+    "edit_prediction_provider": "zed"
+  },
+  "edit_predictions": {
+    "mode": "subtle",
+    "copilot": {
+      "proxy": null,
+      "proxy_no_verify": null
+    },
+    "enabled_in_text_threads": false
+  },
   "terminal": {
     "dock": "bottom",
     "blinking": "on",
     "line_height": "standard",
     "option_as_meta": true
   },
-  "assistant": {
+  "agent": {
+    "default_profile": "ask",
     "default_model": {
       "provider": "copilot_chat",
       "model": "gpt-4o"
@@ -22,20 +34,51 @@
   },
   "ssh_connections": [
     {
-      "host": "10.28.58.140",
-      "username": "root",
-      "port": 10033,
+      "host": "fw.dev.env",
       "projects": [
         {
-          "paths": ["/common/src"]
+          "paths": [
+            "/common/src"
+          ]
+        },
+        {
+          "paths": [
+            "/common/yo_script"
+          ]
+        },
+        {
+          "paths": [
+            "/regression/regression/regression"
+          ]
         }
-      ],
-      "nickname": "fw.dev.env"
+      ]
+    },
+    {
+      "host": "10.28.53.191",
+      "username": "root",
+      "port": 10215,
+      "projects": [
+        {
+          "paths": [
+            "/common/src"
+          ]
+        }
+      ]
+    },
+    {
+      "host": "fw.build.env",
+      "projects": [
+        {
+          "paths": [
+            "/common/src"
+          ]
+        }
+      ]
     }
   ],
   "vim_mode": true,
-  "ui_font_size": 14,
-  "buffer_font_size": 14,
+  "ui_font_size": 15,
+  "buffer_font_size": 15,
   "theme": {
     "mode": "system",
     "light": "One Light",
@@ -45,7 +88,8 @@
   "cursor_blink": false,
   "relative_line_numbers": true,
   "vim": {
-    "use_system_clipboard": "never"
+    "use_system_clipboard": "never",
+    "highlight_on_yank_duration": 0
   },
   "inlay_hints": { "enabled": false },
   "max_modal_width": "full",
@@ -79,5 +123,26 @@
   },
   "use_system_path_prompts": false,
   "auto_signature_help": true,
-  "show_user_picture": false
+  "show_user_picture": false,
+  "ensure_final_newline_on_save": false,
+  "auto_indent_on_paste": false,
+  "use_auto_surround": false,
+  "use_autoclose": true,
+  "always_treat_brackets_as_autoclosed": true,
+  "bottom_dock_layout": "left_aligned",
+  "file_scan_exclusions": [
+    "**/.git",
+    "**/.svn",
+    "**/.hg",
+    "**/.jj",
+    "**/CVS",
+    "**/.DS_Store",
+    "**/Thumbs.db",
+    "**/.classpath",
+    "**/.settings",
+    "**/build",
+    "**/.cache"
+  ],
+  "wrap_guides": [80, 100, 120],
+  "command_aliases": { "re": "" }
 }

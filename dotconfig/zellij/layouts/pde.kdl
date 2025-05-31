@@ -1,8 +1,12 @@
 layout {
     tab {
-        pane command="$EDITOR" size="70%" focus=true name="editor" close_on_exit=true
+        pane command="$EDITOR" size="70%" focus=true name="editor" close_on_exit=true borderless=true
         pane split_direction="horizontal" {
             pane
+        }
+
+        pane size=1 borderless=true {
+            plugin location="zellij:compact-bar"
         }
     }
 

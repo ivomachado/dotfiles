@@ -28,3 +28,7 @@ lazy-lock.json
 .rgignore
 .ignore
 ccache/
+.pde.sh
+.stfolder
+*.sync-conflict*
+dotconfig/zed/embeddings

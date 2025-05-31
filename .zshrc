@@ -41,14 +41,16 @@ function start-dev-container {
 source "${HOME}/.zgenom/zgenom.zsh"
 zgenom autoupdate
 
-if ! command -v helix &> /dev/null ; then
-    alias helix=hx
-    export EDITOR='hx'
-    export VISUAL='hx'
-else
-    export EDITOR='helix'
-    export VISUAl='helix'
-fi
+export EDITOR='nvim'
+export VISUAL='nvim'
+# if ! command -v helix &> /dev/null ; then
+#     alias helix=hx
+#     export EDITOR='hx'
+#     export VISUAL='hx'
+# else
+#     export EDITOR='helix'
+#     export VISUAl='helix'
+# fi
 
 if ! zgenom saved; then
     echo "Creating a zgenom save"
@@ -196,7 +198,13 @@ SPACESHIP_RPROMPT_ORDER=(
   time           # Time stamps section
 )
 
-alias pde='zellij --layout pde'
+function pde() {
+    if [ -f .pde.sh ]; then
+        #TODO: ask if it should run and then save the result
+        source .pde.sh
+    fi
+    zellij --layout pde
+}
 
 export TPV_PF_FRIENDLY_NAME="Ivo's Notebook"
 export TPV_PF_DEVICE_NAME="Computer"

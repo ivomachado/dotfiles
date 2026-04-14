@@ -1,2 +1,6 @@
 dotconfig/lazygit/state.yml
 .stfolder/
+.DS_Store
+dotconfig/zed/debug.json
+dotconfig/zed/settings_backup.json
+dotconfig/zed/tasks.json

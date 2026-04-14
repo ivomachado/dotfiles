@@ -1,0 +1,60 @@
+# Starship configuration matching your Powerlevel10k look
+
+format = """
+$directory\
+$git_branch\
+$git_status\
+$python\
+$character"""
+
+right_format = """
+$cmd_duration\
+$username\
+$hostname\
+$time"""
+
+# Don't add a newline between prompts
+add_newline = false
+
+[directory]
+style = "cyan bold"
+truncation_length = 3
+truncate_to_repo = true
+
+[git_branch]
+symbol = " "
+style = "purple bold"
+
+[git_status]
+style = "red bold"
+
+[cmd_duration]
+min_time = 500
+show_milliseconds = false
+style = "yellow"
+format = "took [$duration]($style) "
+
+[python]
+symbol = "🐍 "
+style = "blue bold"
+format = "via [${symbol}${pyenv_prefix}(${version} )($virtualenv )]($style)"
+
+[username]
+show_always = false
+style_user = "white"
+format = "[$user]($style)"
+
+[hostname]
+ssh_only = true
+style = "white"
+format = "@[$hostname]($style) "
+
+[time]
+disabled = false
+time_format = "%R" # 24-hour format
+style = "grey italic"
+format = "[$time]($style)"
+
+[character]
+success_symbol = "[➜](bold green)"
+error_symbol = "[➜](bold red)"

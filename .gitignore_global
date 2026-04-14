@@ -8,6 +8,9 @@ compile_commands.json
 toolchains
 toolchain
 prebuilt
+.clangd
+.build/
+.ivo/
 
 third_party
 .git

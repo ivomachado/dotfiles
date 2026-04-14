@@ -191,9 +191,10 @@ if not LazySet then
     { 'kylechui/nvim-surround',         version = "*",            keys = { "ys", "ds", "cs" },           config = true, },
     -- { 'numToStr/Comment.nvim',          keys = { "gc", "gb" },    config = true, },
     { 'echasnovski/mini.notify',        version = false,          config = true },
-    { 'echasnovski/mini.ai',            version = false,          config = true },
+    -- { 'echasnovski/mini.ai',            version = false,          config = true },
     { 'lewis6991/gitsigns.nvim',        event = "VeryLazy",        opts = { current_line_blame = false, } },
     { 'Darazaki/indent-o-matic',        config = true },
+    { 'tpope/vim-abolish' },
     {
       enabled = false,
       'neanias/everforest-nvim',
@@ -205,19 +206,35 @@ if not LazySet then
         vim.cmd[[colorscheme everforest]]
       end
     },
+    -- {
+    --   'nvim-treesitter/nvim-treesitter',
+    --   branch = 'main',
+    --   build = ':TSUpdate',
+    --   opts = {
+    --     auto_install = true,
+    --     ensure_install = { 'rust', 'cpp', 'lua' },
+    --     sync_install = false,
+    --     highlight = {
+    --       enable = true,
+    --       additional_vim_regex_highlighting = false,
+    --     },
+    --   },
+    -- },
     {
       'nvim-treesitter/nvim-treesitter',
-      branch = 'main',
+      branch = 'master',
       build = ':TSUpdate',
-      opts = {
-        auto_install = true,
-        ensure_install = { 'rust', 'cpp', 'lua' },
-        sync_install = false,
-        highlight = {
-          enable = true,
-          additional_vim_regex_highlighting = false,
-        },
-      },
+      config = function()
+        require("nvim-treesitter.configs").setup({
+          auto_install = true,
+          ensure_installed = { 'rust', 'cpp', 'lua' },
+          sync_install = false,
+          highlight = {
+            enable = true,
+            additional_vim_regex_highlighting = false,
+          },
+        })
+      end
     },
     {
       'stevearc/conform.nvim',
@@ -247,7 +264,29 @@ if not LazySet then
       },
     },
     -- { 'echasnovski/mini.colors', version = false },
-    -- { "catppuccin/nvim", name = "catppuccin", config = true, priority = 1000, },
+    {
+      "f-person/auto-dark-mode.nvim",
+      opts = {
+        -- your configuration comes here
+        -- or leave it empty to use the default settings
+        -- refer to the configuration section below
+      }
+    },
+    {
+      "catppuccin/nvim",
+      name = "catppuccin",
+      opts = {
+        flavour = "auto", -- latte, frappe, macchiato, mocha
+        background = { -- :h background
+          light = "latte",
+          dark = "macchiato",
+        },
+      },
+      config = function(opts)
+        vim.cmd.colorscheme "catppuccin"
+      end,
+      priority = 1000,
+    },
   })
 end
 
@@ -358,12 +397,12 @@ vim.api.nvim_create_autocmd({ "WinEnter" }, {
   end,
 })
 
-vim.api.nvim_create_autocmd('FileType', {
-  group = autocmd_group,
-  desc = "Start treesitter",
-  pattern = { 'cpp', 'rust', 'lua' },
-  callback = function() vim.treesitter.start() end,
-})
+-- vim.api.nvim_create_autocmd('FileType', {
+--   group = autocmd_group,
+--   desc = "Start treesitter",
+--   pattern = { 'cpp', 'rust', 'lua' },
+--   callback = function() vim.treesitter.start() end,
+-- })
 
 vim.api.nvim_create_autocmd('VimResized', {
   group = autocmd_group,
@@ -484,6 +523,5 @@ lspconfig.rust_analyzer.setup {
 
 lspconfig['lua_ls'].setup({})
 
-vim.cmd[[colorscheme catppuccin-ivo]]
 vim.cmd("FzfLua register_ui_select")
 vim.notify = require('mini.notify').make_notify()

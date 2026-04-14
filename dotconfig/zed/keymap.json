@@ -6,34 +6,41 @@
 // To see the default key bindings run `zed: open default keymap`
 // from the command palette.
 [
-  {
-    "context": "vim_mode == insert || vim_mode == replace",
-    "bindings": {
-      "j k": ["workspace::SendKeystrokes", "escape"]
+    {
+        "context": "vim_mode == insert || vim_mode == replace",
+        "bindings": {
+            "j k": ["workspace::SendKeystrokes", "escape"]
+        }
+    },
+    {
+        "context": "VimControl && !menu",
+        "bindings": {
+            "shift-c": "editor::AddSelectionBelow"
+        }
+    },
+    {
+        "context": "(VimControl || menu || EmptyPane || SharedScreen) && vim_mode!=insert",
+        "bindings": {
+            "space w": ["workspace::SendKeystrokes", "ctrl-w"],
+            "space f": "file_finder::Toggle",
+            "space b": "tab_switcher::ToggleAll"
+        }
+    },
+    {
+        "context": "Dock",
+        "bindings": {
+            "ctrl-w h": "workspace::ActivatePaneLeft",
+            "ctrl-w l": "workspace::ActivatePaneRight",
+            "ctrl-w k": "workspace::ActivatePaneUp",
+            "ctrl-w j": "workspace::ActivatePaneDown"
+        }
+    },
+    {
+        "context": "vim_operator == a || vim_operator == i || vim_operator == cs",
+        "bindings": {
+            // Traditional Vim behavior
+            "q": "vim::AnyQuotes",
+            "b": "vim::AnyBrackets"
+        }
     }
-  },
-  {
-    "context": "(VimControl || menu || EmptyPane || SharedScreen) && vim_mode!=insert",
-    "bindings": {
-      "space w": ["workspace::SendKeystrokes", "ctrl-w"],
-      "space f": "file_finder::Toggle"
-    }
-  },
-  {
-    "context": "Dock",
-    "bindings": {
-      "ctrl-w h": "workspace::ActivatePaneLeft",
-      "ctrl-w l": "workspace::ActivatePaneRight",
-      "ctrl-w k": "workspace::ActivatePaneUp",
-      "ctrl-w j": "workspace::ActivatePaneDown"
-    }
-  },
-  {
-    "context": "vim_operator == a || vim_operator == i || vim_operator == cs",
-    "bindings": {
-      // Traditional Vim behavior
-      "q": "vim::AnyQuotes",
-      "b": "vim::AnyBrackets"
-    }
-  }
 ]

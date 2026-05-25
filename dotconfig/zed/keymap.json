@@ -22,8 +22,8 @@
         "context": "(VimControl || menu || EmptyPane || SharedScreen) && vim_mode!=insert",
         "bindings": {
             "space w": ["workspace::SendKeystrokes", "ctrl-w"],
-            "space f": "file_finder::Toggle",
-            "space b": "tab_switcher::ToggleAll"
+            "space f": "file_finder::Toggle"
+            // "space b": "tab_switcher::ToggleAll"
         }
     },
     {

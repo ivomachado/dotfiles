@@ -161,13 +161,11 @@ vim.keymap.set('i', '<C-Space>', "<C-x><C-o>")
 --------------------------- Language Server Protocol ---------------------------
 --------------------------------------------------------------------------------
 vim.keymap.set('n', 'gd', vim.lsp.buf.definition)
-vim.keymap.set({ 'n', 'i' }, '<C-k>', vim.lsp.buf.signature_help)
-
--- ==============================================================================
-
-vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-  close_events = { "InsertLeave", "CompleteDone", }
-})
+vim.keymap.set({ 'n', 'i' }, '<C-k>', function()
+  vim.lsp.buf.signature_help({
+    close_events = { "InsertLeave", "CompleteDone", }
+  })
+end)
 
 --------------------------------------------------------------------------------
 ----------------------------------- Plugins ------------------------------------
@@ -199,38 +197,69 @@ if not LazySet then
       event = { "BufReadPre", "BufNewFile" },
       dependencies = { 'folke/lazydev.nvim' },
       config = function()
-        local lspconfig = require("lspconfig")
         local capabilities = vim.lsp.protocol.make_client_capabilities()
         
-        -- Clangd setup
-        if lspconfig.clangd then
-          lspconfig.clangd.setup({
-            capabilities = capabilities,
-            flags = { debounce_text_changes = 150 }
-          })
-        end
-        
-        -- Rust setup
-        if lspconfig.rust_analyzer then
-          lspconfig.rust_analyzer.setup({
-            capabilities = capabilities,
-            settings = {
-              ['rust-analyzer'] = {
-                check = { command = "clippy" }
-              }
-            }
-          })
-        end
-        
-        -- Lua setup
-        if lspconfig.lua_ls then
-          lspconfig.lua_ls.setup({
-            capabilities = capabilities,
-          })
-        end
+        -- 1. Manual Overrides for specific servers
+        local overrides = {
+          clangd = { flags = { debounce_text_changes = 150 } },
+          rust_analyzer = {
+            settings = { ['rust-analyzer'] = { check = { command = "clippy" } } }
+          },
+          lua_ls = {},
+        }
+
+        -- 2. On-Demand Discovery
+        -- This autocmd runs whenever you open a new filetype
+        vim.api.nvim_create_autocmd('FileType', {
+          group = vim.api.nvim_create_augroup('lsp-auto-enable', { clear = true }),
+          callback = function(args)
+            local ft = vim.bo[args.buf].filetype
+            if ft == "" or ft == nil then return end
+
+            -- Heuristic: search for servers in the 'lsp/' runtime path that might match
+            -- We search for 'ft*.lua' and '*ft*.lua' to catch most servers.
+            local potential_servers = {}
+            local paths = vim.api.nvim_get_runtime_file('lsp/' .. ft .. '*.lua', true)
+            vim.list_extend(paths, vim.api.nvim_get_runtime_file('lsp/*' .. ft .. '*.lua', true))
+            
+            for _, path in ipairs(paths) do
+              local name = vim.fn.fnamemodify(path, ':t:r')
+              potential_servers[name] = true
+            end
+
+            -- Always check overrides even if they don't match the filename heuristic
+            for name, _ in pairs(overrides) do
+              -- We could check if the override is relevant to this FT, 
+              -- but it's safer to just let the loop handle it.
+              potential_servers[name] = true
+            end
+
+            for name, _ in pairs(potential_servers) do
+              -- Skip if already configured for this buffer or globally
+              if not vim.lsp.get_config(name) then
+                local config = vim.lsp.config[name]
+                if config then
+                  -- Verify this server actually supports the current filetype
+                  local supports_ft = false
+                  for _, sft in ipairs(config.filetypes or {}) do
+                    if sft == ft then supports_ft = true; break end
+                  end
+
+                  if supports_ft then
+                    local cmd = config.cmd
+                    if cmd and cmd[1] and vim.fn.executable(cmd[1]) == 1 then
+                      local opts = vim.tbl_deep_extend('force', { capabilities = capabilities }, overrides[name] or {})
+                      vim.lsp.config(name, opts)
+                      vim.lsp.enable(name)
+                    end
+                  end
+                end
+              end
+            end
+          end,
+        })
       end
-    },
-    { 'windwp/nvim-autopairs',          opts = { map_cr = false } },
+    },    { 'windwp/nvim-autopairs',          opts = { map_cr = false } },
     { 'kylechui/nvim-surround',         version = "*",            keys = { "ys", "ds", "cs" },           config = true, },
     { 'echasnovski/mini.notify',        version = false,          config = true },
     { 'lewis6991/gitsigns.nvim',        event = "VeryLazy",        opts = { current_line_blame = false, } },
@@ -358,22 +387,11 @@ function get_mode_name()
   return mode_map[vim.api.nvim_get_mode().mode] or 'UNKNOWN'
 end
 
-function get_remote_status()
-  if vim.env.PDE_REMOTE_PATH ~= nil then
-    if (PDE_REMOTE_PENDING or 0) > 0 then
-      return "[PENDING]"
-    else
-      return "[SYNCED]"
-    end
-  end
-  return ""
-end
-
 local statusline = {
   ' %{luaeval(\'get_mode_name()\')}',
   '%=', '%f', '%r', '%m', '%=',
   ' %{&expandtab?"\u{f1050}":"\u{f0312} "} %{&shiftwidth}',
-  ' %2p%%', ' %3l:%-2c', ' %{&filetype} %{luaeval(\'get_remote_status()\')}',
+  ' %2p%%', ' %3l:%-2c', ' %{&filetype}',
 }
 
 vim.opt.statusline = table.concat(statusline, '')
@@ -419,15 +437,18 @@ vim.api.nvim_create_autocmd({ "WinEnter" }, {
   end,
 })
 
--- Comprehensive Treesitter Auto-start: 
--- Triggers for ANY filetype if a parser is installed.
 vim.api.nvim_create_autocmd('FileType', {
   group = autocmd_group,
   desc = "Start treesitter",
-  callback = function() 
-    local lang = vim.treesitter.language.get_lang(vim.bo.filetype)
-    if lang and pcall(vim.treesitter.get_parser, 0, lang) then
-      vim.treesitter.start() 
+  callback = function(args)
+    local ft = vim.bo[args.buf].filetype
+    if ft == nil or ft == "" then return end
+    local lang = vim.treesitter.language.get_lang(ft)
+    if not lang then return end
+
+    local ok, parser = pcall(vim.treesitter.get_parser, args.buf, lang)
+    if ok and parser then
+      vim.treesitter.start(args.buf, lang)
     end
   end,
 })
@@ -446,71 +467,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end
   end,
 })
-
---------------------------------------------------------------------------------
--------------------------------- Remote Editing --------------------------------
---------------------------------------------------------------------------------
-
-local pde_remote_autocmd_group = vim.api.nvim_create_augroup("pde-remote", { clear = true })
-PDE_REMOTE_PENDING = 0
-if vim.env.PDE_REMOTE_PATH ~= nil then
-  local function get_paths_for_remote(buffer)
-    local absolute_path = vim.api.nvim_buf_get_name(buffer)
-    local cwd = vim.uv.cwd()
-    if cwd == nil or absolute_path == "" then
-      return nil
-    end
-    local relative_path = string.sub(absolute_path, string.len(cwd) + 2)
-    return {
-      absolute_path = absolute_path,
-      relative_path = relative_path,
-      remote_path = vim.fn.expand(vim.env.PDE_REMOTE_PATH.."/"..relative_path)
-    }
-  end
-  local function bypass_remote_sync(paths)
-    return paths.relative_path:match("compile_commands%.json$") or paths.relative_path:match("CMakeLists%.txt$")
-  end
-  local function rsync_file(name, source, dest, callback)
-    local args = {source, dest}
-    PDE_REMOTE_PENDING = PDE_REMOTE_PENDING + 1
-    local handler
-    handler = vim.uv.spawn("rsync", {args = args}, function(code, signal)
-      PDE_REMOTE_PENDING = math.max(0, PDE_REMOTE_PENDING - 1)
-      vim.defer_fn(function()
-        if code ~= 0 then
-          vim.notify("Failed to sync "..name, vim.log.levels.WARN)
-        end
-        vim.cmd([[redraws]])
-      end, 0)
-      if handler and not handler:is_closing() then
-        handler:close()
-      end
-      if callback ~= nil then vim.defer_fn(callback, 0) end
-    end)
-  end
-  local function bufwrite_autocmd_handler(ev)
-    local paths = get_paths_for_remote(ev.buf)
-    if paths == nil then
-      return
-    end
-    if not bypass_remote_sync(paths) then
-      rsync_file(paths.relative_path, paths.absolute_path, paths.remote_path)
-    end
-  end
-  local function read_file_from_remote()
-    local paths = get_paths_for_remote(0)
-    if paths == nil then
-      return
-    end
-    rsync_file(paths.relative_path, paths.remote_path, paths.absolute_path, function() vim.cmd([[e! ]]..paths.relative_path) end)
-  end
-  vim.api.nvim_create_autocmd({ "BufWrite" }, {
-    group = pde_remote_autocmd_group,
-    desc = "Rsync file to server",
-    callback = bufwrite_autocmd_handler,
-  })
-  vim.api.nvim_create_user_command('RemoteReloadFile', read_file_from_remote, {})
-end
 
 vim.cmd("FzfLua register_ui_select")
 vim.notify = require('mini.notify').make_notify()

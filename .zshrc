@@ -73,6 +73,12 @@ fi
 
 bindkey '^ ' autosuggest-accept
 
+# Keep pasted URLs literal (avoid auto-escaping like \& and \=)
+if [[ -o zle ]]; then
+    zle -A .self-insert self-insert
+fi
+unsetopt magic_equal_subst
+
 # Helper Functions
 merge_compile_commands() {
     find .build_"$1" -name compile_commands.json -type f -print0 | xargs -0 jq -s '[.[][]]' > compile_commands.json
@@ -80,3 +86,7 @@ merge_compile_commands() {
 
 # To customize your prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/ivomachado/.local/bin:$PATH"

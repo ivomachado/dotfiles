@@ -7,6 +7,20 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+    "go_to_definition_scroll_strategy": "top",
+    "icon_theme": {
+        "mode": "light",
+        "light": "Zed (Default)",
+        "dark": "Zed (Default)"
+    },
+    "cli_default_open_behavior": "new_window",
+    "outline_panel": {
+        "dock": "right"
+    },
+    "collaboration_panel": {
+        "dock": "right"
+    },
+    "diff_view_style": "split",
     "agent_servers": {
         "opencode": {
             "default_mode": "plan",
@@ -19,9 +33,11 @@
     "show_edit_predictions": false,
     "use_system_prompts": false,
     "git_panel": {
+        "dock": "right",
         "collapse_untracked_diff": true
     },
     "project_panel": {
+        "dock": "right",
         "auto_reveal_entries": false,
         "hide_root": false,
         "show_diagnostics": "off",
@@ -30,7 +46,7 @@
         "entry_spacing": "standard"
     },
     "title_bar": {
-        "show_branch_icon": true
+        "show_branch_status_icon": true
     },
     "search_wrap": true,
     "search": {
@@ -67,6 +83,7 @@
         "option_as_meta": true
     },
     "agent": {
+        "sidebar_side": "left",
         "favorite_models": [
             {
                 "provider": "copilot_chat",
@@ -97,6 +114,12 @@
                 "provider": "copilot_chat",
                 "model": "gpt-4.1",
                 "enable_thinking": false
+            },
+            {
+                "provider": "copilot_chat",
+                "model": "gpt-5.3-codex",
+                "enable_thinking": true,
+                "effort": "high"
             }
         ],
         "inline_assistant_model": {
@@ -148,18 +171,25 @@
                 }
             }
         },
-        "dock": "right",
+        "dock": "left",
         "default_model": {
             "effort": "high",
-            "enable_thinking": false,
+            "enable_thinking": true,
             "provider": "copilot_chat",
-            "model": "gpt-5-mini"
+            "model": "gpt-5.3-codex"
         },
         "single_file_review": true,
         "profiles": {
+            "plan": {
+                "name": "Plan",
+                "tools": {},
+                "enable_all_context_servers": false,
+                "context_servers": {}
+            },
             "write": {
                 "name": "Write",
                 "tools": {
+                    "search_web": true,
                     "copy_path": true,
                     "create_directory": true,
                     "delete_path": true,
@@ -175,8 +205,7 @@
                     "open": true,
                     "grep": true,
                     "terminal": true,
-                    "thinking": true,
-                    "web_search": true
+                    "thinking": true
                 },
                 "enable_all_context_servers": true,
                 "context_servers": {}
@@ -185,22 +214,80 @@
         "use_modifier_to_send": false,
         "enable_feedback": false,
         "expand_terminal_card": true,
-        "play_sound_when_agent_done": false,
+        "play_sound_when_agent_done": "never",
         "notify_when_agent_waiting": "never",
-        "default_profile": "ask"
+        "default_profile": "write"
     },
-    "ssh_connections": [],
+    "ssh_connections": [
+        {
+            "host": "fw.dev.env",
+            "args": [],
+            "projects": [
+                {
+                    "paths": [
+                        "/common"
+                    ]
+                },
+                {
+                    "paths": [
+                        "/common/src"
+                    ]
+                },
+                {
+                    "paths": [
+                        "/regression/regression/regression"
+                    ]
+                },
+                {
+                    "paths": [
+                        "/root/ads-dev-agent"
+                    ]
+                },
+                {
+                    "paths": [
+                        "/root/playground"
+                    ]
+                }
+            ]
+        },
+        {
+            "host": "fw.build.env",
+            "args": [],
+            "projects": [
+                {
+                    "paths": [
+                        "/common"
+                    ]
+                },
+                {
+                    "paths": [
+                        "/common/src"
+                    ]
+                }
+            ]
+        },
+        {
+            "host": "fw.reg.env",
+            "args": [],
+            "projects": []
+        },
+        {
+            "host": "fw.dev.env-2",
+            "args": [],
+            "projects": []
+        }
+    ],
     "ui_font_size": 15,
     "buffer_font_size": 15,
     "theme": {
-        "mode": "system",
-        "light": "Gruvbox Light Soft",
-        "dark": "Gruvbox Dark Soft"
+        "mode": "light",
+        "light": "Ayu Light",
+        "dark": "Ayu Dark"
     },
     "confirm_quit": true,
     "cursor_blink": false,
     "relative_line_numbers": "enabled",
-    "helix_mode": false,
+    // "helix_mode": true,
     "vim_mode": true,
     "vim": {
         "use_system_clipboard": "on_yank",

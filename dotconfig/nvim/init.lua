@@ -198,6 +198,7 @@ if not LazySet then
       dependencies = { 'folke/lazydev.nvim' },
       config = function()
         local capabilities = vim.lsp.protocol.make_client_capabilities()
+        local enabled_servers = {}
         
         -- 1. Manual Overrides for specific servers
         local overrides = {
@@ -235,11 +236,9 @@ if not LazySet then
             end
 
             for name, _ in pairs(potential_servers) do
-              -- Skip if already configured for this buffer or globally
-              if not vim.lsp.get_config(name) then
+              if not enabled_servers[name] then
                 local config = vim.lsp.config[name]
                 if config then
-                  -- Verify this server actually supports the current filetype
                   local supports_ft = false
                   for _, sft in ipairs(config.filetypes or {}) do
                     if sft == ft then supports_ft = true; break end
@@ -251,6 +250,7 @@ if not LazySet then
                       local opts = vim.tbl_deep_extend('force', { capabilities = capabilities }, overrides[name] or {})
                       vim.lsp.config(name, opts)
                       vim.lsp.enable(name)
+                      enabled_servers[name] = true
                     end
                   end
                 end
@@ -267,23 +267,16 @@ if not LazySet then
     { 'tpope/vim-abolish' },
     {
       'nvim-treesitter/nvim-treesitter',
-      branch = 'master',
-      build = ':TSUpdate',
       lazy = false,
-      main = 'nvim-treesitter.configs',
-      opts = {
-        auto_install = true,
-        ensure_installed = { 
-            'rust', 'cpp', 'lua', 'markdown', 'markdown_inline',
-            'bash', 'python', 'json', 'toml', 'yaml', 'vim', 'vimdoc', 'regex',
-            'git_config', 'git_rebase', 'gitcommit', 'gitignore', 'diff'
-        },
-        sync_install = false,
-        highlight = {
-          enable = true,
-          additional_vim_regex_highlighting = false,
-        },
-      },
+      build = ':TSUpdate',
+      config = function()
+        require('nvim-treesitter').setup()
+        require('nvim-treesitter').install {
+          'rust', 'cpp', 'lua', 'markdown', 'markdown_inline',
+          'bash', 'python', 'json', 'toml', 'yaml', 'vim', 'vimdoc', 'regex',
+          'git_config', 'git_rebase', 'gitcommit', 'gitignore', 'diff',
+        }
+      end,
     },
     {
       'stevearc/conform.nvim',
@@ -318,29 +311,27 @@ if not LazySet then
         update_interval = 1000,
         set_dark_mode = function()
           vim.api.nvim_set_option_value("background", "dark", {})
-          vim.cmd("colorscheme catppuccin")
+          vim.cmd("colorscheme rose-pine-moon")
         end,
         set_light_mode = function()
           vim.api.nvim_set_option_value("background", "light", {})
-          vim.cmd("colorscheme catppuccin")
+          vim.cmd("colorscheme rose-pine-dawn")
         end,
       }
     },
     {
-      "catppuccin/nvim",
-      name = "catppuccin",
+      "rose-pine/neovim",
+      name = "rose-pine",
       lazy = false,
       priority = 1000,
       opts = {
-        flavour = "auto",
-        background = {
-          light = "latte",
-          dark = "macchiato",
-        },
+        variant = "auto",
+        dark_variant = "moon",
+        light_variant = "dawn",
       },
       config = function(_, opts)
-        require("catppuccin").setup(opts)
-        vim.cmd.colorscheme "catppuccin"
+        require("rose-pine").setup(opts)
+        vim.cmd.colorscheme "rose-pine"
       end,
     },
   })

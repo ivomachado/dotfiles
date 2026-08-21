@@ -35,3 +35,4 @@ ccache/
 .stfolder
 *.sync-conflict*
 dotconfig/zed/embeddings
+

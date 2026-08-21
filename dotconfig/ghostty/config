@@ -7,7 +7,13 @@
 # Run `ghostty +show-config --default --docs` to view a list of
 # all available config options and their default values.
 
+ 
 font-size=15
+theme=dark:Rose Pine, light:Rose Pine Dawn
 window-inherit-font-size = false
+window-inherit-working-directory = false
+tab-inherit-working-directory = false
+
+# Make Option behave as Alt so chords like Option+Backspace delete a word.
+# Use `right` instead of `true` if you want only the right Option key to act as Alt.
 macos-option-as-alt = true
-theme=Ayu Light

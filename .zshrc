@@ -37,6 +37,19 @@ export TPV_PF_FRIENDLY_NAME="Ivo's Notebook"
 export TPV_PF_DEVICE_NAME="Computer"
 export TPV_PF_MANUFACTURER="PC"
 
+# Cocoa-Way (Linux apps via Wayland/waypipe)
+# Auto-detect running compositor and set env vars for waypipe.
+_cocoa_way_dir="$TMPDIR/cocoa-way"
+_cocoa_way_socket="$_cocoa_way_dir/wayland-1"
+if [ -S "$_cocoa_way_socket" ]; then
+    export XDG_RUNTIME_DIR="$_cocoa_way_dir"
+    export WAYLAND_DISPLAY=wayland-1
+elif [ -S "$_cocoa_way_dir/wayland-2" ]; then
+    export XDG_RUNTIME_DIR="$_cocoa_way_dir"
+    export WAYLAND_DISPLAY=wayland-2
+fi
+unset _cocoa_way_dir _cocoa_way_socket
+
 # Zgenom Plugin Manager
 source "${HOME}/.zgenom/zgenom.zsh"
 zgenom autoupdate
@@ -90,3 +103,13 @@ merge_compile_commands() {
 
 # Added by Antigravity CLI installer
 export PATH="/Users/ivomachado/.local/bin:$PATH"
+export JAVA_HOME=/opt/homebrew/Cellar/openjdk/23.0.2/libexec/openjdk.jdk/Contents/Home
+export PATH=$JAVA_HOME/bin:$PATH
+
+# bun completions
+[ -s "/Users/ivomachado/.bun/_bun" ] && source "/Users/ivomachado/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+

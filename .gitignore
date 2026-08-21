@@ -4,3 +4,7 @@ dotconfig/lazygit/state.yml
 dotconfig/zed/debug.json
 dotconfig/zed/settings_backup.json
 dotconfig/zed/tasks.json
+dotconfig/herdr/*.log
+dotconfig/herdr/*.sock
+dotconfig/herdr/session.json
+dotconfig/herdr/release-notes.json

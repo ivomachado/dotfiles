@@ -1,0 +1,21 @@
+onboarding = false
+[ui.toast]
+delivery = "terminal"
+
+[theme]
+name = "rose-pine"
+auto_switch = true
+light_name = "rose-pine-dawn"
+dark_name = "rose-pine"
+
+[ui.sound]
+enabled = true
+
+[ui]
+show_agent_labels_on_pane_borders = true
+
+[keys]
+focus_pane_left = "alt+h"
+focus_pane_down = "alt+j"
+focus_pane_up = "alt+k"
+focus_pane_right = "alt+l"

@@ -5,6 +5,10 @@ mkdir -p ~/.config
 # Symlink all items in dotconfig to ~/.config
 for item in dotconfig/*; do
   target="$HOME/.config/$(basename "$item")"
+  if [ "$(basename "$item")" = "opencode" ]; then
+    "$PWD/tools/install-opencode.sh"
+    continue
+  fi
   # herdr stores runtime state (logs, session.json) in its config dir,
   # so symlink only the config file and keep the rest local.
   if [ "$(basename "$item")" = "herdr" ]; then

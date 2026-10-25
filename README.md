@@ -59,6 +59,13 @@ Configuration for Zellij, a terminal workspace manager.
 - Multiple floating layout configurations
 - Default layout for development environment
 
+## OpenCode
+Global OpenCode preferences and UI plugins are under `dotconfig/opencode/`.
+- `macbook-pro/` and `ufam-notebook/` hold host-specific UI preferences.
+- `common/` holds shared plugins and generic agents.
+- UFAM MCP server definitions are intentionally kept in the private `ufam-agent-config` repository and installed only as project configs in UFAM Git roots.
+- `./tools/install-opencode.sh` installs just the OpenCode settings without relinking the rest of the dotfiles.
+
 ## Layouts
 Custom layouts for Zellij.
 - PDE (Programming Development Environment) layout with predefined pane and tab configurations

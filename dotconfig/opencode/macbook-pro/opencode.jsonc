@@ -1,0 +1,25 @@
+{
+  "plugin": [
+    "@el4cteo/opencode-goal"
+  ],
+  "$schema": "https://opencode.ai/config.json",
+  "default_agent": "plan",
+  "disabled_providers": [
+    "opencode"
+  ],
+  "small_model": "opencode-go/deepseek-v4.1-flash",
+  "agent": {
+    "build": {
+      "model": "opencode-go/deepseek-v4.1-flash"
+    },
+    "plan": {
+      "model": "opencode-go/deepseek-v4.1-flash"
+    },
+    "explore": {
+      "model": "opencode-go/deepseek-v4.1-flash"
+    },
+    "scout": {
+      "model": "opencode-go/deepseek-v4.1-flash"
+    }
+  }
+}
